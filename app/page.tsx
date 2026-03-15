@@ -2,10 +2,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Calendar, Menu, ChevronRight, LogIn, LogOut, LayoutDashboard } from 'lucide-react'
+import { Calendar, Menu, LogIn, LogOut, LayoutDashboard } from 'lucide-react'
 import Link from 'next/link'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth, GSAMemberData } from '@/contexts/AuthContext'
 import { db } from '@/lib/firebase'
 import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore'
 
@@ -23,11 +22,15 @@ interface BlogPost {
   authorCampus?: string;
 }
 
+interface MemberWithId extends GSAMemberData {
+  id: string;
+}
+
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { user, memberData, logout } = useAuth()
+  const { user, logout } = useAuth()
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
-  const [members, setMembers] = useState<any[]>([])
+  const [members, setMembers] = useState<MemberWithId[]>([])
 
   useEffect(() => {
     const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'))
@@ -47,7 +50,7 @@ export default function App() {
       const membersData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      }))
+      })) as MemberWithId[]
       setMembers(membersData.slice(0, 10)) // Max 10 members
     })
     return () => unsubscribe()

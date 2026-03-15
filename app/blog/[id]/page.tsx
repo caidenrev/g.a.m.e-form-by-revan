@@ -1,11 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { db } from '@/lib/firebase'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, Timestamp } from 'firebase/firestore'
 import Link from 'next/link'
-import { ArrowLeft, Calendar, User } from 'lucide-react'
+import { ArrowLeft, Calendar } from 'lucide-react'
 
 interface BlogPost {
   id: string;
@@ -14,7 +15,7 @@ interface BlogPost {
   content: string;
   category: string;
   imageUrl?: string;
-  createdAt?: any;
+  createdAt?: Timestamp;
   author: string;
   authorId: string;
   authorPhoto?: string;
@@ -28,13 +29,7 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (postId) {
-      loadPost()
-    }
-  }, [postId])
-
-  const loadPost = async () => {
+  const loadPost = useCallback(async () => {
     try {
       const docRef = doc(db, 'blogs', postId)
       const docSnap = await getDoc(docRef)
@@ -47,7 +42,13 @@ export default function BlogPostPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [postId])
+
+  useEffect(() => {
+    if (postId) {
+      loadPost()
+    }
+  }, [postId, loadPost])
 
   const getTierColor = (tier?: string) => {
     switch(tier) {

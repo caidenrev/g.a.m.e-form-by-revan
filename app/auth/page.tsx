@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState } from 'react'
@@ -65,8 +66,12 @@ export default function AuthPage() {
         })
       }
       router.push('/')
-    } catch (err: any) {
-      setError(err.message || 'Terjadi kesalahan')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Terjadi kesalahan')
+      } else {
+        setError('Terjadi kesalahan')
+      }
     } finally {
       setLoading(false)
     }

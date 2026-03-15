@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter, useParams } from 'next/navigation'
 import { db } from '@/lib/firebase'
@@ -13,7 +14,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
 export default function EditArticlePage() {
-  const { user, memberData, loading } = useAuth()
+  const { user, loading } = useAuth()
   const router = useRouter()
   const params = useParams()
   const articleId = params.id as string
@@ -29,18 +30,7 @@ export default function EditArticlePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState('')
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth')
-      return
-    }
-
-    if (user && articleId) {
-      loadArticle()
-    }
-  }, [user, loading, router, articleId])
-
-  const loadArticle = async () => {
+  const loadArticle = useCallback(async () => {
     try {
       const docRef = doc(db, 'blogs', articleId)
       const docSnap = await getDoc(docRef)
@@ -68,7 +58,18 @@ export default function EditArticlePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [articleId, user?.uid])
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth')
+      return
+    }
+
+    if (user && articleId) {
+      loadArticle()
+    }
+  }, [user, loading, router, articleId, loadArticle])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

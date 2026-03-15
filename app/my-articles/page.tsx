@@ -1,11 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import { db } from '@/lib/firebase'
-import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore'
-import { Button } from '@/components/ui/button'
+import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc, Timestamp } from 'firebase/firestore'
 import Link from 'next/link'
 import { ArrowLeft, Edit, Trash2, Plus, Calendar } from 'lucide-react'
 
@@ -15,7 +15,7 @@ interface BlogPost {
   excerpt: string;
   category: string;
   imageUrl?: string;
-  createdAt?: any;
+  createdAt?: Timestamp;
   author: string;
   authorId: string;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -100,9 +101,9 @@ export default function MyProfilePage() {
       setTimeout(() => {
         window.location.reload()
       }, 1500)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating profile:', error)
-      setMessage(`Gagal memperbarui profile: ${error.message || String(error)}`)
+      setMessage(`Gagal memperbarui profile: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setIsSubmitting(false)
     }

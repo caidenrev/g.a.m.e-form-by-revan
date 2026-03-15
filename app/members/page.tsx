@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -5,9 +6,14 @@ import { db } from '@/lib/firebase'
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { GSAMemberData } from '@/contexts/AuthContext'
+
+interface MemberWithId extends GSAMemberData {
+  id: string;
+}
 
 export default function MembersPage() {
-  const [members, setMembers] = useState<any[]>([])
+  const [members, setMembers] = useState<MemberWithId[]>([])
 
   useEffect(() => {
     const q = query(collection(db, 'members'), orderBy('createdAt', 'desc'))
@@ -15,7 +21,7 @@ export default function MembersPage() {
       const membersData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      }))
+      })) as MemberWithId[]
       setMembers(membersData)
     })
     return () => unsubscribe()
