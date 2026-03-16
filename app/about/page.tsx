@@ -2,7 +2,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, Target, Award, Rocket } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Footer from '@/components/Footer'
 
 export default function AboutPage() {
@@ -77,7 +77,7 @@ export default function AboutPage() {
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-6 bg-blue-50/20">
                 <div className="grid grid-cols-2 gap-4 relative">
                   <div className="relative aspect-square rounded-[32px] overflow-hidden shadow-md border-4 border-white">
-                    <img src="/images/revan.jpeg" alt="Eka Revandi 1" className="w-full h-full object-cover transition-transform hover:scale-110 duration-500" />
+                    <img src="/images/ngoding.jpeg" alt="Eka Revandi 1" className="w-full h-full object-cover transition-transform hover:scale-110 duration-500" />
                   </div>
                   <div className="relative aspect-square rounded-[32px] overflow-hidden shadow-md mt-8 border-4 border-white">
                     <img src="/images/revan2.jpeg" alt="Eka Revandi 2" className="w-full h-full object-cover transition-transform hover:scale-110 duration-500" />

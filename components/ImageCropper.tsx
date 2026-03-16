@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
-import Cropper from 'react-easy-crop'
+import Cropper, { Area } from 'react-easy-crop'
 import { getCroppedImg } from '@/lib/imageUtils'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -23,7 +23,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [rotation, setRotation] = useState(0)
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
 
   const onCropChange = (crop: { x: number; y: number }) => {
@@ -34,16 +34,18 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     setZoom(zoom)
   }
 
-  const onCropAreaComplete = useCallback((_croppedArea: any, croppedAreaPixels: any) => {
+  const onCropAreaComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
   }, [])
 
   const handleCrop = async () => {
     setIsProcessing(true)
     try {
-      const croppedImage = await getCroppedImg(image, croppedAreaPixels, rotation)
-      if (croppedImage) {
-        onCropComplete(croppedImage)
+      if (croppedAreaPixels) {
+        const croppedImage = await getCroppedImg(image, croppedAreaPixels, rotation)
+        if (croppedImage) {
+          onCropComplete(croppedImage)
+        }
       }
     } catch (e) {
       console.error(e)

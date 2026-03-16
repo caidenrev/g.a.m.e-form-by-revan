@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, Edit2, LayoutDashboard, ArrowLeft } from 'lucide-react'
+import { Plus, Edit2, ArrowLeft } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import { db } from '@/lib/firebase'
@@ -134,9 +134,9 @@ export default function AdminPage() {
       setGalleryTitle('')
       setGalleryCategory('')
       setGalleryImage(null)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error adding gallery: ', error)
-      setMessage(`Gagal menambahkan momen: ${error.message}`)
+      setMessage(`Gagal menambahkan momen: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setIsSubmitting(false)
     }

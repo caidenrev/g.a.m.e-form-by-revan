@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
+import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore'
 import { ArrowLeft, Image as ImageIcon, Maximize2 } from 'lucide-react'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
@@ -14,7 +14,7 @@ interface GalleryItem {
   imageUrl: string;
   category: string;
   author: string;
-  createdAt: any;
+  createdAt: Timestamp;
 }
 
 export default function GalleryPage() {
