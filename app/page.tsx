@@ -53,7 +53,7 @@ export default function App() {
         id: doc.id,
         ...doc.data()
       })) as MemberWithId[]
-      setMembers(membersData.slice(0, 10)) // Max 10 members
+      setMembers(membersData)
     })
     return () => unsubscribe()
   }, [])
