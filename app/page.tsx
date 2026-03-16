@@ -342,9 +342,9 @@ export default function App() {
                 </div>
               </div>
 
-              {members.length >= 10 && (
-                <Link href="/members" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-full shadow-md hover:shadow-lg transition-all mt-4">
-                  View More Members
+              {members.length > 0 && (
+                <Link href="/members" className="bg-blue-600 hover:bg-blue-700 text-white font-black px-10 py-4 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all mt-4 inline-flex items-center gap-2">
+                  Liat Semua Member
                 </Link>
               )}
             </div>
@@ -421,41 +421,6 @@ export default function App() {
         </div>
       </div>
 
-        {/* Donation Section (Saweria) */}
-        <div className="w-full max-w-4xl px-4 flex flex-col items-center">
-          <div className="relative bg-gradient-to-br from-orange-400 to-yellow-500 p-8 sm:p-12 rounded-[40px] shadow-2xl overflow-hidden group w-full">
-            {/* Background elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl group-hover:bg-white/20 transition-colors"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full -ml-10 -mb-10 blur-2xl"></div>
-
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-1 text-center md:text-left space-y-4">
-                <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight drop-shadow-md">
-                  85% Gaji gua abis bayar tagihan server cloud gara gara klean
-                </h2>
-                <p className="text-white/90 font-bold text-sm sm:text-base leading-relaxed">
-                  Woi patungan bayar server lah kocak, gaji gua abis ama lu pada buat generate app timpa ini itu ancrit klean
-                </p>
-              </div>
-
-              <div className="flex-shrink-0">
-                <a 
-                  href="https://saweria.co/RevanMalesNgoding" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 bg-white text-orange-600 font-black px-8 py-4 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl active:scale-95 transition-all text-lg"
-                >
-                  <img src="https://saweria.co/favicon.ico" alt="" className="w-6 h-6 object-contain" />
-                  Donate via Saweria
-                </a>
-              </div>
-            </div>
-
-            {/* Decorative icons */}
-            <img src="/images/asset7.png" alt="" className="absolute -top-4 -right-4 w-16 h-16 object-contain opacity-20 -rotate-12" />
-            <img src="/images/asset8.png" alt="" className="absolute -bottom-4 -left-4 w-16 h-16 object-contain opacity-20 rotate-12" />
-          </div>
-        </div>
       </div>
 
       <Footer />
