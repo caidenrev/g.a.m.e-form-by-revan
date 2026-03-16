@@ -209,7 +209,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {activeTab === 'article' ? (
+          {activeTab === 'article' && (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="p-6 sm:p-8 bg-[#f8fafc] rounded-3xl space-y-6 border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
@@ -242,7 +242,9 @@ export default function AdminPage() {
                 </Button>
               </div>
             </form>
-          ) : (
+          )}
+
+          {activeTab === 'gallery' && (
             <form onSubmit={handleGallerySubmit} className="space-y-6">
               <div className="p-6 sm:p-8 bg-[#f8fafc] rounded-3xl space-y-6 border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">

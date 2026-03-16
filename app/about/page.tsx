@@ -1,11 +1,55 @@
-/* eslint-disable @next/next/no-img-element */
-'use client'
-
+import { useState, useEffect } from 'react'
+import { db } from '@/lib/firebase'
+import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Trophy, Medal, Star } from 'lucide-react'
 import Footer from '@/components/Footer'
 
+interface Donation {
+  id: string;
+  donator: string;
+  amount: number;
+}
+
 export default function AboutPage() {
+  const [donations, setDonations] = useState<Donation[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchDonations = async () => {
+      try {
+        const response = await fetch('/api/saweria')
+        const result = await response.json()
+        if (result.data) {
+          // Sort by amount desc just in case Saweria doesn't
+          const sortedData = [...result.data].sort((a: any, b: any) => b.amount - a.amount).slice(0, 15)
+          setDonations(sortedData.map((d: any, index: number) => ({
+            id: index.toString(),
+            donator: d.donator,
+            amount: d.amount
+          })))
+        }
+      } catch (error) {
+        console.error('Error fetching donations:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDonations()
+    // Refresh every 5 minutes
+    const interval = setInterval(fetchDonations, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(amount)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 relative overflow-hidden flex flex-col items-center">
       {/* Grid background */}
@@ -106,7 +150,7 @@ export default function AboutPage() {
         </div>
 
         {/* Donation Section (Saweria) */}
-        <div className="w-full max-w-3xl mb-20 px-4">
+        <div className="w-full max-w-3xl mb-8 px-4">
           <div className="relative bg-gradient-to-br from-orange-400 to-yellow-500 p-8 sm:p-10 rounded-[40px] shadow-2xl overflow-hidden group w-full border-4 border-white">
             {/* Background elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl group-hover:bg-white/20 transition-colors"></div>
@@ -136,6 +180,64 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+
+        {/* Donation Leaderboard / Feed */}
+        {donations.length > 0 && (
+          <div className="w-full max-w-2xl px-4 mb-20 animate-in slide-in-from-bottom duration-700">
+            <div className="bg-white/70 backdrop-blur-md rounded-[40px] p-8 border-2 border-white shadow-xl">
+              <div className="flex items-center gap-3 mb-8 justify-center">
+                <div className="bg-yellow-100 p-2.5 rounded-2xl shadow-sm border border-yellow-200">
+                  <Trophy className="w-6 h-6 text-yellow-500" />
+                </div>
+                <h2 className="text-2xl font-black text-gray-800 tracking-tight">Wall of Fame <span className="text-orange-500">Supporters</span></h2>
+              </div>
+
+              <div className="w-full space-y-6">
+                {donations.map((donation, index) => (
+                  <div 
+                    key={donation.id} 
+                    className={`relative p-5 rounded-[32px] transition-all hover:scale-[1.02] border-2 shadow-sm ${
+                      index === 0 ? 'bg-yellow-50/50 border-yellow-200' : 
+                      index === 1 ? 'bg-slate-50/50 border-slate-200' :
+                      index === 2 ? 'bg-orange-50/50 border-orange-200' :
+                      'bg-white/50 border-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-black text-white shadow-md transform rotate-[-3deg] ${
+                          index === 0 ? 'bg-yellow-400' : 
+                          index === 1 ? 'bg-slate-400' :
+                          index === 2 ? 'bg-orange-400' :
+                          'bg-blue-400'
+                        }`}>
+                          {index === 0 ? <Star className="w-6 h-6" /> : index + 1}
+                        </div>
+                        <div>
+                          <p className="font-black text-gray-800 text-lg leading-tight uppercase tracking-tight">{donation.donator}</p>
+                          <p className="text-blue-600 font-black text-sm">{formatCurrency(donation.amount)}</p>
+                        </div>
+                      </div>
+                      
+                      {index < 3 && (
+                        <div className="hidden sm:block">
+                          {index === 0 ? <Trophy className="w-8 h-8 text-yellow-400 opacity-20" /> : <Medal className="w-8 h-8 text-gray-400 opacity-10" />}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-10 p-4 bg-orange-50 rounded-3xl border border-orange-100 text-center">
+                <p className="text-[10px] sm:text-xs text-orange-600 font-bold italic leading-relaxed">
+                  Leaderboard ini terhubung secara otomatis ke Saweria. Update data terjadi setiap saat. <br className="hidden sm:block" />
+                  Gaji gua aman, lu seneng, portal jalan terus. Thank you klean! ❤️
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
       <Footer />
