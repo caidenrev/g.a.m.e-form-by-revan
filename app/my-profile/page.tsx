@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import { db, auth } from '@/lib/firebase'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, setDoc } from 'firebase/firestore'
 import { updateProfile } from 'firebase/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -86,14 +86,14 @@ export default function MyProfilePage() {
 
       // Update Firestore member data
       if (user) {
-        await updateDoc(doc(db, 'members', user.uid), {
+        await setDoc(doc(db, 'members', user.uid), {
           name,
           campus,
           gsaId: gsaId || null,
           tier: tier || null,
           photoURL,
           updatedAt: new Date(),
-        })
+        }, { merge: true })
       }
 
       setMessage('Profile berhasil diperbarui!')
