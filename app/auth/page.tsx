@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
+import ImageCropper from '@/components/ImageCropper'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -18,6 +19,8 @@ export default function AuthPage() {
   const [gsaId, setGsaId] = useState('')
   const [tier, setTier] = useState<'Rising Star' | 'Achiever' | 'Stabilizer' | ''>('')
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null)
+  const [showCropper, setShowCropper] = useState(false)
+  const [tempImage, setTempImage] = useState<string>('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   
@@ -77,6 +80,24 @@ export default function AuthPage() {
     }
   }
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        setTempImage(reader.result as string)
+        setShowCropper(true)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleCropComplete = (croppedBlob: Blob) => {
+    const croppedFile = new File([croppedBlob], 'profile.jpg', { type: 'image/jpeg' })
+    setProfilePhoto(croppedFile)
+    setShowCropper(false)
+  }
+
   const getTierColor = (tierName: string) => {
     switch(tierName) {
       case 'Rising Star': return 'bg-blue-100 text-blue-600 border-blue-200'
@@ -127,12 +148,14 @@ export default function AuthPage() {
                       )}
                     </div>
                     <div className="flex-1">
-                      <Input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={e => setProfilePhoto(e.target.files?.[0] || null)} 
-                        className="border-0 bg-blue-50 text-sm file:bg-blue-100 file:text-blue-700 file:border-0 file:rounded-full file:px-4 file:py-2 file:mr-4 file:font-semibold hover:file:bg-blue-200 cursor-pointer focus-visible:ring-blue-400 rounded-2xl" 
-                      />
+                      <div className="bg-blue-50 rounded-2xl p-1 shadow-sm h-12 flex items-center">
+                        <Input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={handleImageSelect} 
+                          className="border-0 bg-transparent text-sm file:bg-blue-100 file:text-blue-700 file:border-0 file:rounded-full file:px-4 file:py-1 file:mr-4 file:font-semibold hover:file:bg-blue-200 cursor-pointer w-full focus-visible:ring-0 focus-visible:ring-offset-0 h-auto py-0 px-0" 
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -148,8 +171,18 @@ export default function AuthPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-[#475467] mb-2">GSA ID (Opsional)</label>
-                  <Input value={gsaId} onChange={e => setGsaId(e.target.value)} placeholder="Contoh: GSA-2024-001" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="block text-sm font-semibold text-[#475467]">GSA ID (Opsional)</label>
+                    <a 
+                      href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQGuoKWYG9yF9kihsD2J7qjH6d6BpBWDQcEwi9nmixf4HbUji_tPtjivPB5lqUx1F-KMljLQli7e2c5/pubhtml?gid=1138697843&single=true" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-blue-600 font-bold hover:underline"
+                    >
+                      Lupa GSAID? Cek di sini
+                    </a>
+                  </div>
+                  <Input value={gsaId} onChange={e => setGsaId(e.target.value)} placeholder="Contoh: GSAID25612" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
                 </div>
 
                 <div>
@@ -192,6 +225,15 @@ export default function AuthPage() {
           </div>
         </Card>
       </div>
+
+      {showCropper && (
+        <ImageCropper
+          image={tempImage}
+          onCropComplete={handleCropComplete}
+          onCancel={() => setShowCropper(false)}
+          aspect={1}
+        />
+      )}
     </div>
   )
 }

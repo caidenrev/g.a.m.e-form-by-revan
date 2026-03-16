@@ -14,7 +14,6 @@ interface BlogPost {
   excerpt: string;
   content: string;
   category: string;
-  imageUrl?: string;
   createdAt?: Timestamp;
   author: string;
   authorId: string;
@@ -92,10 +91,18 @@ export default function BlogPostPage() {
         backgroundSize: '40px 40px'
       }}></div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-700 mb-8">
-          <ArrowLeft className="w-5 h-5" /> Kembali ke Beranda
-        </Link>
+      <div className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-5 px-4 w-full">
+        <div className="w-full max-w-2xl flex items-center justify-between bg-white/90 backdrop-blur-md px-6 py-3.5 rounded-full shadow-lg border border-white/20">
+          <div className="flex items-center gap-4">
+            <img src="/images/asset1.png" alt="GSA" className="h-8 w-auto object-contain" />
+          </div>
+          <Link href="/" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-700">
+            Kembali <ArrowLeft className="w-5 h-5" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-28 pb-8">
 
         <article className="bg-white rounded-[40px] shadow-xl border-4 border-white p-8 sm:p-12">
           {/* Header */}
@@ -147,16 +154,6 @@ export default function BlogPostPage() {
             </div>
           </div>
 
-          {/* Featured Image */}
-          {post.imageUrl && (
-            <div className="mb-8">
-              <img 
-                src={post.imageUrl} 
-                alt={post.title}
-                className="w-full h-64 sm:h-96 object-cover rounded-3xl shadow-lg"
-              />
-            </div>
-          )}
 
           {/* Content */}
           <div className="prose prose-lg max-w-none">

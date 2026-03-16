@@ -35,11 +35,19 @@
 
 @layer utilities {
   .animate-scroll-left {
-    animation: scroll-left 30s linear infinite;
+    animation: scroll-left 15s linear infinite;
   }
   
   .animate-spin-slow {
     animation: spin 3s linear infinite;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

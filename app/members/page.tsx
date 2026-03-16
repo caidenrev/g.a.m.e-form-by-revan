@@ -43,10 +43,18 @@ export default function MembersPage() {
         backgroundSize: '40px 40px'
       }}></div>
 
-      <div className="relative z-10 w-full max-w-4xl px-4 py-8 mt-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-700 mb-6">
-          <ArrowLeft className="w-5 h-5" /> Kembali ke Beranda
-        </Link>
+      <div className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-5 px-4 w-full">
+        <div className="w-full max-w-2xl flex items-center justify-between bg-white/90 backdrop-blur-md px-6 py-3.5 rounded-full shadow-lg border border-white/20">
+          <div className="flex items-center gap-4">
+            <img src="/images/asset1.png" alt="GSA" className="h-8 w-auto object-contain" />
+          </div>
+          <Link href="/" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-700">
+            Kembali <ArrowLeft className="w-5 h-5" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="relative z-10 w-full max-w-4xl px-4 pt-28 pb-8 flex flex-col items-center">
 
         <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] mb-3 text-center">
           Semua Member <span className="text-[#0ea5e9]">GSA</span>

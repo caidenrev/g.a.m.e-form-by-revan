@@ -5,8 +5,8 @@ import { AuthProvider } from '@/contexts/AuthContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Webinar Certificate Portal',
-  description: 'Complete feedback form and download your webinar certificate',
+  title: 'GSA Alumni Portal',
+  description: 'Platform eksklusif bagi alumni GSA untuk tetap terkoneksi, berbagi program baru, dan tips berkembang di ekosistem Google.',
   icons: {
     icon: '/images/site-icon.png',
   },

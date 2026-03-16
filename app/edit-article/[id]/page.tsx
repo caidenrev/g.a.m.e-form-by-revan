@@ -23,8 +23,6 @@ export default function EditArticlePage() {
   const [excerpt, setExcerpt] = useState('')
   const [category, setCategory] = useState('')
   const [content, setContent] = useState('')
-  const [image, setImage] = useState<File | null>(null)
-  const [currentImageUrl, setCurrentImageUrl] = useState('')
   
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -48,7 +46,6 @@ export default function EditArticlePage() {
         setExcerpt(data.excerpt || '')
         setCategory(data.category || '')
         setContent(data.content || '')
-        setCurrentImageUrl(data.imageUrl || '')
       } else {
         setMessage('Artikel tidak ditemukan')
       }
@@ -82,30 +79,12 @@ export default function EditArticlePage() {
     setMessage('')
 
     try {
-      let imageUrl = currentImageUrl
-      
-      // Upload new image if provided
-      if (image) {
-        const formData = new FormData()
-        formData.append('file', image)
-        
-        const uploadResponse = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        })
-        
-        if (uploadResponse.ok) {
-          const uploadResult = await uploadResponse.json()
-          imageUrl = uploadResult.secure_url
-        }
-      }
 
       await updateDoc(doc(db, 'blogs', articleId), {
         title,
         excerpt,
         content,
         category,
-        imageUrl,
         updatedAt: serverTimestamp(),
       })
 
@@ -120,6 +99,7 @@ export default function EditArticlePage() {
       setIsSubmitting(false)
     }
   }
+
 
   if (loading || isLoading || !user) {
     return (
@@ -168,20 +148,9 @@ export default function EditArticlePage() {
               <Input required value={title} onChange={e => setTitle(e.target.value)} placeholder="Masukkan judul..." className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-[#475467] mb-2">Kategori</label>
-                <Input required value={category} onChange={e => setCategory(e.target.value)} placeholder="Contoh: Web Development" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-[#475467] mb-2">Gambar Sampul (Opsional)</label>
-                <div className="bg-white rounded-full p-1 shadow-sm h-12 flex items-center">
-                  <Input type="file" accept="image/*" onChange={e => setImage(e.target.files?.[0] || null)} className="border-0 bg-transparent text-sm file:bg-blue-100 file:text-blue-700 file:border-0 file:rounded-full file:px-4 file:py-1 file:mr-4 file:font-semibold hover:file:bg-blue-200 cursor-pointer w-full focus-visible:ring-0 focus-visible:ring-offset-0" />
-                </div>
-                {currentImageUrl && (
-                  <p className="text-xs text-gray-500 mt-1">Gambar saat ini: Ada</p>
-                )}
-              </div>
+            <div>
+              <label className="block text-sm font-semibold text-[#475467] mb-2">Kategori</label>
+              <Input required value={category} onChange={e => setCategory(e.target.value)} placeholder="Contoh: Web Development" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
             </div>
 
             <div>
