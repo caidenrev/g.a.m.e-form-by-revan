@@ -89,8 +89,8 @@ export default function MyProfilePage() {
         await updateDoc(doc(db, 'members', user.uid), {
           name,
           campus,
-          gsaId: gsaId || undefined,
-          tier: tier || undefined,
+          gsaId: gsaId || null,
+          tier: tier || null,
           photoURL,
           updatedAt: new Date(),
         })

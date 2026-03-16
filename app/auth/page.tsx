@@ -63,8 +63,8 @@ export default function AuthPage() {
         await signUp(email, password, {
           name,
           campus,
-          gsaId: gsaId || undefined,
-          tier: tier || undefined,
+          gsaId: gsaId || null,
+          tier: tier || null,
           photoURL,
         })
       }

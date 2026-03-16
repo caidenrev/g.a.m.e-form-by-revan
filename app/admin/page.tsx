@@ -76,9 +76,9 @@ export default function AdminPage() {
         category,
         author: memberData?.name || user.displayName || user.email,
         authorId: user.uid,
-        authorPhoto: user.photoURL,
-        authorTier: memberData?.tier,
-        authorCampus: memberData?.campus,
+        authorPhoto: user.photoURL || null,
+        authorTier: memberData?.tier || null,
+        authorCampus: memberData?.campus || null,
         createdAt: serverTimestamp(),
       })
 
