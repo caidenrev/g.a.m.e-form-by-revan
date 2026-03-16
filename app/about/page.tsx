@@ -22,31 +22,54 @@ export default function AboutPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const fetchDonations = async () => {
       try {
-        const response = await fetch('/api/saweria')
-        const result = await response.json()
-        if (result.data) {
-          // Sort by amount desc just in case Saweria doesn't
-          const sortedData = [...result.data].sort((a: SaweriaDonator, b: SaweriaDonator) => b.amount - a.amount).slice(0, 15)
-          setDonations(sortedData.map((d: SaweriaDonator, index: number) => ({
-            id: index.toString(),
-            donator: d.donator,
-            amount: d.amount
-          })))
-        }
-      } catch (error) {
-        console.error('Error fetching donations:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+        
+        const response = await fetch('/api/saweria', { signal: controller.signal });
+        clearTimeout(timeoutId);
 
-    fetchDonations()
-    // Refresh every 5 minutes
-    const interval = setInterval(fetchDonations, 5 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [])
+        if (response.ok) {
+          const result = await response.json();
+          if (isMounted && result.data && Array.isArray(result.data)) {
+            const sortedData = [...result.data]
+              .sort((a: SaweriaDonator, b: SaweriaDonator) => b.amount - a.amount)
+              .slice(0, 15);
+            
+            setDonations(sortedData.map((d: SaweriaDonator, index: number) => ({
+              id: index.toString(),
+              donator: d.donator,
+              amount: d.amount
+            })));
+          }
+        } else {
+          console.warn('Saweria API response not OK:', response.status);
+        }
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          console.error('Fetch donations timed out');
+        } else {
+          console.error('Failed to fetch donations:', error);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchDonations();
+    const interval = setInterval(fetchDonations, 5 * 60 * 1000);
+    
+    return () => {
+      isMounted = false;
+      controller.abort();
+      clearInterval(interval);
+    };
+  }, []);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -190,9 +213,9 @@ export default function AboutPage() {
         {/* Donation Leaderboard / Feed */}
         {loading ? (
           <div className="text-center py-20">
-            <p className="text-orange-500 font-black animate-pulse text-lg tracking-widest">MENYUDAHI KEHAUSAN DATA...</p>
+            <p className="text-blue-500 font-bold animate-pulse text-lg tracking-widest">MEMUAT DATA DONATUR...</p>
           </div>
-        ) : donations.length > 0 && (
+        ) : donations.length > 0 ? (
           <div className="w-full max-w-2xl px-4 mb-20 animate-in slide-in-from-bottom duration-700">
             <div className="bg-white/70 backdrop-blur-md rounded-[40px] p-8 border-2 border-white shadow-xl">
               <div className="flex items-center gap-3 mb-8 justify-center">
@@ -245,6 +268,16 @@ export default function AboutPage() {
                   Gaji gua aman, lu seneng, portal jalan terus. Thank you klean! ❤️
                 </p>
               </div>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full max-w-2xl px-4 mb-20">
+            <div className="bg-white/50 backdrop-blur-sm rounded-[40px] p-10 border-2 border-white/50 shadow-lg text-center">
+              <div className="bg-gray-100 w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <Star className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-black text-gray-800 mb-2">Belum Ada Donatur</h3>
+              <p className="text-gray-500 font-medium">Jadilah yang pertama mendukung operasional server Portal GSA! ❤️</p>
             </div>
           </div>
         )}

@@ -4,13 +4,19 @@ export async function GET() {
   const STREAM_KEY = 'a362368a34e4f652436fe98bf70064eb';
   const API_URL = 'https://backend.saweria.co/widgets/leaderboard/all';
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s server-side timeout
+
   try {
     const response = await fetch(API_URL, {
       headers: {
         'stream-key': STREAM_KEY,
       },
-      next: { revalidate: 3600 } // Cache for 1 hour
+      next: { revalidate: 3600 }, // Cache for 1 hour
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`Saweria API responded with status: ${response.status}`);
