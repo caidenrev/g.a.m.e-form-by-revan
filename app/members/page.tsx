@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore'
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
 import { ArrowLeft, Search } from 'lucide-react'
 import { GSAMemberData } from '@/contexts/AuthContext'

@@ -1,9 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
+'use client'
+
 import { useState, useEffect } from 'react'
-import { db } from '@/lib/firebase'
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
 import { ArrowLeft, Trophy, Medal, Star } from 'lucide-react'
 import Footer from '@/components/Footer'
+
+interface SaweriaDonator {
+  donator: string;
+  amount: number;
+}
 
 interface Donation {
   id: string;
@@ -22,8 +28,8 @@ export default function AboutPage() {
         const result = await response.json()
         if (result.data) {
           // Sort by amount desc just in case Saweria doesn't
-          const sortedData = [...result.data].sort((a: any, b: any) => b.amount - a.amount).slice(0, 15)
-          setDonations(sortedData.map((d: any, index: number) => ({
+          const sortedData = [...result.data].sort((a: SaweriaDonator, b: SaweriaDonator) => b.amount - a.amount).slice(0, 15)
+          setDonations(sortedData.map((d: SaweriaDonator, index: number) => ({
             id: index.toString(),
             donator: d.donator,
             amount: d.amount
@@ -83,7 +89,7 @@ export default function AboutPage() {
         {/* Content Section */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 px-4">
           <div className="bg-white p-8 rounded-[40px] shadow-xl border-4 border-white transform transition-transform hover:scale-[1.03]">
-            <img src="/images/asset6.png" alt="Ekosistem" className="w-32 h-32 object-contain mb-6 drop-shadow-sm" />
+            <img src="/images/asset6.png" alt="Ekosistem Terkoneksi" className="w-32 h-32 object-contain mb-6 drop-shadow-sm" />
             <h3 className="text-xl font-bold text-gray-800 mb-3">Ekosistem Terkoneksi</h3>
             <p className="text-gray-500 leading-relaxed text-sm">
               Memastikan seluruh alumni dan member GSA tetap saling terhubung untuk berkolaborasi dan terus berkembang di dalam ekosistem Google.
@@ -182,7 +188,11 @@ export default function AboutPage() {
         </div>
 
         {/* Donation Leaderboard / Feed */}
-        {donations.length > 0 && (
+        {loading ? (
+          <div className="text-center py-20">
+            <p className="text-orange-500 font-black animate-pulse text-lg tracking-widest">MENYUDAHI KEHAUSAN DATA...</p>
+          </div>
+        ) : donations.length > 0 && (
           <div className="w-full max-w-2xl px-4 mb-20 animate-in slide-in-from-bottom duration-700">
             <div className="bg-white/70 backdrop-blur-md rounded-[40px] p-8 border-2 border-white shadow-xl">
               <div className="flex items-center gap-3 mb-8 justify-center">
