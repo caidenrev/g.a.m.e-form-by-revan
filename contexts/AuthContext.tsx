@@ -9,9 +9,9 @@ export interface GSAMemberData {
   name: string;
   email: string;
   campus: string;
-  gsaId?: string;
-  tier?: 'Rising Star' | 'Achiever' | 'Stabilizer';
-  photoURL?: string;
+  gsaId?: string | null;
+  tier?: 'Rising Star' | 'Achiever' | 'Stabilizer' | null;
+  photoURL?: string | null;
   createdAt: Date;
   updatedAt?: Date;
 }
