@@ -17,6 +17,7 @@ export default function MembersPage() {
   const [members, setMembers] = useState<MemberWithId[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedMember, setSelectedMember] = useState<MemberWithId | null>(null)
 
   useEffect(() => {
     const q = query(collection(db, 'members'), orderBy('createdAt', 'desc'))
@@ -111,7 +112,8 @@ export default function MembersPage() {
               return (
                 <div
                   key={member.id}
-                  className={`relative bg-white p-3 pb-5 sm:p-5 sm:pb-7 rounded-[24px] sm:rounded-[32px] shadow-xl border-[4px] sm:border-[5px] border-white transform transition-transform hover:scale-105 hover:z-10 flex flex-col items-center ${rotations[index % rotations.length]}`}
+                  onClick={() => setSelectedMember(member)}
+                  className={`relative bg-white p-3 pb-5 sm:p-5 sm:pb-7 rounded-[24px] sm:rounded-[32px] shadow-xl border-[4px] sm:border-[5px] border-white transform transition-transform hover:scale-105 hover:z-10 flex flex-col items-center cursor-pointer ${rotations[index % rotations.length]}`}
                 >
                   {/* Decorative Corner Icons */}
                   <img src={topLeftIcon} alt="" className="absolute -top-3 -left-3 sm:-top-6 sm:-left-6 w-8 h-8 sm:w-14 sm:h-14 object-contain drop-shadow-md z-20 pointer-events-none" />
@@ -147,6 +149,64 @@ export default function MembersPage() {
           </div>
         )}
       </div>
+
+      {/* Detailed Member Popup */}
+      {selectedMember && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+          onClick={() => setSelectedMember(null)}
+        >
+          <div 
+            className="relative bg-white p-6 pb-10 sm:p-10 sm:pb-14 rounded-[40px] shadow-2xl border-[10px] border-white max-w-lg w-full transform animate-in zoom-in-95 duration-300 flex flex-col items-center"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button 
+              onClick={() => setSelectedMember(null)}
+              className="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors z-30"
+            >
+              <span className="text-2xl font-black">×</span>
+            </button>
+
+            {/* Polaroid Decorative Icons */}
+            <img src="/images/asset7.png" alt="" className="absolute -top-8 -left-8 w-20 h-20 object-contain drop-shadow-xl z-20 pointer-events-none" />
+            <img src="/images/asset10.png" alt="" className="absolute -bottom-8 -right-8 w-24 h-24 object-contain drop-shadow-xl z-20 pointer-events-none" />
+
+            <div className="w-full aspect-square bg-blue-50/80 rounded-3xl flex items-center justify-center mb-8 overflow-hidden relative border-2 border-blue-100 shadow-inner">
+              <img
+                src={selectedMember.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.name)}&background=3b82f6&color=fff`}
+                alt={selectedMember.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="w-full space-y-4">
+              <h3 className="text-3xl font-black text-gray-800 text-center leading-tight break-words">
+                {selectedMember.name}
+              </h3>
+              
+              <div className="flex flex-wrap justify-center items-center gap-3">
+                {selectedMember.tier && (
+                  <span className={`text-sm font-black px-4 py-1.5 rounded-full shadow-sm border-2 border-current/10 ${getTierColor(selectedMember.tier)}`}>
+                    {selectedMember.tier}
+                  </span>
+                )}
+                {selectedMember.gsaId && (
+                  <span className="bg-gray-100 text-gray-700 text-sm font-black px-4 py-1.5 rounded-full shadow-sm border-2 border-gray-200">
+                    {selectedMember.gsaId}
+                  </span>
+                )}
+              </div>
+              
+              <div className="pt-2">
+                <p className="text-xl text-[#0ea5e9] font-black text-center break-words bg-blue-50 py-3 px-6 rounded-2xl border border-blue-100">
+                  {selectedMember.campus}
+                 </p>
+               </div>
+             </div>
+           </div>
+         </div>
+       )}
 
       <Footer />
     </div>
