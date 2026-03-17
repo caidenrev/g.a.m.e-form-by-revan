@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
-import { ArrowLeft, Search } from 'lucide-react'
+import { ArrowLeft, Search, Linkedin, Instagram } from 'lucide-react'
 import { GSAMemberData } from '@/contexts/AuthContext'
 import Footer from '@/components/Footer'
 
@@ -201,8 +201,36 @@ export default function MembersPage() {
               <div className="pt-2">
                 <p className="text-xl text-[#0ea5e9] font-black text-center break-words bg-blue-50 py-3 px-6 rounded-2xl border border-blue-100">
                   {selectedMember.campus}
-                 </p>
-               </div>
+                </p>
+              </div>
+
+               {/* Social Media Links */}
+               {(selectedMember.linkedIn || selectedMember.instagram) && (
+                 <div className="flex justify-center gap-4 pt-4">
+                   {selectedMember.linkedIn && (
+                     <a 
+                       href={selectedMember.linkedIn.startsWith('http') ? selectedMember.linkedIn : `https://${selectedMember.linkedIn}`} 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       className="flex items-center gap-2 bg-[#0077b5] text-white px-5 py-2.5 rounded-full font-bold shadow-md hover:scale-105 transition-transform"
+                     >
+                       <Linkedin className="w-5 h-5" />
+                       <span className="hidden sm:inline">LinkedIn</span>
+                     </a>
+                   )}
+                   {selectedMember.instagram && (
+                     <a 
+                       href={selectedMember.instagram.startsWith('http') ? selectedMember.instagram : `https://${selectedMember.instagram}`} 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       className="flex items-center gap-2 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white px-5 py-2.5 rounded-full font-bold shadow-md hover:scale-105 transition-transform"
+                     >
+                       <Instagram className="w-5 h-5" />
+                       <span className="hidden sm:inline">Instagram</span>
+                     </a>
+                   )}
+                 </div>
+               )}
              </div>
            </div>
          </div>

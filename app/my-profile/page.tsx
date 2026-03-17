@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
-import { ArrowLeft, Camera, Save } from 'lucide-react'
+import { ArrowLeft, Camera, Save, Linkedin, Instagram } from 'lucide-react'
 import ImageCropper from '@/components/ImageCropper'
 
 export default function MyProfilePage() {
@@ -26,6 +26,8 @@ export default function MyProfilePage() {
   const [showCropper, setShowCropper] = useState(false)
   const [tempImage, setTempImage] = useState<string>('')
   const [currentPhotoURL, setCurrentPhotoURL] = useState('')
+  const [linkedIn, setLinkedIn] = useState('')
+  const [instagram, setInstagram] = useState('')
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState('')
@@ -42,6 +44,8 @@ export default function MyProfilePage() {
       setGsaId(memberData.gsaId || '')
       setTier(memberData.tier || '')
       setCurrentPhotoURL(user.photoURL || '')
+      setLinkedIn(memberData.linkedIn || '')
+      setInstagram(memberData.instagram || '')
     }
   }, [user, memberData, loading, router])
 
@@ -92,6 +96,8 @@ export default function MyProfilePage() {
           gsaId: gsaId || null,
           tier: tier || null,
           photoURL,
+          linkedIn: linkedIn || null,
+          instagram: instagram || null,
           updatedAt: new Date(),
         }, { merge: true })
       }
@@ -252,6 +258,36 @@ export default function MyProfilePage() {
                       {t}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-[#475467] mb-2">LinkedIn URL (Opsional)</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <Linkedin className="h-5 w-5 text-blue-500" />
+                  </div>
+                  <Input 
+                    value={linkedIn} 
+                    onChange={e => setLinkedIn(e.target.value)} 
+                    placeholder="https://linkedin.com/in/username" 
+                    className="bg-white border-0 shadow-sm rounded-full h-12 pl-12 pr-5 focus-visible:ring-blue-400" 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-[#475467] mb-2">Instagram URL (Opsional)</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <Instagram className="h-5 w-5 text-pink-500" />
+                  </div>
+                  <Input 
+                    value={instagram} 
+                    onChange={e => setInstagram(e.target.value)} 
+                    placeholder="https://instagram.com/username" 
+                    className="bg-white border-0 shadow-sm rounded-full h-12 pl-12 pr-5 focus-visible:ring-blue-400" 
+                  />
                 </div>
               </div>
 

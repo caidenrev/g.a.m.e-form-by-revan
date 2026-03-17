@@ -12,6 +12,8 @@ export interface GSAMemberData {
   gsaId?: string | null;
   tier?: 'Rising Star' | 'Achiever' | 'Stabilizer' | null;
   photoURL?: string | null;
+  linkedIn?: string | null;
+  instagram?: string | null;
   createdAt: Date;
   updatedAt?: Date;
 }
