@@ -424,24 +424,24 @@ export default function App() {
         {/* Special Thanks Section */}
         <div className="w-full max-w-4xl px-4 flex flex-col items-center mt-20 mb-10 text-center">
           <h2 className="text-2xl sm:text-3xl font-black text-[#1e293b] leading-tight mb-4">
-            Program ini terselenggara berkat dukungan luar biasa dari:
+            Program ini terselenggara berkat <br></br> dukungan luar biasa dari:
           </h2>
           <p className="text-gray-500 font-medium max-w-2xl mb-12">
             Terima kasih banyak kepada Dicoding Indonesia dan Google yang telah memberikan kesempatan bagi kami untuk belajar, bertumbuh, dan terkoneksi dalam ekosistem digital yang luar biasa ini.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-12 sm:gap-24 pb-10">
             <div className="group">
-              <img 
-                src="/images/google-logo.png" 
-                alt="Google" 
-                className="h-8 sm:h-12 w-auto transition-transform duration-300" 
+              <img
+                src="/images/google-logo.png"
+                alt="Google"
+                className="h-8 sm:h-12 w-auto transition-transform duration-300"
               />
             </div>
             <div className="group">
-              <img 
-                src="/images/dicoding-logo.png" 
-                alt="Dicoding" 
-                className="h-8 sm:h-12 w-auto transition-transform duration-300" 
+              <img
+                src="/images/dicoding-logo.png"
+                alt="Dicoding"
+                className="h-8 sm:h-12 w-auto transition-transform duration-300"
               />
             </div>
           </div>
