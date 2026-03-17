@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, Timestamp } from 'firebase/firestore'
 import Link from 'next/link'
-import { ArrowLeft, Calendar } from 'lucide-react'
+import { ArrowLeft, Calendar, Share2, Link as LinkIcon, Check, MessageCircle, Twitter } from 'lucide-react'
 
 interface BlogPost {
   id: string;
@@ -27,6 +27,7 @@ export default function BlogPostPage() {
   const postId = params.id as string
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
+  const [copied, setCopied] = useState(false)
 
   const loadPost = useCallback(async () => {
     try {
@@ -56,6 +57,23 @@ export default function BlogPostPage() {
       case 'Stabilizer': return 'bg-purple-100 text-purple-600'
       default: return 'bg-gray-100 text-gray-600'
     }
+  }
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const shareToWA = () => {
+    const url = encodeURIComponent(window.location.href)
+    const text = encodeURIComponent(`Baca artikel menarik ini: ${post?.title}`)
+    window.open(`https://wa.me/?text=${text}%20${url}`, '_blank')
+  }
+
+  const shareToX = () => {
+    const url = encodeURIComponent(window.location.href)
+    const text = encodeURIComponent(post?.title || '')
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank')
   }
 
   if (loading) {
@@ -137,19 +155,48 @@ export default function BlogPostPage() {
             </p>
 
             {/* Author Info */}
-            <div className="flex items-center gap-4 p-6 bg-blue-50 rounded-3xl">
-              <div className="w-16 h-16 rounded-2xl overflow-hidden border-4 border-blue-100 shadow-sm flex-shrink-0 bg-blue-100">
-                <img 
-                  src={post.authorPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=3b82f6&color=fff`} 
-                  alt={post.author} 
-                  className="w-full h-full object-cover" 
-                />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-6 bg-blue-50 rounded-3xl">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden border-4 border-blue-100 shadow-sm flex-shrink-0 bg-blue-100">
+                  <img 
+                    src={post.authorPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=3b82f6&color=fff`} 
+                    alt={post.author} 
+                    className="w-full h-full object-cover" 
+                  />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-800 text-lg">{post.author}</h3>
+                  {post.authorCampus && (
+                    <p className="text-gray-600 text-sm">{post.authorCampus}</p>
+                  )}
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold text-gray-800 text-lg">{post.author}</h3>
-                {post.authorCampus && (
-                  <p className="text-gray-600 text-sm">{post.authorCampus}</p>
-                )}
+
+              {/* Share Buttons */}
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={handleCopyLink}
+                  className="p-3 bg-white text-gray-600 hover:text-blue-600 rounded-2xl border-2 border-white shadow-sm hover:shadow-md transition-all flex items-center gap-2 font-bold text-sm"
+                  title="Copy Link"
+                >
+                  {copied ? <Check className="w-5 h-5 text-green-500" /> : <LinkIcon className="w-5 h-5" />}
+                  <span>{copied ? 'Copied!' : 'Salin'}</span>
+                </button>
+                <button 
+                  onClick={shareToWA}
+                  className="p-3 bg-white text-green-600 rounded-2xl border-2 border-white shadow-sm hover:shadow-md transition-all"
+                  title="Share to WhatsApp"
+                >
+                  <MessageCircle className="w-5 h-5 fill-current opacity-20 absolute" />
+                  <MessageCircle className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={shareToX}
+                  className="p-3 bg-white text-gray-900 rounded-2xl border-2 border-white shadow-sm hover:shadow-md transition-all"
+                  title="Share to X"
+                >
+                  <Twitter className="w-5 h-5 fill-current" />
+                </button>
               </div>
             </div>
           </div>
