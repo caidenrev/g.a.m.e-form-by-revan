@@ -196,8 +196,8 @@ export default function EventsPage() {
                     </div>
                   </div>
 
-                  <h4 className="font-extrabold text-[#1e293b] text-center text-lg leading-tight mb-1 group-hover:text-blue-600 transition-colors uppercase">{event.title}</h4>
-                  <p className="text-sm text-[#0ea5e9] font-bold text-center italic">{event.subtitle}</p>
+                  <h4 className="font-extrabold text-gray-800 text-center text-lg leading-tight mb-1 group-hover:text-blue-600 transition-colors uppercase">{event.title}</h4>
+                  <p className="text-sm text-gray-500 font-bold text-center italic">{event.subtitle}</p>
                 </div>
               )
             })}
