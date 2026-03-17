@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import ImageCropper from '@/components/ImageCropper'
+import LoginPopup from '@/components/LoginPopup'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -23,6 +24,8 @@ export default function AuthPage() {
   const [tempImage, setTempImage] = useState<string>('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showLoginPopup, setShowLoginPopup] = useState(false)
+  const [hasShownPopup, setHasShownPopup] = useState(false)
   
   const { signIn, signUp } = useAuth()
   const router = useRouter()
@@ -34,6 +37,12 @@ export default function AuthPage() {
 
     try {
       if (isLogin) {
+        if (!hasShownPopup) {
+          setShowLoginPopup(true)
+          setHasShownPopup(true)
+          setLoading(false)
+          return
+        }
         await signIn(email, password)
       } else {
         if (!name || !campus) {
@@ -234,6 +243,11 @@ export default function AuthPage() {
           aspect={1}
         />
       )}
+
+      <LoginPopup 
+        isOpen={showLoginPopup} 
+        onClose={() => setShowLoginPopup(false)} 
+      />
     </div>
   )
 }
