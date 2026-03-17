@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: 'GSA Alumni Portal',
   description: 'Platform eksklusif bagi alumni GSA untuk tetap terkoneksi, berbagi program baru, dan tips berkembang di ekosistem Google.',
+  verification: {
+    google: 'KYPaJ-L7huVY-EcX4US30rmGbQPAcCVHVUnQnXgzZjY',
+  },
   icons: {
     icon: '/images/site-icon.png',
   },
