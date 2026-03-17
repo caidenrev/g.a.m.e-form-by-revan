@@ -20,6 +20,8 @@ export default function MembersPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedMember, setSelectedMember] = useState<MemberWithId | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest')
+  const [campusFilter, setCampusFilter] = useState('')
 
   useEffect(() => {
     const q = query(collection(db, 'members'), orderBy('createdAt', 'desc'))
@@ -34,10 +36,27 @@ export default function MembersPage() {
     return () => unsubscribe()
   }, [])
 
-  const filteredMembers = members.filter(member => 
-    member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (member.campus && member.campus.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+  const filteredMembers = members
+    .filter(member => {
+      const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (member.campus && member.campus.toLowerCase().includes(searchTerm.toLowerCase()))
+      const matchesCampus = !campusFilter || member.campus === campusFilter
+      return matchesSearch && matchesCampus
+    })
+    .sort((a, b) => {
+      // Handle both Firestore Timestamp and JS Date
+      const getTime = (val: any) => {
+        if (!val) return 0
+        if (typeof val.toMillis === 'function') return val.toMillis()
+        if (val instanceof Date) return val.getTime()
+        return 0
+      }
+      const timeA = getTime(a.createdAt)
+      const timeB = getTime(b.createdAt)
+      return sortBy === 'newest' ? timeB - timeA : timeA - timeB
+    })
+
+  const uniqueCampuses = Array.from(new Set(members.map(m => m.campus).filter(Boolean))).sort()
 
   const getTierColor = (tier?: string) => {
     switch(tier) {
@@ -136,18 +155,48 @@ export default function MembersPage() {
             Wadah kolaborasi dan jaringan alumni Google Student Ambassador. Total {members.length} member terdaftar.
           </p>
 
-          {/* Search Bar */}
-          <div className="max-w-md mx-auto w-full relative mt-8">
-            <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
+          {/* Filters & Search */}
+          <div className="max-w-4xl mx-auto w-full space-y-4 mt-8 px-2">
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Search Bar */}
+              <div className="flex-1 relative">
+                <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Cari nama atau kampus..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-white border-2 border-white shadow-lg rounded-full py-4 pl-14 pr-6 text-gray-700 font-bold focus:outline-none focus:border-blue-400 transition-all placeholder:text-gray-300"
+                />
+              </div>
+
+              {/* Advanced Filters */}
+              <div className="flex gap-2 flex-wrap sm:flex-nowrap">
+                {/* Sort Dropdown */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest')}
+                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-6 text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none"
+                >
+                  <option value="newest">Terbaru</option>
+                  <option value="oldest">Terlama</option>
+                </select>
+
+                {/* Campus Filter Dropdown */}
+                <select
+                  value={campusFilter}
+                  onChange={(e) => setCampusFilter(e.target.value)}
+                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-6 text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none max-w-[200px] truncate"
+                >
+                  <option value="">Semua Kampus</option>
+                  {uniqueCampuses.map(campus => (
+                    <option key={campus} value={campus}>{campus}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <input
-              type="text"
-              placeholder="Cari nama atau kampus..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border-2 border-white shadow-lg rounded-full py-4 pl-14 pr-6 text-gray-700 font-bold focus:outline-none focus:border-blue-400 transition-all placeholder:text-gray-300"
-            />
           </div>
         </div>
 

@@ -37,9 +37,12 @@ export default function AuthPage() {
 
     try {
       if (isLogin) {
-        if (!hasShownPopup) {
+        // Check if popup has been shown in this session
+        const popupShown = sessionStorage.getItem('login_popup_shown')
+        if (!popupShown && !hasShownPopup) {
           setShowLoginPopup(true)
           setHasShownPopup(true)
+          sessionStorage.setItem('login_popup_shown', 'true')
           setLoading(false)
           return
         }
