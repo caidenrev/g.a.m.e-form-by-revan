@@ -23,7 +23,7 @@ export default function AboutPage() {
   const faqData = [
     {
       label: 'Tentang Saya',
-      content: '"Portal ini diciptakan sebagai bentuk apresiasi saya terhadap komunitas GSA. Harapannya, setiap baris kode di sini bisa membantu member lain untuk tumbuh dan belajar bersama."'
+      content: '"Jadi sebenernya Portal ini tuh adalah web app generate Sertif buat para peserta yang ikut event webinar G.A.M.E kemaren, nah kata gua kok boleh boleh juga ni kalo migrate jadi portal buat my family gue GSA, yaudah gua puter otak ubah skema flow, arsitektur dari DB, FlowSystem sampe ke logic nya biar proper sikit. nah disini juga gua mau ngerasain buat temen temen GSA gimana sih rasanya masuk web GSA dicoding yang dimana member member tertentu aja, ya walaupun masih bagusan punya dicoding sih awkaokowk, dan gua tuh mau everyone can feel the same vibe anjasss. btw makasih juga ka taufiq, yang baik hati bijak ganteng dan ga sombong udah mau support kita as a GSA 25. btw makasih google thr nya aku jadi bisa nyimpen uang cash aku buat bayar tagihan CLOUDDDDDDDDD #KeluhKesahCloudEnjinerrr"'
     },
     {
       label: 'Roles & Expertise',
