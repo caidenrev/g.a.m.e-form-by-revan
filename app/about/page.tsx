@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ChevronDown, ChevronUp, Menu, LogIn } from 'lucide-react'
+import { ChevronDown, ChevronUp, Menu, LogIn } from 'lucide-react'
 import Footer from '@/components/Footer'
 import { useAuth } from '@/contexts/AuthContext'
 

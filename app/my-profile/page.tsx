@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
-import { ArrowLeft, Camera, Save, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
+import { Camera, Save, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
 import ImageCropper from '@/components/ImageCropper'
 
 export default function MyProfilePage() {

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc, Timestamp } from 'firebase/firestore'
 import Link from 'next/link'
-import { ArrowLeft, Edit, Trash2, Plus, Calendar, Menu, LogIn } from 'lucide-react'
+import { Edit, Trash2, Plus, Calendar, Menu, LogIn } from 'lucide-react'
 
 interface BlogPost {
   id: string;

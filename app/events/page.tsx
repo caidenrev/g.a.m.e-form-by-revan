@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, ArrowLeft, Search, Menu, LogIn } from 'lucide-react'
+import { Calendar, Search, Menu, LogIn } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { db } from '@/lib/firebase'

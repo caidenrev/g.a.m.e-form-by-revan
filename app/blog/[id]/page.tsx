@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, Timestamp } from 'firebase/firestore'
 import Link from 'next/link'
-import { ArrowLeft, Calendar, Share2, Link as LinkIcon, Check, MessageCircle, Twitter, Menu, LogIn } from 'lucide-react'
+import { Calendar, Link as LinkIcon, Check, MessageCircle, Twitter, Menu, LogIn } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 interface BlogPost {

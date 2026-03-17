@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
-import { ArrowLeft, Search, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
+import { Search, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
 import { GSAMemberData, useAuth } from '@/contexts/AuthContext'
 import Footer from '@/components/Footer'
 
@@ -45,15 +45,17 @@ export default function MembersPage() {
     })
     .sort((a, b) => {
       // Handle both Firestore Timestamp and JS Date
-      const getTime = (val: any) => {
-        if (!val) return 0
-        if (typeof val.toMillis === 'function') return val.toMillis()
-        if (val instanceof Date) return val.getTime()
-        return 0
-      }
-      const timeA = getTime(a.createdAt)
-      const timeB = getTime(b.createdAt)
-      return sortBy === 'newest' ? timeB - timeA : timeA - timeB
+      const getTime = (val: unknown): number => {
+        if (!val) return 0;
+        if (val instanceof Date) return val.getTime();
+        if (typeof val === 'object' && val !== null && 'toMillis' in val && typeof (val as { toMillis: () => number }).toMillis === 'function') {
+          return (val as { toMillis: () => number }).toMillis();
+        }
+        return 0;
+      };
+      const timeA = getTime(a.createdAt);
+      const timeB = getTime(b.createdAt);
+      return sortBy === 'newest' ? timeB - timeA : timeA - timeB;
     })
 
   const uniqueCampuses = Array.from(new Set(members.map(m => m.campus).filter(Boolean))).sort()

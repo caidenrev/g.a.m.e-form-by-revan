@@ -8,7 +8,6 @@ import { ArrowLeft, Image as ImageIcon, Maximize2, Menu, LogIn } from 'lucide-re
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import { useAuth } from '@/contexts/AuthContext'
-import { Button } from '@/components/ui/button'
 
 interface GalleryItem {
   id: string;
