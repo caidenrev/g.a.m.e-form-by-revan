@@ -27,9 +27,17 @@ export default function AboutPage() {
 
     const fetchDonations = async () => {
       try {
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
         
-        const response = await fetch('/api/saweria', { signal: controller.signal });
+        // Fetch DIRECTLY from Saweria from the client browser
+        // Cloudflare blocks datacenter IPs (Vercel/Cloud), but usually allows residential browsers.
+        const response = await fetch('https://backend.saweria.co/widgets/leaderboard/week', {
+          headers: {
+            'stream-key': 'a362368a34e4f652436fe98bf70064eb'
+          },
+          signal: controller.signal
+        });
+        
         clearTimeout(timeoutId);
 
         if (response.ok) {
@@ -46,19 +54,15 @@ export default function AboutPage() {
             })));
           }
         } else {
-          // Log the error body if possible
-          try {
-            const errData = await response.json();
-            console.error('Saweria API error details:', errData);
-          } catch {
-            console.error('Saweria API error (could not parse body):', response.status);
-          }
+          console.error('Saweria Direct API error:', response.status);
+          // If direct fetch fails (e.g. CORS), we could potentially fallback to our proxy
+          // but our proxy is already returning 403 in prod.
         }
       } catch (error: unknown) {
         if (error instanceof Error && error.name === 'AbortError') {
-          console.error('Fetch donations timed out');
+          console.error('Direct fetch timed out');
         } else {
-          console.error('Failed to fetch donations:', error);
+          console.error('Direct fetch failed:', error);
         }
       } finally {
         if (isMounted) {
