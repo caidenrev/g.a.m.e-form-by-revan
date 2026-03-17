@@ -371,7 +371,7 @@ export default function App() {
                       switch (tier) {
                         case 'Rising Star': return 'bg-blue-100 text-blue-600'
                         case 'Achiever': return 'bg-pink-100 text-pink-600'
-                        case 'Stabilizer': return 'bg-purple-100 text-purple-600'
+                        case 'Trailblazer': return 'bg-purple-100 text-purple-600'
                         default: return 'bg-gray-100 text-gray-600'
                       }
                     }
@@ -531,7 +531,7 @@ export default function App() {
                     switch (tier) {
                       case 'Rising Star': return 'bg-blue-100 text-blue-600'
                       case 'Achiever': return 'bg-pink-100 text-pink-600'
-                      case 'Stabilizer': return 'bg-purple-100 text-purple-600'
+                      case 'Trailblazer': return 'bg-purple-100 text-purple-600'
                       default: return 'bg-gray-100 text-gray-600'
                     }
                   }

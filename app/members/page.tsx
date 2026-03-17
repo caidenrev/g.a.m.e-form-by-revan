@@ -22,6 +22,7 @@ export default function MembersPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest')
   const [campusFilter, setCampusFilter] = useState('')
+  const [tierFilter, setTierFilter] = useState('')
 
   useEffect(() => {
     const q = query(collection(db, 'members'), orderBy('createdAt', 'desc'))
@@ -41,7 +42,8 @@ export default function MembersPage() {
       const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           (member.campus && member.campus.toLowerCase().includes(searchTerm.toLowerCase()))
       const matchesCampus = !campusFilter || member.campus === campusFilter
-      return matchesSearch && matchesCampus
+      const matchesTier = !tierFilter || member.tier === tierFilter
+      return matchesSearch && matchesCampus && matchesTier
     })
     .sort((a, b) => {
       // Handle both Firestore Timestamp and JS Date
@@ -64,7 +66,7 @@ export default function MembersPage() {
     switch(tier) {
       case 'Rising Star': return 'bg-blue-100 text-blue-600'
       case 'Achiever': return 'bg-pink-100 text-pink-600'
-      case 'Stabilizer': return 'bg-purple-100 text-purple-600'
+      case 'Trailblazer': return 'bg-purple-100 text-purple-600'
       default: return 'bg-gray-100 text-gray-600'
     }
   }
@@ -196,6 +198,18 @@ export default function MembersPage() {
                   {uniqueCampuses.map(campus => (
                     <option key={campus} value={campus}>{campus}</option>
                   ))}
+                </select>
+
+                {/* Tier Filter Dropdown */}
+                <select
+                  value={tierFilter}
+                  onChange={(e) => setTierFilter(e.target.value)}
+                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-6 text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none"
+                >
+                  <option value="">Semua Tier</option>
+                  <option value="Rising Star">Rising Star</option>
+                  <option value="Achiever">Achiever</option>
+                  <option value="Trailblazer">Trailblazer</option>
                 </select>
               </div>
             </div>

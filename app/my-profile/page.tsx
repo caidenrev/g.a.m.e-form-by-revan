@@ -21,7 +21,7 @@ export default function MyProfilePage() {
   const [name, setName] = useState('')
   const [campus, setCampus] = useState('')
   const [gsaId, setGsaId] = useState('')
-  const [tier, setTier] = useState<'Rising Star' | 'Achiever' | 'Stabilizer' | ''>('')
+  const [tier, setTier] = useState<'Rising Star' | 'Achiever' | 'Trailblazer' | ''>('')
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null)
   const [showCropper, setShowCropper] = useState(false)
   const [tempImage, setTempImage] = useState<string>('')
@@ -141,7 +141,7 @@ export default function MyProfilePage() {
     switch (tierName) {
       case 'Rising Star': return 'bg-blue-100 text-blue-600 border-blue-200'
       case 'Achiever': return 'bg-pink-100 text-pink-600 border-pink-200'
-      case 'Stabilizer': return 'bg-purple-100 text-purple-600 border-purple-200'
+      case 'Trailblazer': return 'bg-purple-100 text-purple-600 border-purple-200'
       default: return 'bg-gray-100 text-gray-600 border-gray-200'
     }
   }
@@ -308,7 +308,7 @@ export default function MyProfilePage() {
               <div>
                 <label className="block text-sm font-semibold text-[#475467] mb-2">Tier (Opsional)</label>
                 <div className="grid grid-cols-3 gap-2">
-                  {(['Rising Star', 'Achiever', 'Stabilizer'] as const).map((t) => (
+                  {(['Rising Star', 'Achiever', 'Trailblazer'] as const).map((t) => (
                     <button
                       key={t}
                       type="button"
