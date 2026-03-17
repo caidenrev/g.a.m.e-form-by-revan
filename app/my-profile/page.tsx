@@ -291,17 +291,7 @@ export default function MyProfilePage() {
               </div>
 
               <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="block text-sm font-semibold text-[#475467]">GSA ID (Opsional)</label>
-                  <a
-                    href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQGuoKWYG9yF9kihsD2J7qjH6d6BpBWDQcEwi9nmixf4HbUji_tPtjivPB5lqUx1F-KMljLQli7e2c5/pubhtml?gid=1138697843&single=true"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[10px] text-blue-600 font-bold hover:underline"
-                  >
-                    Lupa GSAID? Cek di sini
-                  </a>
-                </div>
+                <label className="block text-sm font-semibold text-[#475467] mb-2">GSA ID (Opsional)</label>
                 <Input value={gsaId} onChange={e => setGsaId(e.target.value)} placeholder="Contoh: GSAID25612" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
               </div>
 
