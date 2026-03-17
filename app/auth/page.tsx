@@ -10,6 +10,10 @@ import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import ImageCropper from '@/components/ImageCropper'
 import LoginPopup from '@/components/LoginPopup'
+import GsaRejectionPopup from '@/components/GsaRejectionPopup'
+import { GSAID_LIST } from '@/lib/gsa-ids'
+import { db } from '@/lib/firebase'
+import { collection, query, where, getDocs } from 'firebase/firestore'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -25,6 +29,7 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showLoginPopup, setShowLoginPopup] = useState(false)
+  const [showRejectionPopup, setShowRejectionPopup] = useState(false)
   const [hasShownPopup, setHasShownPopup] = useState(false)
   
   const { signIn, signUp } = useAuth()
@@ -50,6 +55,22 @@ export default function AuthPage() {
       } else {
         if (!name || !campus) {
           setError('Nama dan Asal Kampus wajib diisi')
+          setLoading(false)
+          return
+        }
+
+        // Validate GSA ID existence in authorized list
+        if (!gsaId || !GSAID_LIST.includes(gsaId.trim())) {
+          setShowRejectionPopup(true)
+          setLoading(false)
+          return
+        }
+
+        // Check if GSA ID is already used
+        const q = query(collection(db, 'members'), where('gsaId', '==', gsaId.trim()))
+        const querySnapshot = await getDocs(q)
+        if (!querySnapshot.empty) {
+          setError('GSA ID ini sudah terdaftar. Gunakan GSA ID lain atau hubungi admin jika ini adalah ID kamu.')
           setLoading(false)
           return
         }
@@ -184,7 +205,7 @@ export default function AuthPage() {
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-semibold text-[#475467]">GSA ID (Opsional)</label>
+                    <label className="block text-sm font-semibold text-[#475467]">GSA ID *</label>
                     <a 
                       href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQGuoKWYG9yF9kihsD2J7qjH6d6BpBWDQcEwi9nmixf4HbUji_tPtjivPB5lqUx1F-KMljLQli7e2c5/pubhtml?gid=1138697843&single=true" 
                       target="_blank" 
@@ -194,7 +215,7 @@ export default function AuthPage() {
                       Lupa GSAID? Cek di sini
                     </a>
                   </div>
-                  <Input value={gsaId} onChange={e => setGsaId(e.target.value)} placeholder="Contoh: GSAID25612" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+                  <Input required value={gsaId} onChange={e => setGsaId(e.target.value)} placeholder="Contoh: GSAID25612" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
                 </div>
 
                 <div>
@@ -250,6 +271,11 @@ export default function AuthPage() {
       <LoginPopup 
         isOpen={showLoginPopup} 
         onClose={() => setShowLoginPopup(false)} 
+      />
+
+      <GsaRejectionPopup
+        isOpen={showRejectionPopup}
+        onClose={() => setShowRejectionPopup(false)}
       />
     </div>
   )
