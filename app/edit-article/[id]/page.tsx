@@ -201,47 +201,47 @@ export default function EditArticlePage() {
             <h1 className="text-xl font-extrabold text-gray-800">Edit Artikel</h1>
           </div>
         </div>
-      </div>
       
-      <Card className="relative z-10 w-full max-w-3xl bg-white shadow-xl rounded-[40px] border-2 border-blue-200 p-6 sm:p-10 mb-20 overflow-hidden">
-        <h2 className="text-2xl font-bold text-center text-[#475467] mb-8 leading-snug">
-          Edit <span className="text-[#0ea5e9]">Artikel</span>
-        </h2>
-        
-        {message && (
-          <div className={`p-4 mb-6 rounded-2xl font-semibold text-center border ${message.includes('berhasil') ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'}`}>
-            {message}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="p-6 sm:p-8 bg-[#eff6ff] rounded-3xl space-y-6">
-            <div>
-              <label className="block text-sm font-semibold text-[#475467] mb-2">Judul Artikel</label>
-              <Input required value={title} onChange={e => setTitle(e.target.value)} placeholder="Masukkan judul..." className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+        <Card className="relative z-10 w-full max-w-3xl bg-white shadow-xl rounded-[40px] border-2 border-blue-200 p-6 sm:p-10 mb-20 overflow-hidden">
+          <h2 className="text-2xl font-bold text-center text-[#475467] mb-8 leading-snug">
+            Edit <span className="text-[#0ea5e9]">Artikel</span>
+          </h2>
+          
+          {message && (
+            <div className={`p-4 mb-6 rounded-2xl font-semibold text-center border ${message.includes('berhasil') ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'}`}>
+              {message}
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-semibold text-[#475467] mb-2">Kategori</label>
-              <Input required value={category} onChange={e => setCategory(e.target.value)} placeholder="Contoh: Web Development" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="p-6 sm:p-8 bg-[#eff6ff] rounded-3xl space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-[#475467] mb-2">Judul Artikel</label>
+                <Input required value={title} onChange={e => setTitle(e.target.value)} placeholder="Masukkan judul..." className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+              </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-[#475467] mb-2">Ringkasan (Excerpt)</label>
-              <Textarea required value={excerpt} onChange={e => setExcerpt(e.target.value)} placeholder="Ringkasan singkat artikel..." className="bg-white border-0 shadow-sm min-h-[100px] rounded-3xl p-5 focus-visible:ring-blue-400" />
-            </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#475467] mb-2">Kategori</label>
+                <Input required value={category} onChange={e => setCategory(e.target.value)} placeholder="Contoh: Web Development" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+              </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-[#475467] mb-2">Konten Lengkap</label>
-              <Textarea required value={content} onChange={e => setContent(e.target.value)} placeholder="Tuliskan konten artikel secara detail..." className="bg-white border-0 shadow-sm min-h-[250px] rounded-3xl p-5 focus-visible:ring-blue-400" />
+              <div>
+                <label className="block text-sm font-semibold text-[#475467] mb-2">Ringkasan (Excerpt)</label>
+                <Textarea required value={excerpt} onChange={e => setExcerpt(e.target.value)} placeholder="Ringkasan singkat artikel..." className="bg-white border-0 shadow-sm min-h-[100px] rounded-3xl p-5 focus-visible:ring-blue-400" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-[#475467] mb-2">Konten Lengkap</label>
+                <Textarea required value={content} onChange={e => setContent(e.target.value)} placeholder="Tuliskan konten artikel secara detail..." className="bg-white border-0 shadow-sm min-h-[250px] rounded-3xl p-5 focus-visible:ring-blue-400" />
+              </div>
+              
+              <Button type="submit" disabled={isSubmitting} className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full h-14 text-lg font-bold shadow-md hover:shadow-lg transition-all mt-4">
+                {isSubmitting ? 'Menyimpan...' : 'Perbarui Artikel'}
+              </Button>
             </div>
-            
-            <Button type="submit" disabled={isSubmitting} className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full h-14 text-lg font-bold shadow-md hover:shadow-lg transition-all mt-4">
-              {isSubmitting ? 'Menyimpan...' : 'Perbarui Artikel'}
-            </Button>
-          </div>
-        </form>
-      </Card>
-    </div>
+          </form>
+        </Card>
+      </div>
+    </>
   )
 }
