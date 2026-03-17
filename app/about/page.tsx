@@ -46,7 +46,13 @@ export default function AboutPage() {
             })));
           }
         } else {
-          console.warn('Saweria API response not OK:', response.status);
+          // Log the error body if possible
+          try {
+            const errData = await response.json();
+            console.error('Saweria API error details:', errData);
+          } catch {
+            console.error('Saweria API error (could not parse body):', response.status);
+          }
         }
       } catch (error: unknown) {
         if (error instanceof Error && error.name === 'AbortError') {

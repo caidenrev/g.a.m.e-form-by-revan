@@ -2,14 +2,18 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const STREAM_KEY = 'a362368a34e4f652436fe98bf70064eb';
-  const API_URL = 'https://backend.saweria.co/widgets/leaderboard/all';
+  const API_URL = 'https://backend.saweria.co/widgets/leaderboard/week';
 
   try {
     const response = await fetch(API_URL, {
       headers: {
         'stream-key': STREAM_KEY,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Referer': 'https://saweria.co/',
+        'Origin': 'https://saweria.co'
       },
-      next: { revalidate: 60 } // Reduce cache for testing
+      next: { revalidate: 60 }
     });
 
     if (!response.ok) {
