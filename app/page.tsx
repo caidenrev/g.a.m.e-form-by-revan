@@ -26,13 +26,30 @@ interface MemberWithId extends GSAMemberData {
   id: string;
 }
 
+interface EventWithId {
+  id: string;
+  title: string;
+  subtitle: string;
+  imageUrl: string;
+  link?: string;
+  author: string;
+  authorId: string;
+  createdAt?: Timestamp;
+}
+
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user, logout } = useAuth()
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [members, setMembers] = useState<MemberWithId[]>([])
+  const [events, setEvents] = useState<EventWithId[]>([])
+  
   const scrollRef = useRef<HTMLDivElement>(null)
+  const eventScrollRef = useRef<HTMLDivElement>(null)
+  
   const [isPaused, setIsPaused] = useState(false)
+  const [isEventPaused, setIsEventPaused] = useState(false)
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
 
   useEffect(() => {
     const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'))
@@ -54,6 +71,18 @@ export default function App() {
         ...doc.data()
       })) as MemberWithId[]
       setMembers(membersData)
+    })
+    return () => unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    const q = query(collection(db, 'events'), orderBy('createdAt', 'desc'))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const eventsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as EventWithId[]
+      setEvents(eventsData)
     })
     return () => unsubscribe()
   }, [])
@@ -86,6 +115,30 @@ export default function App() {
     return () => container.removeEventListener('scroll', handleScroll)
   }, [members])
 
+  // Truly Infinite Scroll Logic - Events
+  useEffect(() => {
+    if (!eventScrollRef.current || events.length === 0) return
+    const container = eventScrollRef.current
+
+    const scrollWidth = container.scrollWidth
+    const firstSetWidth = scrollWidth / 3
+    container.scrollLeft = firstSetWidth
+
+    const handleScroll = () => {
+      const currentScroll = container.scrollLeft
+      const sectionWidth = container.scrollWidth / 3
+
+      if (currentScroll >= sectionWidth * 2) {
+        container.scrollLeft = currentScroll - sectionWidth
+      } else if (currentScroll <= 0) {
+        container.scrollLeft = currentScroll + sectionWidth
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [events])
+
   // Auto-scroll logic
   useEffect(() => {
     if (!scrollRef.current || members.length === 0 || isPaused) return
@@ -103,6 +156,24 @@ export default function App() {
     animationId = requestAnimationFrame(scroll)
     return () => cancelAnimationFrame(animationId)
   }, [members, isPaused])
+
+  // Auto-scroll logic - Events
+  useEffect(() => {
+    if (!eventScrollRef.current || events.length === 0 || isEventPaused) return
+
+    const scrollContainer = eventScrollRef.current
+    let animationId: number
+
+    const scroll = () => {
+      if (scrollContainer) {
+        scrollContainer.scrollLeft += 2
+      }
+      animationId = requestAnimationFrame(scroll)
+    }
+
+    animationId = requestAnimationFrame(scroll)
+    return () => cancelAnimationFrame(animationId)
+  }, [events, isEventPaused])
 
   const instructors = [
     { name: 'GSA 2025 Graduation', role: 'Ciputra Artpreneur', image: '/images/graduation.jpeg' },
@@ -156,6 +227,9 @@ export default function App() {
             </Link>
             <Link href="/gallery" onClick={() => setIsMenuOpen(false)} className="px-5 py-3.5 text-sm font-bold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-colors">
               Gallery
+            </Link>
+            <Link href="/events" onClick={() => setIsMenuOpen(false)} className="px-5 py-3.5 text-sm font-bold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-colors">
+              Events
             </Link>
             <Link href="/about" onClick={() => setIsMenuOpen(false)} className="px-5 py-3.5 text-sm font-bold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-colors">
               About
@@ -265,6 +339,7 @@ export default function App() {
           </div>
         </div>
 
+
         {/* List Member Section - Full Width */}
         <div id="members" className="w-full flex flex-col items-center scroll-mt-32">
           <div className="max-w-4xl w-full px-4 flex flex-col items-center">
@@ -350,6 +425,92 @@ export default function App() {
             </div>
           )}
         </div>
+
+        {/* Upcoming Events Section - Full Width Carousel (Positioned below Members) */}
+        {events.length > 0 && (
+          <div id="events" className="w-full flex flex-col items-center scroll-mt-32">
+            <div className="max-w-4xl w-full px-4 flex flex-col items-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#475467] mb-3 leading-snug uppercase tracking-tight">
+                Upcoming <span className="text-[#0ea5e9]">Events</span>
+              </h2>
+              <p className="text-gray-500 text-sm mb-4">Jangan sampai ketinggalan keseruannya!</p>
+            </div>
+
+            <div className="w-full flex flex-col items-center relative">
+              <div
+                ref={eventScrollRef}
+                className="w-full overflow-x-auto no-scrollbar py-12 flex"
+                onMouseEnter={() => !selectedEventId && setIsEventPaused(true)}
+                onMouseLeave={() => !selectedEventId && setIsEventPaused(false)}
+              >
+                <div className="flex gap-x-8 sm:gap-x-12 px-10">
+                  {/* Triplicate events for truly infinite scroll */}
+                  {[...events, ...events, ...events].map((event, index) => {
+                    const rotations = ['rotate-[2deg]', 'rotate-[-3deg]', 'rotate-[1deg]']
+                    const isSelected = selectedEventId === event.id
+
+                    return (
+                      <div
+                        key={`${event.id}-${index}`}
+                        onClick={() => {
+                          setSelectedEventId(event.id)
+                          setIsEventPaused(true)
+                        }}
+                        className={`relative bg-white p-4 pb-6 rounded-[32px] shadow-2xl border-[6px] border-white transform transition-all duration-500 hover:scale-105 hover:z-10 w-72 sm:w-80 flex flex-col items-center cursor-pointer ${rotations[index % rotations.length]} flex-shrink-0 ${isSelected ? 'scale-105 z-20' : ''}`}
+                      >
+                        {/* Decorative Corner Icons */}
+                        <img src="/images/asset7.png" alt="" className="absolute -top-4 -left-4 w-10 h-10 object-contain drop-shadow-md z-20" />
+                        <img src="/images/asset8.png" alt="" className="absolute -bottom-4 -right-4 w-10 h-10 object-contain drop-shadow-md z-20" />
+
+                        <div className="w-full aspect-[3/4] bg-blue-50 rounded-2xl flex items-center justify-center mb-5 overflow-hidden relative border border-blue-100 group">
+                          <img src={event.imageUrl} alt={event.title} className="w-full h-full object-cover shadow-inner" />
+                          
+                          {/* Ikuti Event Button - Shows only when selected */}
+                          {isSelected && (
+                            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center p-4 animate-in fade-in zoom-in duration-300">
+                              <button 
+                                className="bg-blue-600 hover:bg-blue-700 text-white font-black px-6 py-3 rounded-full shadow-xl transform hover:scale-110 active:scale-95 transition-all flex items-center gap-2"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  if (event.link) {
+                                    window.open(event.link, '_blank')
+                                  } else {
+                                    alert('Link pendaftaran belum tersedia Bang!')
+                                  }
+                                }}
+                              >
+                                Ikuti Event <Calendar className="w-4 h-4" />
+                              </button>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setSelectedEventId(null)
+                                  setIsEventPaused(false)
+                                }}
+                                className="mt-4 text-white hover:text-white/80 text-xs font-bold underline decoration-2 underline-offset-4"
+                              >
+                                Tutup
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        <h4 className="font-extrabold text-[#1e293b] text-center text-lg leading-tight mb-1">{event.title}</h4>
+                        <p className="text-sm text-[#0ea5e9] font-bold text-center italic">{event.subtitle}</p>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {events.length > 0 && (
+                <Link href="/events" className="bg-blue-600 hover:bg-blue-700 text-white font-black px-10 py-4 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all mt-4 inline-flex items-center gap-2">
+                  Lihat Semua Event
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Bottom Sections Container (Restricted Width) */}
         <div className="w-full max-w-4xl px-4 flex flex-col items-center">

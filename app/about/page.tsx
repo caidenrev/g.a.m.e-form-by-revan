@@ -3,10 +3,38 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react'
 import Footer from '@/components/Footer'
 
 export default function AboutPage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const [feedback, setFeedback] = useState('')
+
+  const handleSendFeedback = () => {
+    if (!feedback.trim()) return
+    const subject = encodeURIComponent('Saran & Masukan Portal GSA')
+    const body = encodeURIComponent(feedback)
+    window.location.href = `mailto:ekarevandii@gmail.com?subject=${subject}&body=${body}`
+  }
+
+  const faqData = [
+    {
+      label: 'Tentang Saya',
+      content: '"Portal ini diciptakan sebagai bentuk apresiasi saya terhadap komunitas GSA. Harapannya, setiap baris kode di sini bisa membantu member lain untuk tumbuh dan belajar bersama."'
+    },
+    {
+      label: 'Roles & Expertise',
+      content: ''
+    },
+    {
+      label: 'Campus & Community',
+      content: 'Aktif berkontribusi di komunitas IT dan ekosistem Google Student Ambassadors untuk berbagi ilmu.'
+    },
+    {
+      label: 'Saran & Masukan',
+      content: ''
+    }
+  ]
   return (
     <div className="min-h-screen bg-gray-50 relative overflow-hidden flex flex-col items-center">
       {/* Grid background */}
@@ -64,43 +92,99 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Author Section */}
-        <div className="relative w-full max-w-3xl mb-20 group">
-          {/* Decoration Assets (Moved outside overflow-hidden) */}
-          <img src="/images/asset7.png" alt="" className="absolute -top-6 -left-6 w-16 h-16 object-contain drop-shadow-xl z-30 pointer-events-none animate-bounce-slow" />
-          <img src="/images/asset8.png" alt="" className="absolute top-1/3 -right-6 w-12 h-12 object-contain drop-shadow-xl z-30 pointer-events-none animate-float" />
-          <img src="/images/asset9.png" alt="" className="absolute bottom-10 -left-6 w-14 h-14 object-contain drop-shadow-xl z-30 pointer-events-none animate-pulse-slow" />
-          <img src="/images/asset10.png" alt="" className="absolute -bottom-8 right-12 w-20 h-20 object-contain drop-shadow-xl z-30 pointer-events-none animate-float" style={{ animationDelay: '1s' }} />
+        {/* Author Section - Refined Stacked */}
+        <div className="w-full max-w-2xl mb-20 flex flex-col items-center gap-10">
+          {/* Header (Top) */}
+          <div className="text-center mb-2">
+            <p className="text-blue-600 font-extrabold tracking-widest text-[10px] sm:text-xs uppercase mb-1">The Architect</p>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-[#1e293b] leading-tight">Eka Revandi</h2>
+          </div>
 
-          <div className="bg-white rounded-[50px] shadow-2xl border-8 border-white overflow-hidden transform transition-all group-hover:shadow-blue-100 relative z-20">
-            <div className="flex flex-col md:flex-row">
-              {/* Photos Side */}
-              <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-6 bg-blue-50/20">
-                <div className="grid grid-cols-2 gap-4 relative">
-                  <div className="relative aspect-square rounded-[32px] overflow-hidden shadow-md border-4 border-white">
-                    <img src="/images/ngoding.jpeg" alt="Eka Revandi 1" className="w-full h-full object-cover transition-transform hover:scale-110 duration-500" />
-                  </div>
-                  <div className="relative aspect-square rounded-[32px] overflow-hidden shadow-md mt-8 border-4 border-white">
-                    <img src="/images/revan2.jpeg" alt="Eka Revandi 2" className="w-full h-full object-cover transition-transform hover:scale-110 duration-500" />
-                  </div>
-                </div>
-              </div>
+          {/* Photo (Middle) - Full Width on Mobile */}
+          <div className="w-full max-w-[380px] sm:w-96 flex-shrink-0 relative z-10">
+            <img
+              src="/images/eka-revandi.png"
+              alt="Eka Revandi"
+              className="w-full h-auto object-contain drop-shadow-[0_30px_100px_rgba(59,130,246,0.4)] animate-float"
+            />
+          </div>
 
-              {/* Info Side */}
-              <div className="w-full md:w-1/2 p-10 flex flex-col justify-center bg-gradient-to-br from-white to-blue-50/30">
-                <p className="text-blue-600 font-bold tracking-widest text-xs uppercase mb-3">The Architect</p>
-                <h2 className="text-3xl font-extrabold text-[#1e293b] mb-4">Eka Revandi</h2>
-                <div className="space-y-4">
-                  <p className="text-gray-600 leading-relaxed italic">
-                    Portal ini diciptakan sebagai bentuk apresiasi saya terhadap komunitas GSA. Harapannya, setiap baris kode di sini bisa membantu member lain untuk tumbuh dan belajar bersama.
-                  </p>
-                  <div className="pt-4 flex flex-wrap gap-2">
-                    <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-4 py-1.5 rounded-full shadow-sm">Google Cloud Innovator</span>
-                    <span className="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-4 py-1.5 rounded-full shadow-sm">Technical Expert</span>
-                    <span className="bg-green-100 text-green-700 text-[10px] font-bold px-4 py-1.5 rounded-full shadow-sm">Cloud System Engineer</span>
-                    <span className="bg-orange-100 text-orange-700 text-[10px] font-bold px-4 py-1.5 rounded-full shadow-sm">Software Engineer II</span>
+          {/* Info Side (Bottom - Deconstructed Items) */}
+          <div className="w-full z-20">
+            <div className="bg-transparent p-0 sm:p-2">
+
+              {/* FAQ Style Rows - White Fill & Shadow */}
+              <div className="flex flex-col gap-4">
+                {faqData.map((item, idx) => (
+                  <div key={idx} className="rounded-[32px] border-2 border-blue-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all overflow-hidden group hover:shadow-[0_15px_40px_rgba(59,130,246,0.08)]">
+                    <button
+                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                      className="w-full flex items-center justify-between px-6 py-5 transition-all duration-300 group rounded-[32px]"
+                    >
+                      <span className={`text-xs sm:text-base font-extrabold uppercase tracking-wider text-left transition-colors ${openFaq === idx ? 'text-blue-600' : 'text-[#475467] group-hover:text-blue-500'}`}>
+                        {item.label}
+                      </span>
+                      <div className={`p-2 rounded-xl transition-all ${openFaq === idx ? 'bg-blue-50 text-blue-600' : 'text-blue-100 group-hover:text-blue-400'}`}>
+                        {openFaq === idx ? (
+                          <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
+                        )}
+                      </div>
+                    </button>
+
+                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openFaq === idx ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                      }`}>
+                      <div className="px-6 pb-6 pt-2">
+                        {item.label === 'Roles & Expertise' ? (
+                          <div className="space-y-6">
+                            {/* Badges */}
+                            <div className="flex flex-wrap gap-2">
+                              {[
+                                { label: 'Cloud Innovator', bg: 'bg-blue-50/50', text: 'text-blue-700', border: 'border-blue-100' },
+                                { label: 'Technical Expert', bg: 'bg-indigo-50/50', text: 'text-indigo-700', border: 'border-indigo-100' },
+                                { label: 'Software Engineer II', bg: 'bg-orange-50/50', text: 'text-orange-700', border: 'border-orange-100' }
+                              ].map((badge, bIdx) => (
+                                <span key={bIdx} className={`${badge.bg} ${badge.text} ${badge.border} border text-[10px] font-extrabold px-4 py-1.5 rounded-full`}>
+                                  {badge.label}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Partnership Logos inside Dropdown - COLORED */}
+                            <div className="pt-6 border-t border-blue-50">
+                              <p className="text-[10px] font-medium text-[#475467] mb-4 lowercase italic">special thank you for</p>
+                              <div className="flex items-center gap-6">
+                                <img src="/images/google-logo.png" alt="Google Cloud" className="h-5 sm:h-6 w-auto object-contain" />
+                                <img src="/images/dicoding-logo.png" alt="Dicoding" className="h-5 sm:h-6 w-auto object-contain" />
+                                <img src="/images/site-icon.png" alt="Portal GSA" className="h-6 sm:h-8 w-auto object-contain" />
+                              </div>
+                            </div>
+                          </div>
+                        ) : item.label === 'Saran & Masukan' ? (
+                          <div className="space-y-4 pt-2">
+                            <textarea
+                              value={feedback}
+                              onChange={(e) => setFeedback(e.target.value)}
+                              placeholder="Tulis saran atau masukan Anda di sini..."
+                              className="w-full h-32 p-4 rounded-2xl border-2 border-blue-50 bg-blue-50/10 focus:border-blue-200 focus:bg-white outline-none transition-all text-sm font-medium text-gray-600 placeholder:text-gray-400"
+                            />
+                            <button
+                              onClick={handleSendFeedback}
+                              className="w-full py-3 rounded-xl bg-blue-600 text-white font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
+                            >
+                              Kirim
+                            </button>
+                          </div>
+                        ) : (
+                          <p className={`text-sm sm:text-base leading-relaxed font-medium ${item.label === 'Tentang Saya' ? 'italic text-blue-700/80 border-l-4 border-blue-100 pl-4' : 'text-gray-500'}`}>
+                            {item.content}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
