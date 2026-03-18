@@ -217,7 +217,7 @@ export default function AboutPage() {
 
                             {/* Partnership Logos inside Dropdown - COLORED */}
                             <div className="pt-6 border-t border-blue-50">
-                              <p className="text-[10px] font-medium text-[#475467] mb-4 lowercase italic">special thank you for</p>
+                              <p className="text-[10px] font-medium text-[#475467] mb-4 lowercase italic">Special Thanks for</p>
                               <div className="flex items-center gap-6">
                                 <img src="/images/google-logo.png" alt="Google Cloud" className="h-5 sm:h-6 w-auto object-contain" />
                                 <img src="/images/dicoding-logo.png" alt="Dicoding" className="h-5 sm:h-6 w-auto object-contain" />

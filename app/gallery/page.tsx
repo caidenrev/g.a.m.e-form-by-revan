@@ -120,8 +120,8 @@ export default function GalleryPage() {
       <main className="relative z-10 w-full pt-28 pb-20 flex flex-col items-center">
         <div className="max-w-6xl w-full px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-5xl font-black text-gray-800 mb-4 tracking-tight">
-              GSA <span className="text-blue-600">Moments</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
+              GSA <span className="text-[#0ea5e9]">Moments</span>
             </h2>
             <p className="text-gray-500 font-medium max-w-lg mx-auto">
               Kumpulan dokumentasi keseruan dan pencapaian selama menjadi Google Student Ambassador.

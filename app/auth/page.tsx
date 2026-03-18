@@ -32,7 +32,6 @@ export default function AuthPage() {
   const [showRejectionPopup, setShowRejectionPopup] = useState(false)
   const [hasShownPopup, setHasShownPopup] = useState(false)
   const [message, setMessage] = useState('')
-  const [resetSent, setResetSent] = useState(false)
   
   const { signIn, signUp, resetPassword } = useAuth()
   const router = useRouter()
@@ -125,7 +124,6 @@ export default function AuthPage() {
     setLoading(true)
     try {
       await resetPassword(email)
-      setResetSent(true)
       setMessage('Email pemulihan password telah dikirim! Silakan periksa kotak masuk (inbox) atau folder spam Anda.')
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -178,7 +176,7 @@ export default function AuthPage() {
         </Link>
 
         <Card className="bg-white shadow-xl rounded-[40px] border-2 border-blue-200 p-8 overflow-hidden">
-          <h2 className="text-2xl font-bold text-center text-[#475467] mb-6">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm mb-6">
             {isLogin ? 'Login' : 'Daftar'} <span className="text-[#0ea5e9]">Member GSA</span>
           </h2>
 

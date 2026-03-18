@@ -129,7 +129,7 @@ export default function EventsPage() {
       <main className="relative z-10 w-full max-w-6xl px-4 pt-32 pb-20 flex flex-col items-center">
         {/* Header Section */}
         <div className="text-center mb-12 space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#1e293b] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
             Events <span className="text-[#0ea5e9]">GSA</span>
           </h1>
           <p className="text-gray-500 font-medium max-w-2xl mx-auto">

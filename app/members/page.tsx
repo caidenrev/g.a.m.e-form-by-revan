@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
@@ -13,6 +13,9 @@ interface MemberWithId extends GSAMemberData {
   id: string;
 }
 
+// Simple pagination-based optimization instead of complex virtualization
+const ITEMS_PER_PAGE = 20;
+
 export default function MembersPage() {
   const { user } = useAuth()
   const [members, setMembers] = useState<MemberWithId[]>([])
@@ -23,6 +26,7 @@ export default function MembersPage() {
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest')
   const [campusFilter, setCampusFilter] = useState('')
   const [tierFilter, setTierFilter] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     const q = query(collection(db, 'members'), orderBy('createdAt', 'desc'))
@@ -37,30 +41,50 @@ export default function MembersPage() {
     return () => unsubscribe()
   }, [])
 
-  const filteredMembers = members
-    .filter(member => {
-      const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          (member.campus && member.campus.toLowerCase().includes(searchTerm.toLowerCase()))
-      const matchesCampus = !campusFilter || member.campus === campusFilter
-      const matchesTier = !tierFilter || member.tier === tierFilter
-      return matchesSearch && matchesCampus && matchesTier
-    })
-    .sort((a, b) => {
-      // Handle both Firestore Timestamp and JS Date
-      const getTime = (val: unknown): number => {
-        if (!val) return 0;
-        if (val instanceof Date) return val.getTime();
-        if (typeof val === 'object' && val !== null && 'toMillis' in val && typeof (val as { toMillis: () => number }).toMillis === 'function') {
-          return (val as { toMillis: () => number }).toMillis();
-        }
-        return 0;
-      };
-      const timeA = getTime(a.createdAt);
-      const timeB = getTime(b.createdAt);
-      return sortBy === 'newest' ? timeB - timeA : timeA - timeB;
-    })
+  const filteredMembers = useMemo(() => {
+    return members
+      .filter(member => {
+        const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            (member.campus && member.campus.toLowerCase().includes(searchTerm.toLowerCase()))
+        const matchesCampus = !campusFilter || member.campus === campusFilter
+        const matchesTier = !tierFilter || member.tier === tierFilter
+        return matchesSearch && matchesCampus && matchesTier
+      })
+      .sort((a, b) => {
+        // Handle both Firestore Timestamp and JS Date
+        const getTime = (val: unknown): number => {
+          if (!val) return 0;
+          if (val instanceof Date) return val.getTime();
+          if (typeof val === 'object' && val !== null && 'toMillis' in val && typeof (val as { toMillis: () => number }).toMillis === 'function') {
+            return (val as { toMillis: () => number }).toMillis();
+          }
+          return 0;
+        };
+        const timeA = getTime(a.createdAt);
+        const timeB = getTime(b.createdAt);
+        return sortBy === 'newest' ? timeB - timeA : timeA - timeB;
+      })
+  }, [members, searchTerm, campusFilter, tierFilter, sortBy])
 
-  const uniqueCampuses = Array.from(new Set(members.map(m => m.campus).filter(Boolean))).sort()
+  const uniqueCampuses = useMemo(() => {
+    return Array.from(new Set(members.map(m => m.campus).filter(Boolean))).sort()
+  }, [members])
+
+  // Pagination for performance
+  const totalPages = Math.ceil(filteredMembers.length / ITEMS_PER_PAGE)
+  const paginatedMembers = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    return filteredMembers.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+  }, [filteredMembers, currentPage])
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm, campusFilter, tierFilter, sortBy])
+
+  const handleMemberClick = useCallback((member: MemberWithId) => {
+    setSelectedMember(member)
+  }, [])
 
   const getTierColor = (tier?: string) => {
     switch(tier) {
@@ -152,7 +176,7 @@ export default function MembersPage() {
 
       <div className="relative z-10 w-full max-w-6xl px-4 pt-28 pb-20 flex flex-col items-center">
         <div className="text-center mb-8 space-y-4 w-full">
-          <h1 className="text-3xl sm:text-5xl font-black text-[#1e293b] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
             Semua Member <span className="text-[#0ea5e9]">GSA</span>
           </h1>
           <p className="text-gray-500 font-medium max-w-lg mx-auto">
@@ -229,50 +253,103 @@ export default function MembersPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-x-10 sm:gap-y-16 w-full px-2 sm:px-4">
-            {filteredMembers.map((member, index) => {
-              const rotations = ['rotate-[-2deg]', 'rotate-[3deg]', 'rotate-[-1deg]', 'rotate-[2deg]']
-              const topLeftIcon = `/images/asset${(index % 4) + 7}.png`
-              const bottomRightIcon = `/images/asset${((index + 2) % 4) + 7}.png`
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-x-10 sm:gap-y-16 w-full px-2 sm:px-4">
+              {paginatedMembers.map((member, index) => {
+                const rotations = ['rotate-[-2deg]', 'rotate-[3deg]', 'rotate-[-1deg]', 'rotate-[2deg]']
+                const topLeftIcon = `/images/asset${(index % 4) + 7}.png`
+                const bottomRightIcon = `/images/asset${((index + 2) % 4) + 7}.png`
 
-              return (
-                <div
-                  key={member.id}
-                  onClick={() => setSelectedMember(member)}
-                  className={`relative bg-white p-3 pb-5 sm:p-5 sm:pb-7 rounded-[24px] sm:rounded-[32px] shadow-xl border-[4px] sm:border-[5px] border-white transform transition-transform hover:scale-105 hover:z-10 flex flex-col items-center cursor-pointer ${rotations[index % rotations.length]}`}
+                return (
+                  <div
+                    key={member.id}
+                    onClick={() => handleMemberClick(member)}
+                    className={`relative bg-white p-3 pb-5 sm:p-5 sm:pb-7 rounded-[24px] sm:rounded-[32px] shadow-xl border-[4px] sm:border-[5px] border-white transform transition-transform hover:scale-105 hover:z-10 flex flex-col items-center cursor-pointer ${rotations[index % rotations.length]}`}
+                  >
+                    {/* Decorative Corner Icons */}
+                    <img src={topLeftIcon} alt="" className="absolute -top-3 -left-3 sm:-top-6 sm:-left-6 w-8 h-8 sm:w-14 sm:h-14 object-contain drop-shadow-md z-20 pointer-events-none" />
+                    <img src={bottomRightIcon} alt="" className="absolute -bottom-3 -right-3 sm:-bottom-6 sm:-right-6 w-8 h-8 sm:w-14 sm:h-14 object-contain drop-shadow-md z-20 pointer-events-none" />
+
+                    <div className="w-full aspect-[4/3] bg-blue-50/80 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-5 overflow-hidden relative border border-blue-100 shadow-inner">
+                      <img
+                        src={member.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=3b82f6&color=fff`}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    <h4 className="font-extrabold text-gray-800 text-center text-xs sm:text-lg leading-tight mb-1 sm:mb-1.5 line-clamp-1 w-full px-1">{member.name}</h4>
+                    
+                    <div className="flex flex-wrap justify-center items-center gap-1 mb-1 sm:mb-2">
+                      {member.tier && (
+                        <span className={`text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full ${getTierColor(member.tier)}`}>
+                          {member.tier}
+                        </span>
+                      )}
+                      {member.gsaId && (
+                        <span className="bg-gray-100 text-gray-600 text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full">
+                          {member.gsaId}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <p className="text-[9px] sm:text-sm text-[#0ea5e9] font-bold text-center line-clamp-1 w-full px-1">{member.campus}</p>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-12">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  {/* Decorative Corner Icons */}
-                  <img src={topLeftIcon} alt="" className="absolute -top-3 -left-3 sm:-top-6 sm:-left-6 w-8 h-8 sm:w-14 sm:h-14 object-contain drop-shadow-md z-20 pointer-events-none" />
-                  <img src={bottomRightIcon} alt="" className="absolute -bottom-3 -right-3 sm:-bottom-6 sm:-right-6 w-8 h-8 sm:w-14 sm:h-14 object-contain drop-shadow-md z-20 pointer-events-none" />
-
-                  <div className="w-full aspect-[4/3] bg-blue-50/80 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-5 overflow-hidden relative border border-blue-100 shadow-inner">
-                    <img
-                      src={member.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=3b82f6&color=fff`}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  <h4 className="font-extrabold text-gray-800 text-center text-xs sm:text-lg leading-tight mb-1 sm:mb-1.5 line-clamp-1 w-full px-1">{member.name}</h4>
-                  
-                  <div className="flex flex-wrap justify-center items-center gap-1 mb-1 sm:mb-2">
-                    {member.tier && (
-                      <span className={`text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full ${getTierColor(member.tier)}`}>
-                        {member.tier}
-                      </span>
-                    )}
-                    {member.gsaId && (
-                      <span className="bg-gray-100 text-gray-600 text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full">
-                        {member.gsaId}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <p className="text-[9px] sm:text-sm text-[#0ea5e9] font-bold text-center line-clamp-1 w-full px-1">{member.campus}</p>
+                  Previous
+                </button>
+                
+                <div className="flex gap-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+                    
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`w-10 h-10 rounded-full font-bold transition-all ${
+                          currentPage === pageNum
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white border-2 border-blue-200 text-blue-600 hover:bg-blue-50'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
                 </div>
-              )
-            })}
-          </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
 
