@@ -31,6 +31,7 @@ export default function GsaRejectionPopup({ isOpen, onClose }: GsaRejectionPopup
 
           {/* Icon/Decoration */}
           <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-red-50">
+             {/* eslint-disable-next-line @next/next/no-img-element */}
              <img src="/images/site-icon.png" alt="GSA" className="w-12 h-12 grayscale opacity-50" />
           </div>
 

@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import ImageCropper from '@/components/ImageCropper'
+import { validateFileSize, compressImage } from '@/lib/cloudinary'
 import { Trash2, ExternalLink } from 'lucide-react'
 
 interface EventWithId {
@@ -263,16 +264,41 @@ export default function AdminPage() {
     }
   }
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>, target: 'gallery' | 'event') => {
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>, target: 'gallery' | 'event') => {
     const file = e.target.files?.[0]
     if (file) {
+      // Validasi ukuran file
+      if (!validateFileSize(file, 2)) {
+        alert('File terlalu besar. Maksimal 2MB.')
+        return
+      }
+
+      // Validasi tipe file
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      if (!allowedTypes.includes(file.type)) {
+        alert('Tipe file tidak didukung. Gunakan JPG, PNG, atau WebP.')
+        return
+      }
+
       setCropTarget(target)
+      
+      // Kompres gambar jika terlalu besar
+      let processedFile = file
+      if (file.size > 1024 * 1024) { // Jika lebih dari 1MB
+        try {
+          const compressedBlob = await compressImage(file, 1200, 0.8)
+          processedFile = new File([compressedBlob!], file.name, { type: 'image/jpeg' })
+        } catch (error) {
+          console.error('Compression error:', error)
+        }
+      }
+
       const reader = new FileReader()
       reader.onload = () => {
         setTempImage(reader.result as string)
         setShowCropper(true)
       }
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(processedFile)
     }
   }
 

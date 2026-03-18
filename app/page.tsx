@@ -8,6 +8,7 @@ import { useAuth, GSAMemberData } from '@/contexts/AuthContext'
 import { db } from '@/lib/firebase'
 import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore'
 import Footer from '@/components/Footer'
+import { CloudinaryPresets } from '@/lib/cloudinary'
 
 interface BlogPost {
   id: string;
@@ -391,9 +392,10 @@ export default function App() {
 
                         <div className="w-full aspect-[4/3] bg-blue-50/80 rounded-2xl flex items-center justify-center mb-5 overflow-hidden relative border border-blue-100">
                           <img
-                            src={member.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=3b82f6&color=fff`}
+                            src={member.photoURL ? CloudinaryPresets.memberCard(member.photoURL) : `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=3b82f6&color=fff`}
                             alt={member.name}
                             className="w-full h-full object-cover"
+                            loading="lazy"
                           />
                         </div>
 
@@ -545,9 +547,10 @@ export default function App() {
                         <div className="flex flex-row items-center gap-4 sm:gap-8">
                           <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl sm:rounded-[28px] overflow-hidden border-3 sm:border-4 border-blue-50 shadow-sm flex-shrink-0 bg-blue-50">
                             <img
-                              src={post.authorPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=3b82f6&color=fff`}
+                              src={post.authorPhoto ? CloudinaryPresets.profile(post.authorPhoto) : `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=3b82f6&color=fff`}
                               alt={post.author}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
                             />
                           </div>
 

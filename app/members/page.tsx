@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Search, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
 import { GSAMemberData, useAuth } from '@/contexts/AuthContext'
 import Footer from '@/components/Footer'
+import { CloudinaryPresets } from '@/lib/cloudinary'
 
 interface MemberWithId extends GSAMemberData {
   id: string;
@@ -272,7 +273,7 @@ export default function MembersPage() {
 
                     <div className="w-full aspect-[4/3] bg-blue-50/80 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-5 overflow-hidden relative border border-blue-100 shadow-inner">
                       <img
-                        src={member.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=3b82f6&color=fff`}
+                        src={member.photoURL ? CloudinaryPresets.memberCard(member.photoURL) : `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=3b82f6&color=fff`}
                         alt={member.name}
                         className="w-full h-full object-cover"
                         loading="lazy"
@@ -379,7 +380,7 @@ export default function MembersPage() {
 
             <div className="w-full aspect-square bg-blue-50/80 rounded-3xl flex items-center justify-center mb-8 overflow-hidden relative border-2 border-blue-100 shadow-inner">
               <img
-                src={selectedMember.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.name)}&background=3b82f6&color=fff`}
+                src={selectedMember.photoURL ? CloudinaryPresets.profile(selectedMember.photoURL) : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.name)}&background=3b82f6&color=fff`}
                 alt={selectedMember.name}
                 className="w-full h-full object-cover"
               />

@@ -10,6 +10,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
 
+    // Validasi ukuran file (max 2MB)
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSize) {
+      return NextResponse.json({ 
+        error: 'File terlalu besar. Maksimal 2MB.' 
+      }, { status: 400 });
+    }
+
+    // Validasi tipe file
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json({ 
+        error: 'Tipe file tidak didukung. Gunakan JPG, PNG, atau WebP.' 
+      }, { status: 400 });
+    }
+
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
     const apiKey = process.env.CLOUDINARY_API_KEY
     const apiSecret = process.env.CLOUDINARY_API_SECRET
@@ -23,13 +39,14 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Prepare upload to Cloudinary
+    // Use your existing preset with additional optimization
     const timestamp = Math.round(Date.now() / 1000).toString()
     
-    // Generate signature: SHA1 of "timestamp=<timestamp><api_secret>"
+    // Generate signature for signed upload (more secure)
+    const paramsToSign = `timestamp=${timestamp}&upload_preset=GSA-2025${apiSecret}`
     const signature = crypto
       .createHash('sha1')
-      .update(`timestamp=${timestamp}${apiSecret}`)
+      .update(paramsToSign)
       .digest('hex')
 
     // Create form data
@@ -37,9 +54,10 @@ export async function POST(request: NextRequest) {
     uploadData.append('file', new Blob([buffer], { type: file.type }))
     uploadData.append('api_key', apiKey)
     uploadData.append('timestamp', timestamp)
+    uploadData.append('upload_preset', 'GSA-2025') // Use your existing preset
     uploadData.append('signature', signature)
 
-    console.log('Uploading to Cloudinary:', { cloudName, timestamp })
+    console.log('Uploading to Cloudinary with GSA-2025 preset:', { cloudName, timestamp })
 
     // Upload to Cloudinary
     const response = await fetch(
