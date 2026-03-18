@@ -31,8 +31,10 @@ export default function AuthPage() {
   const [showLoginPopup, setShowLoginPopup] = useState(false)
   const [showRejectionPopup, setShowRejectionPopup] = useState(false)
   const [hasShownPopup, setHasShownPopup] = useState(false)
+  const [message, setMessage] = useState('')
+  const [resetSent, setResetSent] = useState(false)
   
-  const { signIn, signUp } = useAuth()
+  const { signIn, signUp, resetPassword } = useAuth()
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,6 +115,29 @@ export default function AuthPage() {
     }
   }
 
+  const handleResetPassword = async () => {
+    if (!email) {
+      setError('Masukkan email Anda terlebih dahulu untuk mereset password.')
+      return
+    }
+    setError('')
+    setMessage('')
+    setLoading(true)
+    try {
+      await resetPassword(email)
+      setResetSent(true)
+      setMessage('Email pemulihan password telah dikirim! Silakan periksa kotak masuk (inbox) atau folder spam Anda.')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Gagal mengirim email reset password')
+      } else {
+        setError('Gagal mengirim email reset password')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -160,6 +185,12 @@ export default function AuthPage() {
           {error && (
             <div className="p-4 mb-4 rounded-2xl bg-red-50 text-red-700 border border-red-200 text-sm font-semibold text-center">
               {error}
+            </div>
+          )}
+
+          {message && (
+            <div className="p-4 mb-4 rounded-2xl bg-green-50 text-green-700 border border-green-200 text-sm font-semibold text-center">
+              {message}
             </div>
           )}
 
@@ -234,6 +265,18 @@ export default function AuthPage() {
             <div>
               <label className="block text-sm font-semibold text-[#475467] mb-2">Password *</label>
               <Input required type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Minimal 6 karakter" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+              {isLogin && (
+                <div className="flex justify-end mt-2">
+                  <button 
+                    type="button" 
+                    onClick={handleResetPassword} 
+                    className="text-xs text-blue-600 font-bold hover:underline"
+                    disabled={loading}
+                  >
+                    Lupa Password?
+                  </button>
+                </div>
+              )}
             </div>
 
             <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full h-12 text-base font-bold shadow-md hover:shadow-lg transition-all mt-6">

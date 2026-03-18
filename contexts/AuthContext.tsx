@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
@@ -26,6 +26,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, memberData: Omit<GSAMemberData, 'email' | 'createdAt'>) => Promise<void>;
   logout: () => Promise<void>;
   refreshMemberData: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -36,6 +37,7 @@ const AuthContext = createContext<AuthContextType>({
   signUp: async () => {},
   logout: async () => {},
   refreshMemberData: async () => {},
+  resetPassword: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -119,8 +121,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      console.error('Error sending password reset email', error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, memberData, loading, signIn, signUp, logout, refreshMemberData }}>
+    <AuthContext.Provider value={{ user, memberData, loading, signIn, signUp, logout, refreshMemberData, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );
