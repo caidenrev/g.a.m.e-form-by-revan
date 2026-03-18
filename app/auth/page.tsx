@@ -9,11 +9,13 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import ImageCropper from '@/components/ImageCropper'
+import CompressionPopup from '@/components/CompressionPopup'
 import LoginPopup from '@/components/LoginPopup'
 import GsaRejectionPopup from '@/components/GsaRejectionPopup'
 import { GSAID_LIST } from '@/lib/gsa-ids'
 import { db } from '@/lib/firebase'
 import { collection, query, where, getDocs } from 'firebase/firestore'
+import { validateFileSize } from '@/lib/cloudinary'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -32,6 +34,10 @@ export default function AuthPage() {
   const [showRejectionPopup, setShowRejectionPopup] = useState(false)
   const [hasShownPopup, setHasShownPopup] = useState(false)
   const [message, setMessage] = useState('')
+  
+  // Compression popup states
+  const [showCompressionPopup, setShowCompressionPopup] = useState(false)
+  const [rejectedFile, setRejectedFile] = useState<{ name: string; size: string } | null>(null)
   
   const { signIn, signUp, resetPassword } = useAuth()
   const router = useRouter()
@@ -139,6 +145,27 @@ export default function AuthPage() {
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      // Validasi ukuran file (1MB)
+      if (!validateFileSize(file, 1)) {
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
+        setRejectedFile({
+          name: file.name,
+          size: `${fileSizeMB} MB`
+        })
+        setShowCompressionPopup(true)
+        // Reset input
+        e.target.value = ''
+        return
+      }
+
+      // Validasi tipe file
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      if (!allowedTypes.includes(file.type)) {
+        alert('Tipe file tidak didukung. Gunakan JPG, PNG, atau WebP.')
+        e.target.value = ''
+        return
+      }
+
       const reader = new FileReader()
       reader.onload = () => {
         setTempImage(reader.result as string)
@@ -308,6 +335,18 @@ export default function AuthPage() {
         isOpen={showRejectionPopup}
         onClose={() => setShowRejectionPopup(false)}
       />
+
+      {showCompressionPopup && rejectedFile && (
+        <CompressionPopup
+          isOpen={showCompressionPopup}
+          onClose={() => {
+            setShowCompressionPopup(false)
+            setRejectedFile(null)
+          }}
+          fileName={rejectedFile.name}
+          fileSize={rejectedFile.size}
+        />
+      )}
     </div>
   )
 }

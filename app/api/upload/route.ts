@@ -10,11 +10,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
 
-    // Validasi ukuran file (max 2MB)
-    const maxSize = 2 * 1024 * 1024; // 2MB
+    // Validasi ukuran file (max 1MB)
+    const maxSize = 1 * 1024 * 1024; // 1MB
     if (file.size > maxSize) {
       return NextResponse.json({ 
-        error: 'File terlalu besar. Maksimal 2MB.' 
+        error: 'File terlalu besar. Maksimal 1MB.' 
       }, { status: 400 });
     }
 

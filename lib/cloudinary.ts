@@ -48,7 +48,7 @@ export function optimizeCloudinaryUrl(
   
   // Format dan quality optimization (WAJIB untuk hemat bandwidth)
   params.push(`f_${format}`);
-  params.push(`q_${quality}`);
+  params.push(`q_${quality === 'auto' ? 'auto:good' : quality}`); // Use auto:good instead of auto
   
   // Resize parameters
   if (width) params.push(`w_${width}`);
@@ -68,61 +68,95 @@ export function optimizeCloudinaryUrl(
  * Preset optimasi untuk berbagai use case
  */
 export const CloudinaryPresets = {
-  // Profile photos - kecil, bulat
+  // Profile photos - kecil, bulat, kualitas tinggi
   profile: (url: string) => optimizeCloudinaryUrl(url, {
     width: 200,
     height: 200,
     crop: 'fill',
     gravity: 'face',
-    quality: 'auto',
+    quality: 90, // Higher quality for profile photos
     format: 'auto'
   }),
 
-  // Blog thumbnails - medium size
+  // Blog thumbnails - medium size, kualitas bagus
   blogThumbnail: (url: string) => optimizeCloudinaryUrl(url, {
     width: 400,
     height: 300,
     crop: 'fill',
     gravity: 'auto',
-    quality: 'auto',
+    quality: 85, // Good quality for thumbnails
     format: 'auto'
   }),
 
-  // Blog content images - large but optimized
+  // Blog content images - large but optimized, kualitas tinggi
   blogContent: (url: string) => optimizeCloudinaryUrl(url, {
     width: 1200,
     crop: 'limit',
-    quality: 'auto',
+    quality: 90, // High quality for blog content
     format: 'auto'
   }),
 
-  // Member cards - medium size
+  // Member cards - medium size, kualitas bagus
   memberCard: (url: string) => optimizeCloudinaryUrl(url, {
     width: 300,
     height: 225,
     crop: 'fill',
     gravity: 'face',
-    quality: 'auto',
+    quality: 85, // Good quality for member cards
     format: 'auto'
   }),
 
-  // Gallery images - optimized for viewing
+  // Gallery images - optimized for viewing, kualitas tinggi
   gallery: (url: string) => optimizeCloudinaryUrl(url, {
     width: 800,
     height: 600,
     crop: 'limit',
-    quality: 'auto',
+    quality: 90, // High quality for gallery
+    format: 'auto'
+  }),
+
+  // High quality preset for important images
+  highQuality: (url: string) => optimizeCloudinaryUrl(url, {
+    width: 1200,
+    crop: 'limit',
+    quality: 95, // Very high quality
     format: 'auto'
   })
 };
 
 /**
+ * Get optimized URL with custom quality
+ * @param url - Original Cloudinary URL
+ * @param quality - Quality level: 'low' | 'medium' | 'high' | 'ultra'
+ * @param width - Optional width
+ */
+export function getOptimizedUrl(
+  url: string, 
+  quality: 'low' | 'medium' | 'high' | 'ultra' = 'medium',
+  width?: number
+): string {
+  const qualityMap = {
+    low: 60,
+    medium: 80,
+    high: 90,
+    ultra: 95
+  };
+
+  return optimizeCloudinaryUrl(url, {
+    width: width || 800,
+    crop: 'limit',
+    quality: qualityMap[quality],
+    format: 'auto'
+  });
+}
+
+/**
  * Validasi ukuran file sebelum upload
  * @param file - File yang akan diupload
- * @param maxSizeMB - Maksimal ukuran dalam MB (default: 2MB)
+ * @param maxSizeMB - Maksimal ukuran dalam MB (default: 1MB)
  * @returns boolean
  */
-export function validateFileSize(file: File, maxSizeMB: number = 2): boolean {
+export function validateFileSize(file: File, maxSizeMB: number = 1): boolean {
   const maxSizeBytes = maxSizeMB * 1024 * 1024;
   return file.size <= maxSizeBytes;
 }

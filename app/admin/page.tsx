@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import ImageCropper from '@/components/ImageCropper'
+import CompressionPopup from '@/components/CompressionPopup'
 import { validateFileSize, compressImage } from '@/lib/cloudinary'
 import { Trash2, ExternalLink } from 'lucide-react'
 
@@ -55,6 +56,10 @@ export default function AdminPage() {
   const [showCropper, setShowCropper] = useState(false)
   const [tempImage, setTempImage] = useState<string>('')
   const [cropTarget, setCropTarget] = useState<'gallery' | 'event'>('gallery')
+  
+  // Compression popup states
+  const [showCompressionPopup, setShowCompressionPopup] = useState(false)
+  const [rejectedFile, setRejectedFile] = useState<{ name: string; size: string } | null>(null)
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState('')
@@ -267,9 +272,16 @@ export default function AdminPage() {
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>, target: 'gallery' | 'event') => {
     const file = e.target.files?.[0]
     if (file) {
-      // Validasi ukuran file
-      if (!validateFileSize(file, 2)) {
-        alert('File terlalu besar. Maksimal 2MB.')
+      // Validasi ukuran file (1MB)
+      if (!validateFileSize(file, 1)) {
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
+        setRejectedFile({
+          name: file.name,
+          size: `${fileSizeMB} MB`
+        })
+        setShowCompressionPopup(true)
+        // Reset input
+        e.target.value = ''
         return
       }
 
@@ -277,14 +289,15 @@ export default function AdminPage() {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
       if (!allowedTypes.includes(file.type)) {
         alert('Tipe file tidak didukung. Gunakan JPG, PNG, atau WebP.')
+        e.target.value = ''
         return
       }
 
       setCropTarget(target)
       
-      // Kompres gambar jika terlalu besar
+      // Kompres gambar jika terlalu besar (>500KB)
       let processedFile = file
-      if (file.size > 1024 * 1024) { // Jika lebih dari 1MB
+      if (file.size > 512 * 1024) { // Jika lebih dari 500KB
         try {
           const compressedBlob = await compressImage(file, 1200, 0.8)
           processedFile = new File([compressedBlob!], file.name, { type: 'image/jpeg' })
@@ -554,6 +567,18 @@ export default function AdminPage() {
           onCropComplete={handleCropComplete}
           onCancel={() => setShowCropper(false)}
           aspect={cropTarget === 'event' ? 3/4 : 1}
+        />
+      )}
+
+      {showCompressionPopup && rejectedFile && (
+        <CompressionPopup
+          isOpen={showCompressionPopup}
+          onClose={() => {
+            setShowCompressionPopup(false)
+            setRejectedFile(null)
+          }}
+          fileName={rejectedFile.name}
+          fileSize={rejectedFile.size}
         />
       )}
     </div>
