@@ -13,6 +13,7 @@ import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { Camera, Save, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
 import ImageCropper from '@/components/ImageCropper'
+import { validateFileSize, compressImage, extractPublicId, deleteCloudinaryImage } from '@/lib/cloudinary'
 
 export default function MyProfilePage() {
   const { user, memberData, loading } = useAuth()
@@ -62,6 +63,12 @@ export default function MyProfilePage() {
 
     try {
       let photoURL = currentPhotoURL
+      let oldPhotoPublicId: string | null = null
+
+      // Extract old photo public_id for deletion
+      if (currentPhotoURL && profilePhoto) {
+        oldPhotoPublicId = extractPublicId(currentPhotoURL)
+      }
 
       // Upload new profile photo if provided
       if (profilePhoto) {
@@ -76,6 +83,17 @@ export default function MyProfilePage() {
         if (uploadResponse.ok) {
           const uploadResult = await uploadResponse.json()
           photoURL = uploadResult.secure_url
+
+          // Delete old photo from Cloudinary after successful upload
+          if (oldPhotoPublicId) {
+            console.log('Deleting old photo:', oldPhotoPublicId)
+            const deleteSuccess = await deleteCloudinaryImage(oldPhotoPublicId)
+            if (deleteSuccess) {
+              console.log('Old photo deleted successfully')
+            } else {
+              console.warn('Failed to delete old photo, but continuing...')
+            }
+          }
         } else {
           throw new Error('Gagal mengunggah foto profile')
         }

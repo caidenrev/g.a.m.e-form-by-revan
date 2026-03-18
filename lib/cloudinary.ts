@@ -78,6 +78,16 @@ export const CloudinaryPresets = {
     format: 'auto'
   }),
 
+  // Profile photos for detail popup - larger, higher quality
+  profileDetail: (url: string) => optimizeCloudinaryUrl(url, {
+    width: 400,
+    height: 400,
+    crop: 'fill',
+    gravity: 'face',
+    quality: 95, // Ultra high quality for detail view
+    format: 'auto'
+  }),
+
   // Blog thumbnails - medium size, kualitas bagus
   blogThumbnail: (url: string) => optimizeCloudinaryUrl(url, {
     width: 400,
@@ -125,29 +135,61 @@ export const CloudinaryPresets = {
 };
 
 /**
- * Get optimized URL with custom quality
- * @param url - Original Cloudinary URL
- * @param quality - Quality level: 'low' | 'medium' | 'high' | 'ultra'
- * @param width - Optional width
+ * Extract public_id from Cloudinary URL
+ * @param url - Cloudinary URL
+ * @returns public_id or null
  */
-export function getOptimizedUrl(
-  url: string, 
-  quality: 'low' | 'medium' | 'high' | 'ultra' = 'medium',
-  width?: number
-): string {
-  const qualityMap = {
-    low: 60,
-    medium: 80,
-    high: 90,
-    ultra: 95
-  };
+export function extractPublicId(url: string): string | null {
+  if (!url || !url.includes('cloudinary.com')) {
+    return null;
+  }
 
-  return optimizeCloudinaryUrl(url, {
-    width: width || 800,
-    crop: 'limit',
-    quality: qualityMap[quality],
-    format: 'auto'
-  });
+  try {
+    // Extract public_id from URL
+    // Format: https://res.cloudinary.com/cloud/image/upload/v123456/folder/image.jpg
+    const parts = url.split('/');
+    const uploadIndex = parts.findIndex(part => part === 'upload');
+    
+    if (uploadIndex === -1 || uploadIndex + 2 >= parts.length) {
+      return null;
+    }
+
+    // Get everything after version (v123456) or directly after upload
+    let publicIdPart = '';
+    const afterUpload = parts.slice(uploadIndex + 1);
+    
+    // Skip version if exists (starts with 'v' followed by numbers)
+    const startIndex = afterUpload[0] && /^v\d+$/.test(afterUpload[0]) ? 1 : 0;
+    publicIdPart = afterUpload.slice(startIndex).join('/');
+    
+    // Remove file extension
+    return publicIdPart.replace(/\.[^/.]+$/, '');
+  } catch (error) {
+    console.error('Error extracting public_id:', error);
+    return null;
+  }
+}
+
+/**
+ * Delete image from Cloudinary
+ * @param publicId - Public ID of the image to delete
+ * @returns Promise<boolean> - Success status
+ */
+export async function deleteCloudinaryImage(publicId: string): Promise<boolean> {
+  try {
+    const response = await fetch('/api/cloudinary-delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ publicId }),
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    return false;
+  }
 }
 
 /**

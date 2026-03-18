@@ -380,7 +380,7 @@ export default function MembersPage() {
 
             <div className="w-full aspect-square bg-blue-50/80 rounded-3xl flex items-center justify-center mb-8 overflow-hidden relative border-2 border-blue-100 shadow-inner">
               <img
-                src={selectedMember.photoURL ? CloudinaryPresets.profile(selectedMember.photoURL) : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.name)}&background=3b82f6&color=fff`}
+                src={selectedMember.photoURL ? CloudinaryPresets.profileDetail(selectedMember.photoURL) : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.name)}&background=3b82f6&color=fff`}
                 alt={selectedMember.name}
                 className="w-full h-full object-cover"
               />
