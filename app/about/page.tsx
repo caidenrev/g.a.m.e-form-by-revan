@@ -121,7 +121,7 @@ export default function AboutPage() {
 
         {/* Hero Section */}
         <div className="text-center mb-16 space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
             Tentang <span className="text-[#0ea5e9]">Portal GSA</span>
           </h1>
           <p className="text-[#475467] font-medium max-w-2xl mx-auto text-lg leading-relaxed">

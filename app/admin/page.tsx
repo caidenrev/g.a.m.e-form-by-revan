@@ -309,7 +309,7 @@ export default function AdminPage() {
 
       <div className="pt-24 w-full flex flex-col items-center">
         <Card className="relative z-10 w-full max-w-3xl bg-white shadow-xl rounded-[40px] border-2 border-blue-200 p-6 sm:p-10 mb-20 overflow-hidden">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm mb-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm mb-6 text-center">
             Dashboard <span className="text-[#0ea5e9]">Admin</span>
           </h2>
 

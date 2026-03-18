@@ -176,7 +176,7 @@ export default function MembersPage() {
 
       <div className="relative z-10 w-full max-w-6xl px-4 pt-28 pb-20 flex flex-col items-center">
         <div className="text-center mb-8 space-y-4 w-full">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
             Semua Member <span className="text-[#0ea5e9]">GSA</span>
           </h1>
           <p className="text-gray-500 font-medium max-w-lg mx-auto">
@@ -184,29 +184,29 @@ export default function MembersPage() {
           </p>
 
           {/* Filters & Search */}
-          <div className="max-w-4xl mx-auto w-full space-y-4 mt-8 px-2">
-            <div className="flex flex-col md:flex-row gap-4">
+          <div className="max-w-4xl mx-auto w-full space-y-3 sm:space-y-4 mt-6 sm:mt-8 px-2">
+            <div className="flex flex-col gap-3 sm:gap-4">
               {/* Search Bar */}
               <div className="flex-1 relative">
-                <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 left-4 sm:left-5 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                 </div>
                 <input
                   type="text"
                   placeholder="Cari nama atau kampus..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-white border-2 border-white shadow-lg rounded-full py-4 pl-14 pr-6 text-gray-700 font-bold focus:outline-none focus:border-blue-400 transition-all placeholder:text-gray-300"
+                  className="w-full bg-white border-2 border-white shadow-lg rounded-full py-3 sm:py-4 pl-12 sm:pl-14 pr-4 sm:pr-6 text-sm sm:text-base text-gray-700 font-bold focus:outline-none focus:border-blue-400 transition-all placeholder:text-gray-300"
                 />
               </div>
 
               {/* Advanced Filters */}
-              <div className="flex gap-2 flex-wrap sm:flex-nowrap">
+              <div className="flex gap-1.5 sm:gap-2 flex-wrap">
                 {/* Sort Dropdown */}
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest')}
-                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-6 text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none"
+                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-3 sm:px-6 text-xs sm:text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none"
                 >
                   <option value="newest">Terbaru</option>
                   <option value="oldest">Terlama</option>
@@ -216,7 +216,7 @@ export default function MembersPage() {
                 <select
                   value={campusFilter}
                   onChange={(e) => setCampusFilter(e.target.value)}
-                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-6 text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none max-w-[200px] truncate"
+                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-3 sm:px-6 text-xs sm:text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none max-w-[120px] sm:max-w-[200px] truncate"
                 >
                   <option value="">Semua Kampus</option>
                   {uniqueCampuses.map(campus => (
@@ -228,7 +228,7 @@ export default function MembersPage() {
                 <select
                   value={tierFilter}
                   onChange={(e) => setTierFilter(e.target.value)}
-                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-6 text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none"
+                  className="bg-white border-2 border-white shadow-lg rounded-full py-2 px-3 sm:px-6 text-xs sm:text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-400 transition-all cursor-pointer appearance-none"
                 >
                   <option value="">Semua Tier</option>
                   <option value="Rising Star">Rising Star</option>
@@ -302,16 +302,17 @@ export default function MembersPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-12">
+              <div className="flex justify-center items-center gap-1 sm:gap-2 mt-8 sm:mt-12 px-4">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  Previous
+                  <span className="hidden sm:inline">Previous</span>
+                  <span className="sm:hidden">Prev</span>
                 </button>
                 
-                <div className="flex gap-1">
+                <div className="flex gap-0.5 sm:gap-1">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     let pageNum;
                     if (totalPages <= 5) {
@@ -328,7 +329,7 @@ export default function MembersPage() {
                       <button
                         key={pageNum}
                         onClick={() => setCurrentPage(pageNum)}
-                        className={`w-10 h-10 rounded-full font-bold transition-all ${
+                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full text-xs sm:text-sm font-bold transition-all ${
                           currentPage === pageNum
                             ? 'bg-blue-600 text-white'
                             : 'bg-white border-2 border-blue-200 text-blue-600 hover:bg-blue-50'
@@ -343,9 +344,10 @@ export default function MembersPage() {
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  Next
+                  <span className="hidden sm:inline">Next</span>
+                  <span className="sm:hidden">Next</span>
                 </button>
               </div>
             )}

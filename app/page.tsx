@@ -277,7 +277,7 @@ export default function App() {
 
           {/* Page Headlines */}
           <div className="text-center mt-6 mb-2 space-y-3">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm">
               Halo Temen temen aku! Welcome to GSA Portal!
             </h1>
             <p className="text-[#475467] font-medium max-w-xl mx-auto text-lg">
