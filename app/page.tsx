@@ -193,11 +193,11 @@ export default function App() {
       }}></div>
 
       {/* Floating Pill Header with Dropdown */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-5 px-4">
+      <div className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-5 px-4 w-full">
         {/* Main Pill */}
-        <div className="flex items-center justify-between bg-white/90 backdrop-blur-md rounded-full shadow-lg px-6 py-3.5 w-full max-w-lg relative z-50 border border-white/20">
+        <div className="w-full max-w-2xl flex items-center justify-between bg-white/90 backdrop-blur-md px-6 py-3.5 rounded-full shadow-lg border border-white/20 relative z-50">
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-            <img src="/images/asset1.png" alt="Google Student Ambassador" className="h-10 w-auto object-contain" />
+            <img src="/images/asset1.png" alt="Google Student Ambassador" className="h-8 w-auto object-contain" />
           </Link>
 
           <div className="flex items-center gap-2">
