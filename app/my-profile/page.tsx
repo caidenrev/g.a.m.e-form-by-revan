@@ -13,7 +13,9 @@ import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { Camera, Save, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
 import ImageCropper from '@/components/ImageCropper'
+import TierValidationPopup from '@/components/TierValidationPopup'
 import { extractPublicId, deleteCloudinaryImage } from '@/lib/cloudinary'
+import { validateTierForGSAID, getAllowedTierForGSAID, isGSAOnlyMember } from '@/lib/tier-validation'
 
 export default function MyProfilePage() {
   const { user, memberData, loading } = useAuth()
@@ -29,6 +31,11 @@ export default function MyProfilePage() {
   const [currentPhotoURL, setCurrentPhotoURL] = useState('')
   const [linkedIn, setLinkedIn] = useState('')
   const [instagram, setInstagram] = useState('')
+
+  const [showTierValidationPopup, setShowTierValidationPopup] = useState(false)
+  const [tierValidationMessage, setTierValidationMessage] = useState('')
+  const [allowedTier, setAllowedTier] = useState<string | undefined>(undefined)
+  const [isGSAOnly, setIsGSAOnly] = useState(false)
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState('')
@@ -51,11 +58,34 @@ export default function MyProfilePage() {
     }
   }, [user, memberData, loading, router])
 
+  // Validasi tier saat data pertama kali dimuat
+  useEffect(() => {
+    if (gsaId && tier && !showTierValidationPopup) {
+      const tierValidation = validateTierForGSAID(gsaId.trim(), tier)
+      if (!tierValidation.isValid) {
+        // Tampilkan peringatan jika tier tidak sesuai
+        setMessage(`⚠️ Tier kamu saat ini (${tier}) tidak sesuai dengan data resmi. Silakan perbarui tier atau kosongkan.`)
+      }
+    }
+  }, [gsaId, tier, showTierValidationPopup])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!name || !campus) {
       setMessage('Nama dan Asal Kampus wajib diisi')
       return
+    }
+
+    // Validate tier selection against Final-Data.json if both gsaId and tier are provided
+    if (gsaId && tier) {
+      const tierValidation = validateTierForGSAID(gsaId.trim(), tier)
+      if (!tierValidation.isValid) {
+        setTierValidationMessage(tierValidation.message)
+        setAllowedTier(tierValidation.allowedTier)
+        setIsGSAOnly(tierValidation.isGSAOnly || false)
+        setShowTierValidationPopup(true)
+        return
+      }
     }
 
     setIsSubmitting(true)
@@ -153,6 +183,41 @@ export default function MyProfilePage() {
     const croppedFile = new File([croppedBlob], 'profile.jpg', { type: 'image/jpeg' })
     setProfilePhoto(croppedFile)
     setShowCropper(false)
+  }
+
+  const handleSelectCorrectTier = (correctTier: string) => {
+    setTier(correctTier)
+  }
+
+  const handleGsaIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newGsaId = e.target.value
+    setGsaId(newGsaId)
+    
+    // Reset tier jika GSA ID berubah dan tier tidak sesuai
+    if (newGsaId && tier) {
+      const tierValidation = validateTierForGSAID(newGsaId.trim(), tier)
+      if (!tierValidation.isValid) {
+        setTier('') // Reset tier selection
+      }
+    }
+  }
+
+  const handleTierSelection = (selectedTier: string) => {
+    const newTier = tier === selectedTier ? '' : selectedTier
+    setTier(newTier)
+    
+    // Validasi real-time jika GSA ID sudah diisi
+    if (gsaId && newTier) {
+      const tierValidation = validateTierForGSAID(gsaId.trim(), newTier)
+      if (!tierValidation.isValid) {
+        setTierValidationMessage(tierValidation.message)
+        setAllowedTier(tierValidation.allowedTier)
+        setIsGSAOnly(tierValidation.isGSAOnly || false)
+        setShowTierValidationPopup(true)
+        // Reset tier selection jika tidak valid
+        setTier('')
+      }
+    }
   }
 
   const getTierColor = (tierName: string) => {
@@ -312,17 +377,52 @@ export default function MyProfilePage() {
 
               <div>
                 <label className="block text-sm font-semibold text-[#475467] mb-2">GSA ID (Opsional)</label>
-                <Input value={gsaId} onChange={e => setGsaId(e.target.value)} placeholder="Contoh: GSAID25612" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+                <Input value={gsaId} onChange={handleGsaIdChange} placeholder="Contoh: GSAID25612" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-[#475467] mb-2">Tier (Opsional)</label>
+                {gsaId && (() => {
+                  const recommendedTier = getAllowedTierForGSAID(gsaId.trim())
+                  const isGSAOnlyUser = isGSAOnlyMember(gsaId.trim())
+                  
+                  if (isGSAOnlyUser) {
+                    return (
+                      <div className="mb-3 p-3 bg-blue-50 rounded-2xl border border-blue-200">
+                        <p className="text-xs text-blue-700 font-semibold mb-2">
+                          ℹ️ Berdasarkan GSA ID kamu, kamu terdaftar sebagai:
+                        </p>
+                        <div className="flex justify-center">
+                          <span className="px-3 py-1 rounded-full text-xs font-bold border-2 bg-blue-100 text-blue-600 border-blue-200">
+                            Google Student Ambassador
+                          </span>
+                        </div>
+                        <p className="text-xs text-blue-600 mt-2 text-center">
+                          Tidak memiliki tier khusus
+                        </p>
+                      </div>
+                    )
+                  }
+                  
+                  return recommendedTier ? (
+                    <div className="mb-3 p-3 bg-blue-50 rounded-2xl border border-blue-200">
+                      <p className="text-xs text-blue-700 font-semibold mb-2">
+                        💡 Berdasarkan GSA ID kamu, tier yang sesuai adalah:
+                      </p>
+                      <div className="flex justify-center">
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold border-2 ${getTierColor(recommendedTier)}`}>
+                          {recommendedTier}
+                        </span>
+                      </div>
+                    </div>
+                  ) : null
+                })()}
                 <div className="grid grid-cols-3 gap-2">
                   {(['Rising Star', 'Achiever', 'Trailblazer'] as const).map((t) => (
                     <button
                       key={t}
                       type="button"
-                      onClick={() => setTier(tier === t ? '' : t)}
+                      onClick={() => handleTierSelection(t)}
                       className={`px-3 py-2 rounded-full text-xs font-bold border-2 transition-all ${tier === t ? getTierColor(t) : 'bg-gray-50 text-gray-400 border-gray-200 hover:bg-gray-100'}`}
                     >
                       {t}
@@ -384,6 +484,15 @@ export default function MyProfilePage() {
           aspect={1}
         />
       )}
+
+      <TierValidationPopup
+        isOpen={showTierValidationPopup}
+        onClose={() => setShowTierValidationPopup(false)}
+        message={tierValidationMessage}
+        allowedTier={allowedTier}
+        isGSAOnly={isGSAOnly}
+        onSelectCorrectTier={handleSelectCorrectTier}
+      />
     </div>
   )
 }
