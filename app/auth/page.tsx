@@ -13,11 +13,13 @@ import CompressionPopup from '@/components/CompressionPopup'
 import LoginPopup from '@/components/LoginPopup'
 import GsaRejectionPopup from '@/components/GsaRejectionPopup'
 import TierValidationPopup from '@/components/TierValidationPopup'
+import MemberValidationPopup from '@/components/MemberValidationPopup'
 import { GSAID_LIST } from '@/lib/gsa-ids'
 import { db } from '@/lib/firebase'
 import { collection, query, where, getDocs } from 'firebase/firestore'
 import { validateFileSize } from '@/lib/cloudinary'
 import { validateTierForGSAID, getAllowedTierForGSAID, isGSAOnlyMember } from '@/lib/tier-validation'
+import { validateMemberData, getAutoCompleteData, getAllValidGsaIds } from '@/lib/member-validation'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -35,6 +37,9 @@ export default function AuthPage() {
   const [showLoginPopup, setShowLoginPopup] = useState(false)
   const [showRejectionPopup, setShowRejectionPopup] = useState(false)
   const [showTierValidationPopup, setShowTierValidationPopup] = useState(false)
+  const [showMemberValidationPopup, setShowMemberValidationPopup] = useState(false)
+  const [memberValidationErrors, setMemberValidationErrors] = useState<string[]>([])
+  const [memberValidationSuggestions, setMemberValidationSuggestions] = useState<{name?: string; campus?: string}>({})
   const [tierValidationMessage, setTierValidationMessage] = useState('')
   const [allowedTier, setAllowedTier] = useState<string | undefined>(undefined)
   const [isGSAOnly, setIsGSAOnly] = useState(false)
@@ -72,9 +77,20 @@ export default function AuthPage() {
           return
         }
 
-        // Validate GSA ID existence in authorized list
-        if (!gsaId || !GSAID_LIST.includes(gsaId.trim())) {
+        // Validate GSA ID existence in authorized list (gunakan data dari all-member-data.json)
+        const validGsaIds = getAllValidGsaIds()
+        if (!gsaId || !validGsaIds.includes(gsaId.trim())) {
           setShowRejectionPopup(true)
+          setLoading(false)
+          return
+        }
+
+        // Validasi data member (nama dan kampus harus sesuai dengan database)
+        const memberValidation = validateMemberData(gsaId.trim(), name, campus)
+        if (!memberValidation.isValid) {
+          setMemberValidationErrors(memberValidation.errors)
+          setMemberValidationSuggestions(memberValidation.suggestions)
+          setShowMemberValidationPopup(true)
           setLoading(false)
           return
         }
@@ -200,6 +216,11 @@ export default function AuthPage() {
     setShowCropper(false)
   }
 
+  const handleAcceptMemberSuggestions = (suggestions: { name?: string; campus?: string }) => {
+    if (suggestions.name) setName(suggestions.name)
+    if (suggestions.campus) setCampus(suggestions.campus)
+  }
+
   const handleSelectCorrectTier = (correctTier: string) => {
     setTier(correctTier)
   }
@@ -207,6 +228,15 @@ export default function AuthPage() {
   const handleGsaIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newGsaId = e.target.value
     setGsaId(newGsaId)
+    
+    // Auto-complete nama dan kampus jika GSA ID valid
+    if (newGsaId.trim()) {
+      const autoCompleteData = getAutoCompleteData(newGsaId.trim())
+      if (autoCompleteData) {
+        setName(autoCompleteData.name)
+        setCampus(autoCompleteData.campus)
+      }
+    }
     
     // Reset tier jika GSA ID berubah dan tier tidak sesuai
     if (newGsaId && tier) {
@@ -307,17 +337,109 @@ export default function AuthPage() {
 
                 <div>
                   <label className="block text-sm font-semibold text-[#475467] mb-2">Nama Lengkap *</label>
-                  <Input required value={name} onChange={e => setName(e.target.value)} placeholder="Masukkan nama lengkap" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+                  <div className="relative">
+                    <Input 
+                      required 
+                      value={name} 
+                      onChange={e => setName(e.target.value)} 
+                      placeholder="Masukkan nama lengkap" 
+                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 pr-12 focus-visible:ring-blue-400" 
+                    />
+                    {gsaId && name && (() => {
+                      const autoCompleteData = getAutoCompleteData(gsaId.trim())
+                      const isAutoFilled = autoCompleteData && name === autoCompleteData.name
+                      return isAutoFilled ? (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        </div>
+                      ) : null
+                    })()}
+                  </div>
+                  {gsaId && (() => {
+                    const autoCompleteData = getAutoCompleteData(gsaId.trim())
+                    return autoCompleteData && name === autoCompleteData.name ? (
+                      <p className="text-xs text-green-600 mt-1 font-medium">✓ Nama terverifikasi sesuai database GSA</p>
+                    ) : null
+                  })()}
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-[#475467] mb-2">Asal Kampus *</label>
-                  <Input required value={campus} onChange={e => setCampus(e.target.value)} placeholder="Contoh: Universitas Indonesia" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+                  <div className="relative">
+                    <Input 
+                      required 
+                      value={campus} 
+                      onChange={e => setCampus(e.target.value)} 
+                      placeholder="Contoh: Universitas Indonesia" 
+                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 pr-12 focus-visible:ring-blue-400" 
+                    />
+                    {gsaId && campus && (() => {
+                      const autoCompleteData = getAutoCompleteData(gsaId.trim())
+                      const isAutoFilled = autoCompleteData && campus === autoCompleteData.campus
+                      return isAutoFilled ? (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        </div>
+                      ) : null
+                    })()}
+                  </div>
+                  {gsaId && (() => {
+                    const autoCompleteData = getAutoCompleteData(gsaId.trim())
+                    return autoCompleteData && campus === autoCompleteData.campus ? (
+                      <p className="text-xs text-green-600 mt-1 font-medium">✓ Kampus terverifikasi sesuai database GSA</p>
+                    ) : null
+                  })()}
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-[#475467] mb-2">GSA ID *</label>
-                  <Input required value={gsaId} onChange={handleGsaIdChange} placeholder="Contoh: GSAID25612" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+                  <div className="relative">
+                    <Input 
+                      required 
+                      value={gsaId} 
+                      onChange={handleGsaIdChange} 
+                      placeholder="Contoh: GSAID25612" 
+                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 pr-12 focus-visible:ring-blue-400" 
+                    />
+                    {gsaId && (() => {
+                      const validGsaIds = getAllValidGsaIds()
+                      const isValid = validGsaIds.includes(gsaId.trim())
+                      return isValid ? (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </div>
+                        </div>
+                      )
+                    })()}
+                  </div>
+                  {gsaId && (() => {
+                    const validGsaIds = getAllValidGsaIds()
+                    const isValid = validGsaIds.includes(gsaId.trim())
+                    return isValid ? (
+                      <p className="text-xs text-green-600 mt-1 font-medium">✓ GSA ID valid dan terdaftar</p>
+                    ) : (
+                      <p className="text-xs text-red-600 mt-1 font-medium">✗ GSA ID tidak ditemukan dalam database</p>
+                    )
+                  })()}
                 </div>
 
                 <div>
@@ -434,6 +556,14 @@ export default function AuthPage() {
         allowedTier={allowedTier}
         isGSAOnly={isGSAOnly}
         onSelectCorrectTier={handleSelectCorrectTier}
+      />
+
+      <MemberValidationPopup
+        isOpen={showMemberValidationPopup}
+        onClose={() => setShowMemberValidationPopup(false)}
+        errors={memberValidationErrors}
+        suggestions={memberValidationSuggestions}
+        onAcceptSuggestions={handleAcceptMemberSuggestions}
       />
 
       {showCompressionPopup && rejectedFile && (
