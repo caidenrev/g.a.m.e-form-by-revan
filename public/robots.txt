@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /my-profile/
+Disallow: /my-articles/
+Disallow: /edit-article/
+Disallow: /_next/
+Disallow: /private/
+
+Sitemap: https://googlestudentambassador-alumni25.my.id/sitemap.xml
