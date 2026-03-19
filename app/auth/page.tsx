@@ -24,7 +24,7 @@ export default function AuthPage() {
   const [name, setName] = useState('')
   const [campus, setCampus] = useState('')
   const [gsaId, setGsaId] = useState('')
-  const [tier, setTier] = useState<'Rising Star' | 'Achiever' | 'Trailblazer' | ''>('')
+  const [tier, setTier] = useState<'Rising Star' | 'Achiever' | 'Trailblazer' | string>('')
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null)
   const [showCropper, setShowCropper] = useState(false)
   const [tempImage, setTempImage] = useState<string>('')
