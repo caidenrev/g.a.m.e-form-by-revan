@@ -18,12 +18,16 @@ interface GalleryItem {
   createdAt: Timestamp;
 }
 
+// Pagination for performance
+const ITEMS_PER_PAGE = 12;
+
 export default function GalleryPage() {
   const { user } = useAuth()
   const [items, setItems] = useState<GalleryItem[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     const q = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'))
@@ -37,6 +41,13 @@ export default function GalleryPage() {
     })
     return () => unsubscribe()
   }, [])
+
+  // Pagination calculation
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE)
+  const paginatedItems = items.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  )
 
   return (
     <div className="min-h-screen bg-gray-50 relative overflow-hidden flex flex-col items-center">
@@ -140,31 +151,117 @@ export default function GalleryPage() {
               <p className="text-gray-400 font-bold">Belum ada momen yang diunggah.</p>
             </div>
           ) : (
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="relative group bg-white p-3 rounded-[32px] shadow-xl border-4 border-white break-inside-avoid hover:scale-[1.02] transition-all duration-300 cursor-pointer overflow-hidden"
-                  onClick={() => setSelectedImage(item.imageUrl)}
-                >
-                  <div className="relative aspect-auto rounded-[24px] overflow-hidden">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-full h-auto object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Maximize2 className="text-white w-8 h-8" />
+            <>
+              <div className="space-y-8">
+                {/* Row 1 */}
+                <div className="gallery-grid">
+                  {paginatedItems.slice(0, Math.ceil(paginatedItems.length / 2)).map((item) => (
+                    <div
+                      key={item.id}
+                      className="relative group bg-white p-3 sm:p-4 rounded-[24px] sm:rounded-[32px] shadow-xl border-4 border-white hover:scale-[1.02] transition-all duration-300 cursor-pointer overflow-hidden"
+                      onClick={() => setSelectedImage(item.imageUrl)}
+                    >
+                      <div className="relative aspect-square rounded-[16px] sm:rounded-[24px] overflow-hidden">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <Maximize2 className="text-white w-6 h-6 sm:w-8 sm:h-8" />
+                        </div>
+                      </div>
+                      <div className="mt-3 sm:mt-4 px-1 sm:px-2 pb-2">
+                        <span className="text-[8px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 sm:px-3 py-1 rounded-full">{item.category}</span>
+                        <h3 className="font-bold text-gray-800 mt-2 line-clamp-2 text-xs sm:text-sm">{item.title}</h3>
+                        <p className="text-[8px] sm:text-[10px] text-gray-400 font-medium mt-1">Uploaded by {item.author}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="mt-4 px-2 pb-2">
-                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">{item.category}</span>
-                    <h3 className="font-bold text-gray-800 mt-2 line-clamp-2">{item.title}</h3>
-                    <p className="text-[10px] text-gray-400 font-medium mt-1">Uploaded by {item.author}</p>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                {/* Row 2 */}
+                {paginatedItems.length > Math.ceil(paginatedItems.length / 2) && (
+                  <div className="gallery-grid">
+                    {paginatedItems.slice(Math.ceil(paginatedItems.length / 2)).map((item) => (
+                      <div
+                        key={item.id}
+                        className="relative group bg-white p-3 sm:p-4 rounded-[24px] sm:rounded-[32px] shadow-xl border-4 border-white hover:scale-[1.02] transition-all duration-300 cursor-pointer overflow-hidden"
+                        onClick={() => setSelectedImage(item.imageUrl)}
+                      >
+                        <div className="relative aspect-square rounded-[16px] sm:rounded-[24px] overflow-hidden">
+                          <img
+                            src={item.imageUrl}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <Maximize2 className="text-white w-6 h-6 sm:w-8 sm:h-8" />
+                          </div>
+                        </div>
+                        <div className="mt-3 sm:mt-4 px-1 sm:px-2 pb-2">
+                          <span className="text-[8px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 sm:px-3 py-1 rounded-full">{item.category}</span>
+                          <h3 className="font-bold text-gray-800 mt-2 line-clamp-2 text-xs sm:text-sm">{item.title}</h3>
+                          <p className="text-[8px] sm:text-[10px] text-gray-400 font-medium mt-1">Uploaded by {item.author}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-1 sm:gap-2 mt-8 sm:mt-12 px-4">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <span className="hidden sm:inline">Previous</span>
+                    <span className="sm:hidden">Prev</span>
+                  </button>
+                  
+                  <div className="flex gap-0.5 sm:gap-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full text-xs sm:text-sm font-bold transition-all ${
+                            currentPage === pageNum
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-white border-2 border-blue-200 text-blue-600 hover:bg-blue-50'
+                          }`}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-white border-2 border-blue-200 text-blue-600 font-bold rounded-full hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <span className="hidden sm:inline">Next</span>
+                    <span className="sm:hidden">Next</span>
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>
