@@ -4,7 +4,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { db } from '@/lib/firebase'
-import { doc, getDoc, Timestamp } from 'firebase/firestore'
+import { doc, getDoc, Timestamp, collection, query, getDocs } from 'firebase/firestore'
 import Link from 'next/link'
 import { Calendar, Check, Menu, LogIn } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -24,11 +24,20 @@ interface BlogPost {
   authorGsaId?: string;
 }
 
+interface MemberData {
+  id: string;
+  name: string;
+  gsaId?: string;
+  photoURL?: string;
+  campus?: string;
+}
+
 export default function BlogPostPage() {
   const { user } = useAuth()
   const params = useParams()
   const postId = params.id as string
   const [post, setPost] = useState<BlogPost | null>(null)
+  const [members, setMembers] = useState<MemberData[]>([])
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -49,11 +58,33 @@ export default function BlogPostPage() {
     }
   }, [postId])
 
+  // Load members data for GSA ID lookup
+  const loadMembers = useCallback(async () => {
+    try {
+      const membersQuery = query(collection(db, 'members'))
+      const membersSnapshot = await getDocs(membersQuery)
+      const membersData = membersSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as MemberData[]
+      setMembers(membersData)
+    } catch (error) {
+      console.error('Error loading members:', error)
+    }
+  }, [])
+
+  // Function to get GSA ID by author name
+  const getAuthorGsaId = (authorName: string): string | null => {
+    const member = members.find(m => m.name.toLowerCase() === authorName.toLowerCase())
+    return member?.gsaId || null
+  }
+
   useEffect(() => {
     if (postId) {
       loadPost()
+      loadMembers()
     }
-  }, [postId, loadPost])
+  }, [postId, loadPost, loadMembers])
 
   // Close share dropdown when clicking outside
   useEffect(() => {
@@ -232,13 +263,15 @@ export default function BlogPostPage() {
 
             {/* GSA ID and Share Buttons */}
             <div className="flex items-center gap-2">
-              {/* GSA ID Badge */}
-              <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl border-2 border-blue-200 shadow-sm flex items-center gap-2 font-bold text-sm">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <span>GSAID25612</span>
-              </div>
+              {/* GSA ID Badge - Dynamic based on author */}
+              {getAuthorGsaId(post.author) && (
+                <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl border-2 border-blue-200 shadow-sm flex items-center gap-2 font-bold text-sm">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  <span>{getAuthorGsaId(post.author)}</span>
+                </div>
+              )}
 
               {/* Share Dropdown */}
               <div className="relative share-dropdown">
