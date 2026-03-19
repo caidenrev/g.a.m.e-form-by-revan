@@ -34,42 +34,48 @@ export default function MemberValidationPopup({
           </div>
           
           <h3 className="text-xl font-bold text-gray-900 mb-3">
-            Data Tidak Sesuai
+            Kombinasi Data Tidak Sesuai
           </h3>
           
           <div className="text-left mb-4">
             <p className="text-sm text-gray-600 mb-3">
-              Data yang Anda masukkan tidak sesuai dengan database member GSA.
+              Kombinasi GSA ID, nama, dan kampus yang Anda masukkan tidak sesuai dengan database member GSA.
             </p>
             
             <div className="p-3 bg-red-50 rounded-xl border border-red-200">
               <p className="text-sm text-red-700 font-medium">
-                Pastikan nama dan kampus yang Anda masukkan sesuai dengan data resmi GSA ID Anda.
+                Semua data harus cocok sebagai satu set yang terdaftar resmi.
               </p>
             </div>
           </div>
 
           <div className="mb-4">
             <p className="text-sm text-gray-600 mb-3 font-semibold">
-              Saran:
+              Pastikan:
             </p>
             
             <div className="space-y-2 text-left">
               <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
                 <p className="text-sm text-blue-800">
-                  • Periksa kembali ejaan nama lengkap Anda
+                  • GSA ID yang Anda masukkan adalah milik Anda sendiri
                 </p>
               </div>
               
               <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
                 <p className="text-sm text-blue-800">
-                  • Pastikan nama kampus sesuai dengan data resmi
+                  • Nama lengkap sesuai dengan yang terdaftar di GSA
                 </p>
               </div>
               
               <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
                 <p className="text-sm text-blue-800">
-                  • Hubungi admin jika yakin data sudah benar
+                  • Nama kampus sesuai dengan data resmi GSA
+                </p>
+              </div>
+              
+              <div className="p-3 bg-yellow-50 rounded-xl border border-yellow-200">
+                <p className="text-sm text-yellow-800">
+                  • Hubungi admin jika yakin semua data sudah benar
                 </p>
               </div>
             </div>

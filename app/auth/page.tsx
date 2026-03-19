@@ -78,7 +78,8 @@ export default function AuthPage() {
           return
         }
 
-        // Validate GSA ID existence in authorized list (gunakan data dari all-member-data.json)
+        // Validasi GSA ID, nama, dan kampus harus cocok sebagai satu set
+        // Tidak cukup hanya GSA ID yang valid, tapi semua data harus match
         const validGsaIds = getAllValidGsaIds()
         if (!gsaId || !validGsaIds.includes(gsaId.trim())) {
           setShowRejectionPopup(true)
@@ -86,10 +87,10 @@ export default function AuthPage() {
           return
         }
 
-        // Validasi data member (nama dan kampus harus sesuai dengan database)
-        // Tapi hanya tampilkan popup jika user tetap submit meskipun sudah ada warning
-        if (memberDataMismatchWarning) {
-          setMemberValidationErrors(['Data yang Anda masukkan tidak sesuai dengan database member GSA'])
+        // Validasi kecocokan GSA ID + nama + kampus sebagai satu set
+        const memberValidation = validateMemberData(gsaId.trim(), name, campus)
+        if (!memberValidation.isValid) {
+          setMemberValidationErrors(['Kombinasi GSA ID, nama, dan kampus tidak sesuai dengan database member GSA'])
           setMemberValidationSuggestions({})
           setShowMemberValidationPopup(true)
           setLoading(false)
@@ -243,11 +244,14 @@ export default function AuthPage() {
       const memberValidation = validateMemberData(gsaId.trim(), name.trim(), campus.trim())
       if (!memberValidation.isValid) {
         setMemberDataMismatchWarning(
-          '⚠️ Data yang Anda masukkan tidak sesuai dengan GSA ID. Pastikan nama dan kampus sudah benar.'
+          '⚠️ Kombinasi GSA ID, nama, dan kampus tidak sesuai dengan database. Pastikan semua data benar.'
         )
       } else {
         setMemberDataMismatchWarning('')
       }
+    } else {
+      // Clear warning jika belum lengkap
+      setMemberDataMismatchWarning('')
     }
   }
 
@@ -387,10 +391,10 @@ export default function AuthPage() {
                       placeholder="Contoh: GSAID25612" 
                       className="bg-white border-0 shadow-sm rounded-full h-12 px-5 pr-12 focus-visible:ring-blue-400" 
                     />
-                    {gsaId && (() => {
-                      const validGsaIds = getAllValidGsaIds()
-                      const isValid = validGsaIds.includes(gsaId.trim())
-                      return isValid ? (
+                    {gsaId && name && campus && (() => {
+                      // Validasi kombinasi lengkap GSA ID + nama + kampus
+                      const memberValidation = validateMemberData(gsaId.trim(), name.trim(), campus.trim())
+                      return memberValidation.isValid ? (
                         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                           <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
                             <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -409,11 +413,19 @@ export default function AuthPage() {
                       )
                     })()}
                   </div>
-                  {gsaId && (() => {
+                  {gsaId && name && campus && (() => {
+                    const memberValidation = validateMemberData(gsaId.trim(), name.trim(), campus.trim())
+                    return memberValidation.isValid ? (
+                      <p className="text-xs text-green-600 mt-1 font-medium">✓ Data terverifikasi sesuai database GSA</p>
+                    ) : (
+                      <p className="text-xs text-red-600 mt-1 font-medium">✗ Kombinasi data tidak sesuai database</p>
+                    )
+                  })()}
+                  {gsaId && (!name || !campus) && (() => {
                     const validGsaIds = getAllValidGsaIds()
-                    const isValid = validGsaIds.includes(gsaId.trim())
-                    return isValid ? (
-                      <p className="text-xs text-green-600 mt-1 font-medium">✓ GSA ID valid dan terdaftar</p>
+                    const isValidGsaId = validGsaIds.includes(gsaId.trim())
+                    return isValidGsaId ? (
+                      <p className="text-xs text-blue-600 mt-1 font-medium">ℹ️ GSA ID valid, lengkapi nama dan kampus</p>
                     ) : (
                       <p className="text-xs text-red-600 mt-1 font-medium">✗ GSA ID tidak ditemukan dalam database</p>
                     )
@@ -425,7 +437,7 @@ export default function AuthPage() {
                   <div className="p-3 bg-yellow-50 rounded-2xl border border-yellow-200">
                     <p className="text-sm text-yellow-800 font-medium">{memberDataMismatchWarning}</p>
                     <p className="text-xs text-yellow-600 mt-1">
-                      Periksa kembali data Anda atau hubungi admin jika yakin data sudah benar.
+                      Semua data (GSA ID + nama + kampus) harus sesuai dengan database resmi GSA.
                     </p>
                   </div>
                 )}
