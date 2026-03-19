@@ -3,11 +3,12 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore'
+import { collection, query, orderBy, onSnapshot, Timestamp, getDocs } from 'firebase/firestore'
 import { ArrowLeft, Image as ImageIcon, Maximize2, Menu, LogIn } from 'lucide-react'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import { useAuth } from '@/contexts/AuthContext'
+import { CloudinaryPresets } from '@/lib/cloudinary'
 
 interface GalleryItem {
   id: string;
@@ -18,20 +19,29 @@ interface GalleryItem {
   createdAt: Timestamp;
 }
 
+interface MemberData {
+  id: string;
+  name: string;
+  photoURL?: string;
+  campus?: string;
+}
+
 // Pagination for performance
 const ITEMS_PER_PAGE = 12;
 
 export default function GalleryPage() {
   const { user } = useAuth()
   const [items, setItems] = useState<GalleryItem[]>([])
+  const [members, setMembers] = useState<MemberData[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    const q = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'))
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    // Fetch gallery items
+    const galleryQuery = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'))
+    const unsubscribeGallery = onSnapshot(galleryQuery, (snapshot) => {
       const galleryData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -39,8 +49,31 @@ export default function GalleryPage() {
       setItems(galleryData)
       setLoading(false)
     })
-    return () => unsubscribe()
+
+    // Fetch members data for profile photos
+    const fetchMembers = async () => {
+      try {
+        const membersQuery = query(collection(db, 'members'))
+        const membersSnapshot = await getDocs(membersQuery)
+        const membersData = membersSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as MemberData[]
+        setMembers(membersData)
+      } catch (error) {
+        console.error('Error fetching members:', error)
+      }
+    }
+
+    fetchMembers()
+    return () => unsubscribeGallery()
   }, [])
+
+  // Function to get member photo by name
+  const getMemberPhoto = (authorName: string): string | null => {
+    const member = members.find(m => m.name.toLowerCase() === authorName.toLowerCase())
+    return member?.photoURL || null
+  }
 
   // Pagination calculation
   const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE)
@@ -316,14 +349,23 @@ export default function GalleryPage() {
                   <div>
                     <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Uploaded by</h3>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-blue-600 font-bold text-sm">
-                          {selectedItem.author.charAt(0).toUpperCase()}
-                        </span>
+                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-200 shadow-sm">
+                        {getMemberPhoto(selectedItem.author) ? (
+                          <img 
+                            src={CloudinaryPresets.profile(getMemberPhoto(selectedItem.author)!)} 
+                            alt={selectedItem.author}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-blue-100 flex items-center justify-center">
+                            <span className="text-blue-600 font-bold text-sm">
+                              {selectedItem.author.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <div>
                         <p className="font-bold text-gray-800">{selectedItem.author}</p>
-                        <p className="text-sm text-gray-500">Content Creator</p>
                       </div>
                     </div>
                   </div>
