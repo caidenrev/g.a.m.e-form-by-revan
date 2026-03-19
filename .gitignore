@@ -52,6 +52,25 @@ firebase-console-script.js
 generate-firestore-commands.js
 batch_*.sh
 
+# Member cleanup scripts and documentation
+check-member-names*.js
+cleanup-member-names*.js
+backup-members.js
+cleanup-member-names.sh
+cleanup-member-names.bat
+CLEANUP_MEMBER_NAMES.md
+MEMBER_CLEANUP_COMMANDS.md
+MEMBER_VALIDATION.md
+
+# Generated reports and backups
+*-report-*.json
+members-backup-*.json
+validation-demo-report-*.json
+cleanup-log-*.txt
+daily-member-report-*.json
+pre-cleanup-report.txt
+post-cleanup-report.txt
+
 # Firebase config files (optional - bisa di-commit kalau mau)
 # .firebaserc
 # firebase.json
@@ -63,6 +82,7 @@ Raw-Data.txt
 Data-Tier.txt
 Data-Tier-Cleaned.csv
 # Final-Data.json - needed for tier validation, so not ignored
+# all-member-data.json - needed for member validation, so not ignored
 Final-Data-Filtered.json
 Trailblazer-Only.json
 Rising-Star-Only.json
@@ -72,3 +92,6 @@ firestore-export-with-gsaid.json
 
 # Firebase service account (if created)
 firebase-service-account.json
+
+#fitur validasi user
+VALIDATION_CHANGES.md

@@ -40,6 +40,7 @@ export default function AuthPage() {
   const [showMemberValidationPopup, setShowMemberValidationPopup] = useState(false)
   const [memberValidationErrors, setMemberValidationErrors] = useState<string[]>([])
   const [memberValidationSuggestions, setMemberValidationSuggestions] = useState<{name?: string; campus?: string}>({})
+  const [memberDataMismatchWarning, setMemberDataMismatchWarning] = useState('')
   const [tierValidationMessage, setTierValidationMessage] = useState('')
   const [allowedTier, setAllowedTier] = useState<string | undefined>(undefined)
   const [isGSAOnly, setIsGSAOnly] = useState(false)
@@ -229,14 +230,8 @@ export default function AuthPage() {
     const newGsaId = e.target.value
     setGsaId(newGsaId)
     
-    // Auto-complete nama dan kampus jika GSA ID valid
-    if (newGsaId.trim()) {
-      const autoCompleteData = getAutoCompleteData(newGsaId.trim())
-      if (autoCompleteData) {
-        setName(autoCompleteData.name)
-        setCampus(autoCompleteData.campus)
-      }
-    }
+    // Clear previous warnings
+    setMemberDataMismatchWarning('')
     
     // Reset tier jika GSA ID berubah dan tier tidak sesuai
     if (newGsaId && tier) {
@@ -245,6 +240,37 @@ export default function AuthPage() {
         setTier('') // Reset tier selection
       }
     }
+  }
+
+  // Fungsi untuk validasi real-time nama dan kampus
+  const validateMemberDataRealTime = () => {
+    if (gsaId.trim() && name.trim() && campus.trim()) {
+      const memberValidation = validateMemberData(gsaId.trim(), name.trim(), campus.trim())
+      if (!memberValidation.isValid) {
+        const autoCompleteData = getAutoCompleteData(gsaId.trim())
+        if (autoCompleteData) {
+          setMemberDataMismatchWarning(
+            `⚠️ Data tidak sesuai dengan GSA ID. Data yang benar: "${autoCompleteData.name}" dari "${autoCompleteData.campus}"`
+          )
+        } else {
+          setMemberDataMismatchWarning('⚠️ GSA ID tidak ditemukan dalam database')
+        }
+      } else {
+        setMemberDataMismatchWarning('')
+      }
+    }
+  }
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
+    // Validasi real-time setelah user selesai mengetik (debounce)
+    setTimeout(validateMemberDataRealTime, 500)
+  }
+
+  const handleCampusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCampus(e.target.value)
+    // Validasi real-time setelah user selesai mengetik (debounce)
+    setTimeout(validateMemberDataRealTime, 500)
   }
 
   const handleTierSelection = (selectedTier: string) => {
@@ -341,30 +367,11 @@ export default function AuthPage() {
                     <Input 
                       required 
                       value={name} 
-                      onChange={e => setName(e.target.value)} 
+                      onChange={handleNameChange} 
                       placeholder="Masukkan nama lengkap" 
-                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 pr-12 focus-visible:ring-blue-400" 
+                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" 
                     />
-                    {gsaId && name && (() => {
-                      const autoCompleteData = getAutoCompleteData(gsaId.trim())
-                      const isAutoFilled = autoCompleteData && name === autoCompleteData.name
-                      return isAutoFilled ? (
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                        </div>
-                      ) : null
-                    })()}
                   </div>
-                  {gsaId && (() => {
-                    const autoCompleteData = getAutoCompleteData(gsaId.trim())
-                    return autoCompleteData && name === autoCompleteData.name ? (
-                      <p className="text-xs text-green-600 mt-1 font-medium">✓ Nama terverifikasi sesuai database GSA</p>
-                    ) : null
-                  })()}
                 </div>
 
                 <div>
@@ -373,30 +380,11 @@ export default function AuthPage() {
                     <Input 
                       required 
                       value={campus} 
-                      onChange={e => setCampus(e.target.value)} 
+                      onChange={handleCampusChange} 
                       placeholder="Contoh: Universitas Indonesia" 
-                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 pr-12 focus-visible:ring-blue-400" 
+                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" 
                     />
-                    {gsaId && campus && (() => {
-                      const autoCompleteData = getAutoCompleteData(gsaId.trim())
-                      const isAutoFilled = autoCompleteData && campus === autoCompleteData.campus
-                      return isAutoFilled ? (
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                        </div>
-                      ) : null
-                    })()}
                   </div>
-                  {gsaId && (() => {
-                    const autoCompleteData = getAutoCompleteData(gsaId.trim())
-                    return autoCompleteData && campus === autoCompleteData.campus ? (
-                      <p className="text-xs text-green-600 mt-1 font-medium">✓ Kampus terverifikasi sesuai database GSA</p>
-                    ) : null
-                  })()}
                 </div>
 
                 <div>
@@ -441,6 +429,16 @@ export default function AuthPage() {
                     )
                   })()}
                 </div>
+
+                {/* Warning untuk data yang tidak sesuai */}
+                {memberDataMismatchWarning && (
+                  <div className="p-3 bg-yellow-50 rounded-2xl border border-yellow-200">
+                    <p className="text-sm text-yellow-800 font-medium">{memberDataMismatchWarning}</p>
+                    <p className="text-xs text-yellow-600 mt-1">
+                      Pastikan nama dan kampus sesuai dengan data resmi GSA ID Anda.
+                    </p>
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-sm font-semibold text-[#475467] mb-2">Tier (Opsional)</label>
