@@ -87,7 +87,7 @@ export default function MyProfilePage() {
           // Delete old photo from Cloudinary after successful upload
           if (oldPhotoPublicId) {
             console.log('Deleting old photo:', oldPhotoPublicId)
-            const deleteSuccess = await deleteCloudinaryImage(oldPhotoPublicId)
+            const deleteSuccess = await deleteCloudinaryImage(oldPhotoPublicId, currentPhotoURL)
             if (deleteSuccess) {
               console.log('Old photo deleted successfully')
             } else {

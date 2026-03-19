@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { cloudinaryManager } from '@/lib/cloudinary-manager'
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,12 +27,15 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-    const apiKey = process.env.CLOUDINARY_API_KEY
-    const apiSecret = process.env.CLOUDINARY_API_SECRET
+    // Get optimal Cloudinary account (load balancing)
+    const account = cloudinaryManager.isDualSetup() 
+      ? cloudinaryManager.getOptimalAccount() 
+      : cloudinaryManager.getCurrentAccount();
+
+    const { cloudName, apiKey, apiSecret, uploadPreset } = account;
 
     if (!cloudName || !apiKey || !apiSecret) {
-      console.error('Missing credentials:', { cloudName: !!cloudName, apiKey: !!apiKey, apiSecret: !!apiSecret })
+      console.error('Missing credentials for selected account')
       return NextResponse.json({ error: 'Cloudinary not configured' }, { status: 500 })
     }
 
@@ -43,7 +47,7 @@ export async function POST(request: NextRequest) {
     const timestamp = Math.round(Date.now() / 1000).toString()
     
     // Generate signature for signed upload (more secure)
-    const paramsToSign = `timestamp=${timestamp}&upload_preset=GSA-2025${apiSecret}`
+    const paramsToSign = `timestamp=${timestamp}&upload_preset=${uploadPreset}${apiSecret}`
     const signature = crypto
       .createHash('sha1')
       .update(paramsToSign)
@@ -54,10 +58,10 @@ export async function POST(request: NextRequest) {
     uploadData.append('file', new Blob([buffer], { type: file.type }))
     uploadData.append('api_key', apiKey)
     uploadData.append('timestamp', timestamp)
-    uploadData.append('upload_preset', 'GSA-2025') // Use your existing preset
+    uploadData.append('upload_preset', uploadPreset || 'GSA-2025') // Use preset from account
     uploadData.append('signature', signature)
 
-    console.log('Uploading to Cloudinary with GSA-2025 preset:', { cloudName, timestamp })
+    console.log('Uploading to Cloudinary:', { cloudName, uploadPreset, timestamp })
 
     // Upload to Cloudinary
     const response = await fetch(

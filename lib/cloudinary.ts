@@ -173,16 +173,17 @@ export function extractPublicId(url: string): string | null {
 /**
  * Delete image from Cloudinary
  * @param publicId - Public ID of the image to delete
+ * @param imageUrl - Optional: Original image URL to determine which account to use
  * @returns Promise<boolean> - Success status
  */
-export async function deleteCloudinaryImage(publicId: string): Promise<boolean> {
+export async function deleteCloudinaryImage(publicId: string, imageUrl?: string): Promise<boolean> {
   try {
     const response = await fetch('/api/cloudinary-delete', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ publicId }),
+      body: JSON.stringify({ publicId, imageUrl }),
     });
 
     return response.ok;

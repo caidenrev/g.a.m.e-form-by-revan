@@ -34,3 +34,6 @@ next-env.d.ts
 
 # security & data
 GSAID.txt
+
+# Cloudinary md
+CLOUDINARY_SETUP.md

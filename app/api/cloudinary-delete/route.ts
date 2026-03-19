@@ -1,20 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { cloudinaryManager } from '@/lib/cloudinary-manager'
 
 export async function POST(request: NextRequest) {
   try {
-    const { publicId } = await request.json()
+    const { publicId, imageUrl } = await request.json()
     
     if (!publicId) {
       return NextResponse.json({ error: 'No public_id provided' }, { status: 400 })
     }
 
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-    const apiKey = process.env.CLOUDINARY_API_KEY
-    const apiSecret = process.env.CLOUDINARY_API_SECRET
+    // Determine which account to use based on image URL
+    let account;
+    if (imageUrl && cloudinaryManager.isDualSetup()) {
+      account = cloudinaryManager.getAccountFromUrl(imageUrl);
+      if (!account) {
+        // Fallback to current account if URL doesn't match any
+        account = cloudinaryManager.getCurrentAccount();
+      }
+    } else {
+      // Use current account if no URL provided or single setup
+      account = cloudinaryManager.getCurrentAccount();
+    }
+
+    const { cloudName, apiKey, apiSecret } = account;
 
     if (!cloudName || !apiKey || !apiSecret) {
-      console.error('Missing Cloudinary credentials')
+      console.error('Missing Cloudinary credentials for selected account')
       return NextResponse.json({ error: 'Cloudinary not configured' }, { status: 500 })
     }
 
@@ -35,7 +47,7 @@ export async function POST(request: NextRequest) {
     deleteData.append('timestamp', timestamp)
     deleteData.append('signature', signature)
 
-    console.log('Deleting from Cloudinary:', { publicId, timestamp })
+    console.log('Deleting from Cloudinary:', { cloudName, publicId, timestamp })
 
     // Delete from Cloudinary
     const response = await fetch(
