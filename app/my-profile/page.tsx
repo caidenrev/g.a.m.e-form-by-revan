@@ -13,7 +13,7 @@ import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { Camera, Save, Linkedin, Instagram, Menu, LogIn } from 'lucide-react'
 import ImageCropper from '@/components/ImageCropper'
-import { validateFileSize, compressImage, extractPublicId, deleteCloudinaryImage } from '@/lib/cloudinary'
+import { extractPublicId, deleteCloudinaryImage } from '@/lib/cloudinary'
 
 export default function MyProfilePage() {
   const { user, memberData, loading } = useAuth()

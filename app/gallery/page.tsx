@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, query, orderBy, onSnapshot, Timestamp, getDocs } from 'firebase/firestore'
-import { ArrowLeft, Image as ImageIcon, Maximize2, Menu, LogIn } from 'lucide-react'
+import { Image as ImageIcon, Maximize2, Menu, LogIn } from 'lucide-react'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import { useAuth } from '@/contexts/AuthContext'
