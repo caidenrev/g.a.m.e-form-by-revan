@@ -19,7 +19,7 @@ import { db } from '@/lib/firebase'
 import { collection, query, where, getDocs } from 'firebase/firestore'
 import { validateFileSize } from '@/lib/cloudinary'
 import { validateTierForGSAID, getAllowedTierForGSAID, isGSAOnlyMember } from '@/lib/tier-validation'
-import { validateMemberData, getAutoCompleteData, getAllValidGsaIds } from '@/lib/member-validation'
+import { validateMemberData, getAllValidGsaIds } from '@/lib/member-validation'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -247,14 +247,9 @@ export default function AuthPage() {
     if (gsaId.trim() && name.trim() && campus.trim()) {
       const memberValidation = validateMemberData(gsaId.trim(), name.trim(), campus.trim())
       if (!memberValidation.isValid) {
-        const autoCompleteData = getAutoCompleteData(gsaId.trim())
-        if (autoCompleteData) {
-          setMemberDataMismatchWarning(
-            `⚠️ Data tidak sesuai dengan GSA ID. Data yang benar: "${autoCompleteData.name}" dari "${autoCompleteData.campus}"`
-          )
-        } else {
-          setMemberDataMismatchWarning('⚠️ GSA ID tidak ditemukan dalam database')
-        }
+        setMemberDataMismatchWarning(
+          '⚠️ Data yang Anda masukkan tidak sesuai dengan GSA ID. Pastikan nama dan kampus sudah benar.'
+        )
       } else {
         setMemberDataMismatchWarning('')
       }
@@ -435,7 +430,7 @@ export default function AuthPage() {
                   <div className="p-3 bg-yellow-50 rounded-2xl border border-yellow-200">
                     <p className="text-sm text-yellow-800 font-medium">{memberDataMismatchWarning}</p>
                     <p className="text-xs text-yellow-600 mt-1">
-                      Pastikan nama dan kampus sesuai dengan data resmi GSA ID Anda.
+                      Periksa kembali data Anda atau hubungi admin jika yakin data sudah benar.
                     </p>
                   </div>
                 )}
