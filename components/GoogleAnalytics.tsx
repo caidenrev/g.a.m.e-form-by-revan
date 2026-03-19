@@ -2,7 +2,7 @@
 
 import Script from 'next/script'
 
-const GA_MEASUREMENT_ID = 'G-KN45VYG10K' // Ganti dengan GA4 Measurement ID kamu
+const GA_MEASUREMENT_ID = 'G-M83XEKRCHC' // Ganti dengan GA4 Measurement ID kamu
 
 export default function GoogleAnalytics() {
   return (
