@@ -373,7 +373,9 @@ export default function App() {
                         case 'Rising Star': return 'bg-blue-100 text-blue-600'
                         case 'Achiever': return 'bg-pink-100 text-pink-600'
                         case 'Trailblazer': return 'bg-purple-100 text-purple-600'
-                        default: return 'bg-gray-100 text-gray-600'
+                        default: 
+                          // Jika ada tier tapi bukan 3 tier resmi, pakai hijau tua (custom tier)
+                          return tier ? 'bg-green-800 text-white' : 'bg-gray-100 text-gray-600'
                       }
                     }
 
@@ -534,7 +536,9 @@ export default function App() {
                       case 'Rising Star': return 'bg-blue-100 text-blue-600'
                       case 'Achiever': return 'bg-pink-100 text-pink-600'
                       case 'Trailblazer': return 'bg-purple-100 text-purple-600'
-                      default: return 'bg-gray-100 text-gray-600'
+                      default: 
+                        // Jika ada tier tapi bukan 3 tier resmi, pakai hijau tua (custom tier)
+                        return tier ? 'bg-green-800 text-white' : 'bg-gray-100 text-gray-600'
                     }
                   }
 

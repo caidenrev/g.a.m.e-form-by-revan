@@ -160,7 +160,9 @@ export default function MyProfilePage() {
       case 'Rising Star': return 'bg-blue-100 text-blue-600 border-blue-200'
       case 'Achiever': return 'bg-pink-100 text-pink-600 border-pink-200'
       case 'Trailblazer': return 'bg-purple-100 text-purple-600 border-purple-200'
-      default: return 'bg-gray-100 text-gray-600 border-gray-200'
+      default: 
+        // Jika ada tier tapi bukan 3 tier resmi, pakai hijau tua (custom tier)
+        return tierName ? 'bg-green-800 text-white border-green-800' : 'bg-gray-100 text-gray-600 border-gray-200'
     }
   }
 

@@ -10,7 +10,7 @@ export interface GSAMemberData {
   email: string;
   campus: string;
   gsaId?: string | null;
-  tier?: 'Rising Star' | 'Achiever' | 'Trailblazer' | null;
+  tier?: 'Rising Star' | 'Achiever' | 'Trailblazer' | 'Admin' | null;
   photoURL?: string | null;
   linkedIn?: string | null;
   instagram?: string | null;

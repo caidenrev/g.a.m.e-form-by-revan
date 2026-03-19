@@ -37,3 +37,38 @@ GSAID.txt
 
 # Cloudinary md
 CLOUDINARY_SETUP.md
+
+# Firebase scripts and data files
+update-tiers.sh
+update-tiers-simple.js
+update-tiers-parallel.sh
+update-tiers-batch.js
+update-tier-script.js
+check-existing-gsaids.js
+check-firestore.js
+cleanup-fake-tiers.js
+export-firestore.js
+firebase-console-script.js
+generate-firestore-commands.js
+batch_*.sh
+
+# Firebase config files (optional - bisa di-commit kalau mau)
+# .firebaserc
+# firebase.json
+# firestore.rules
+# firestore.indexes.json
+
+# Data files
+Raw-Data.txt
+Data-Tier.txt
+Data-Tier-Cleaned.csv
+Final-Data.json
+Final-Data-Filtered.json
+Trailblazer-Only.json
+Rising-Star-Only.json
+firestore-export.json
+firestore-export.csv
+firestore-export-with-gsaid.json
+
+# Firebase service account (if created)
+firebase-service-account.json
