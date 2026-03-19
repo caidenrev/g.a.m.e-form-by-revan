@@ -390,7 +390,7 @@ export default function MyProfilePage() {
                     return (
                       <div className="mb-3 p-3 bg-blue-50 rounded-2xl border border-blue-200">
                         <p className="text-xs text-blue-700 font-semibold mb-2">
-                          ℹ️ Berdasarkan GSA ID kamu, kamu terdaftar sebagai:
+                          Berdasarkan GSA ID kamu, kamu terdaftar sebagai:
                         </p>
                         <div className="flex justify-center">
                           <span className="px-3 py-1 rounded-full text-xs font-bold border-2 bg-blue-100 text-blue-600 border-blue-200">
@@ -407,7 +407,7 @@ export default function MyProfilePage() {
                   return recommendedTier ? (
                     <div className="mb-3 p-3 bg-blue-50 rounded-2xl border border-blue-200">
                       <p className="text-xs text-blue-700 font-semibold mb-2">
-                        💡 Berdasarkan GSA ID kamu, tier yang sesuai adalah:
+                        Berdasarkan GSA ID kamu, tier yang sesuai adalah:
                       </p>
                       <div className="flex justify-center">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold border-2 ${getTierColor(recommendedTier)}`}>
