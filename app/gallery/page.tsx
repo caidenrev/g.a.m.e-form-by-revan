@@ -25,7 +25,7 @@ export default function GalleryPage() {
   const { user } = useAuth()
   const [items, setItems] = useState<GalleryItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -159,7 +159,7 @@ export default function GalleryPage() {
                     <div
                       key={item.id}
                       className="relative group bg-white p-3 sm:p-4 rounded-[24px] sm:rounded-[32px] shadow-xl border-4 border-white hover:scale-[1.02] transition-all duration-300 cursor-pointer overflow-hidden"
-                      onClick={() => setSelectedImage(item.imageUrl)}
+                      onClick={() => setSelectedItem(item)}
                     >
                       <div className="relative aspect-square rounded-[16px] sm:rounded-[24px] overflow-hidden">
                         <img
@@ -187,7 +187,7 @@ export default function GalleryPage() {
                       <div
                         key={item.id}
                         className="relative group bg-white p-3 sm:p-4 rounded-[24px] sm:rounded-[32px] shadow-xl border-4 border-white hover:scale-[1.02] transition-all duration-300 cursor-pointer overflow-hidden"
-                        onClick={() => setSelectedImage(item.imageUrl)}
+                        onClick={() => setSelectedItem(item)}
                       >
                         <div className="relative aspect-square rounded-[16px] sm:rounded-[24px] overflow-hidden">
                           <img
@@ -266,23 +266,132 @@ export default function GalleryPage() {
         </div>
       </main>
 
-      {/* Lightbox */}
-      {selectedImage && (
+      {/* Modern Gallery Detail Modal */}
+      {selectedItem && (
         <div
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-lg flex items-center justify-center p-4"
+          onClick={() => setSelectedItem(null)}
         >
-          <img
-            src={selectedImage}
-            alt="Full size"
-            className="max-w-full max-h-full rounded-2xl shadow-2xl animate-in zoom-in-95 duration-300"
-          />
-          <button
-            className="absolute top-8 right-8 text-white p-2 hover:bg-white/10 rounded-full transition-colors"
-            onClick={() => setSelectedImage(null)}
+          <div 
+            className="relative bg-white rounded-[32px] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300"
+            onClick={e => e.stopPropagation()}
           >
-            <ArrowLeft className="w-8 h-8 rotate-180" />
-          </button>
+            {/* Header */}
+            <div className="relative p-6 pb-4 border-b border-gray-100">
+              <button
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-4 right-4 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors group"
+              >
+                <svg className="w-5 h-5 text-gray-600 group-hover:text-gray-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              
+              <div className="pr-12">
+                <span className="inline-block text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full mb-3">
+                  {selectedItem.category}
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-gray-800 leading-tight">
+                  {selectedItem.title}
+                </h2>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-col lg:flex-row">
+              {/* Image */}
+              <div className="lg:w-2/3 p-6">
+                <div className="relative aspect-square lg:aspect-video rounded-2xl overflow-hidden bg-gray-100">
+                  <img
+                    src={selectedItem.imageUrl}
+                    alt={selectedItem.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Details */}
+              <div className="lg:w-1/3 p-6 pt-0 lg:pt-6 space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Uploaded by</h3>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span className="text-blue-600 font-bold text-sm">
+                          {selectedItem.author.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-800">{selectedItem.author}</p>
+                        <p className="text-sm text-gray-500">Content Creator</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Upload Date</h3>
+                    <p className="text-gray-800 font-semibold">
+                      {selectedItem.createdAt?.toDate ? 
+                        selectedItem.createdAt.toDate().toLocaleDateString('id-ID', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        }) : 
+                        'Unknown date'
+                      }
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Category</h3>
+                    <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-bold">
+                      {selectedItem.category}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="pt-4 border-t border-gray-100 space-y-3">
+                  <button
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = selectedItem.imageUrl;
+                      link.download = `${selectedItem.title}.jpg`;
+                      link.click();
+                    }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download Image
+                  </button>
+                  
+                  <button
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({
+                          title: selectedItem.title,
+                          text: `Check out this moment: ${selectedItem.title}`,
+                          url: selectedItem.imageUrl
+                        });
+                      } else {
+                        navigator.clipboard.writeText(selectedItem.imageUrl);
+                        alert('Image URL copied to clipboard!');
+                      }
+                    }}
+                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                    </svg>
+                    Share
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
