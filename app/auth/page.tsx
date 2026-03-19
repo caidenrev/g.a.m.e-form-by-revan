@@ -87,10 +87,10 @@ export default function AuthPage() {
         }
 
         // Validasi data member (nama dan kampus harus sesuai dengan database)
-        const memberValidation = validateMemberData(gsaId.trim(), name, campus)
-        if (!memberValidation.isValid) {
-          setMemberValidationErrors(memberValidation.errors)
-          setMemberValidationSuggestions(memberValidation.suggestions)
+        // Tapi hanya tampilkan popup jika user tetap submit meskipun sudah ada warning
+        if (memberDataMismatchWarning) {
+          setMemberValidationErrors(['Data yang Anda masukkan tidak sesuai dengan database member GSA'])
+          setMemberValidationSuggestions({})
           setShowMemberValidationPopup(true)
           setLoading(false)
           return
@@ -215,11 +215,6 @@ export default function AuthPage() {
     const croppedFile = new File([croppedBlob], 'profile.jpg', { type: 'image/jpeg' })
     setProfilePhoto(croppedFile)
     setShowCropper(false)
-  }
-
-  const handleAcceptMemberSuggestions = (suggestions: { name?: string; campus?: string }) => {
-    if (suggestions.name) setName(suggestions.name)
-    if (suggestions.campus) setCampus(suggestions.campus)
   }
 
   const handleSelectCorrectTier = (correctTier: string) => {
@@ -556,7 +551,7 @@ export default function AuthPage() {
         onClose={() => setShowMemberValidationPopup(false)}
         errors={memberValidationErrors}
         suggestions={memberValidationSuggestions}
-        onAcceptSuggestions={handleAcceptMemberSuggestions}
+        onAcceptSuggestions={() => {}} // Tidak digunakan lagi
       />
 
       {showCompressionPopup && rejectedFile && (

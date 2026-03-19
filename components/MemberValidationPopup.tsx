@@ -23,8 +23,6 @@ export default function MemberValidationPopup({
 }: MemberValidationPopupProps) {
   if (!isOpen) return null
 
-  const hasSuggestions = suggestions.name || suggestions.campus
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <Card className="bg-white rounded-3xl p-6 max-w-md w-full mx-4 shadow-2xl">
@@ -41,62 +39,49 @@ export default function MemberValidationPopup({
           
           <div className="text-left mb-4">
             <p className="text-sm text-gray-600 mb-3">
-              Data yang kamu masukkan tidak sesuai dengan database member GSA:
+              Data yang Anda masukkan tidak sesuai dengan database member GSA.
             </p>
             
-            <div className="space-y-2">
-              {errors.map((error, index) => (
-                <div key={index} className="p-3 bg-red-50 rounded-xl border border-red-200">
-                  <p className="text-sm text-red-700 font-medium">{error}</p>
-                </div>
-              ))}
+            <div className="p-3 bg-red-50 rounded-xl border border-red-200">
+              <p className="text-sm text-red-700 font-medium">
+                Pastikan nama dan kampus yang Anda masukkan sesuai dengan data resmi GSA ID Anda.
+              </p>
             </div>
           </div>
 
-          {hasSuggestions && (
-            <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-3 font-semibold">
-                Data yang benar:
-              </p>
+          <div className="mb-4">
+            <p className="text-sm text-gray-600 mb-3 font-semibold">
+              Saran:
+            </p>
+            
+            <div className="space-y-2 text-left">
+              <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
+                <p className="text-sm text-blue-800">
+                  • Periksa kembali ejaan nama lengkap Anda
+                </p>
+              </div>
               
-              <div className="space-y-2 text-left">
-                {suggestions.name && (
-                  <div className="p-3 bg-green-50 rounded-xl border border-green-200">
-                    <p className="text-xs text-green-600 font-semibold mb-1">Nama:</p>
-                    <p className="text-sm text-green-800 font-medium">{suggestions.name}</p>
-                  </div>
-                )}
-                
-                {suggestions.campus && (
-                  <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
-                    <p className="text-xs text-blue-600 font-semibold mb-1">Kampus:</p>
-                    <p className="text-sm text-blue-800 font-medium">{suggestions.campus}</p>
-                  </div>
-                )}
+              <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
+                <p className="text-sm text-blue-800">
+                  • Pastikan nama kampus sesuai dengan data resmi
+                </p>
+              </div>
+              
+              <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
+                <p className="text-sm text-blue-800">
+                  • Hubungi admin jika yakin data sudah benar
+                </p>
               </div>
             </div>
-          )}
+          </div>
 
           <div className="flex gap-3">
             <Button
               onClick={onClose}
-              variant="outline"
-              className="flex-1 rounded-full border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full"
             >
-              Tutup
+              Periksa Kembali
             </Button>
-            
-            {hasSuggestions && (
-              <Button
-                onClick={() => {
-                  onAcceptSuggestions(suggestions)
-                  onClose()
-                }}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full"
-              >
-                Gunakan Data Benar
-              </Button>
-            )}
           </div>
         </div>
       </Card>
