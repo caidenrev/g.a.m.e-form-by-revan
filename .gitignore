@@ -33,7 +33,7 @@ yarn-error.log*
 next-env.d.ts
 
 # security & data
-GSAID.txt
+# GSAID.txt - needed for tier validation, so not ignored
 
 # Cloudinary md
 CLOUDINARY_SETUP.md
@@ -62,7 +62,7 @@ batch_*.sh
 Raw-Data.txt
 Data-Tier.txt
 Data-Tier-Cleaned.csv
-Final-Data.json
+# Final-Data.json - needed for tier validation, so not ignored
 Final-Data-Filtered.json
 Trailblazer-Only.json
 Rising-Star-Only.json

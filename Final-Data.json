@@ -1,0 +1,1205 @@
+[
+  {
+    "GSAID": "GSAID25156",
+    "Name": "Livya Syahra",
+    "University": "Sekolah Tinggi Manajemen Informatika dan Komputer (STMIK) Time",
+    "Tier": "Trailblazer"
+  },
+  {
+    "GSAID": "GSAID25655",
+    "Name": "Iman Dwi Satrio",
+    "University": "Universitas Pertamina",
+    "Tier": "Trailblazer"
+  },
+  {
+    "GSAID": "GSAID25124",
+    "Name": "Syahdika Kurnia Azhari",
+    "University": "Politeknik Negeri Medan",
+    "Tier": "Trailblazer"
+  },
+  {
+    "GSAID": "GSAID25310",
+    "Name": "Fathan Wibowo",
+    "University": "Universitas Hasanuddin",
+    "Tier": "Trailblazer"
+  },
+  {
+    "GSAID": "GSAID25496",
+    "Name": "Ferdian Iswara",
+    "University": "Universitas Muhammadiyah Pontianak",
+    "Tier": "Trailblazer"
+  },
+  {
+    "GSAID": "GSAID25255",
+    "Name": "Rai Rakhmat Syarifudin Supardi",
+    "University": "Universitas Bung Karno",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25702",
+    "Name": "Bakhtiar Kamil",
+    "University": "Universitas Serang Raya",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25775",
+    "Name": "Nisrina Amalia Iffatunnisa",
+    "University": "Universitas Telkom",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25467",
+    "Name": "Putri Iqlima",
+    "University": "Universitas Malikussaleh",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25281",
+    "Name": "Rizky Saefirdaus",
+    "University": "Universitas Diponegoro",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25459",
+    "Name": "Sheila Putri Maharani Sandjoko",
+    "University": "Universitas Lancang Kuning",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25683",
+    "Name": "Chelsea Emely Mawikere",
+    "University": "Universitas Sam Ratulangi",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25642",
+    "Name": "Abdul Jabbar",
+    "University": "Universitas Pendidikan Indonesia",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25185",
+    "Name": "Pande Komang Bayu Wicaksana",
+    "University": "Universitas Airlangga",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25755",
+    "Name": "Sherly Dea Valentina Barachad",
+    "University": "Universitas Tanjungpura",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25165",
+    "Name": "Ahmad Rizki Sabani",
+    "University": "Sekolah Tinggi Teknologi Wastukancana",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25475",
+    "Name": "Rifky Akbar Utomo Putra",
+    "University": "Universitas Mataram",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25378",
+    "Name": "Nayara Sabila Lubis",
+    "University": "Universitas Islam Negeri Sumatera Utara Medan",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25292",
+    "Name": "Rahma Aulia",
+    "University": "Universitas Gadjah Mada",
+    "Tier": "Achiever"
+  },
+  {
+    "GSAID": "GSAID25133",
+    "Name": "Y Nai Kaki",
+    "University": "Politeknik Negeri Samarinda",
+    "Tier": "Achiever"
+  },
+
+  {
+    "GSAID": "GSAID25003",
+    "Name": "David Rian Prabowo",
+    "University": "IKIP PGRI Semarang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25007",
+    "Name": "Aprilia Lestari",
+    "University": "Institut Agama Islam Negeri Kediri",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25008",
+    "Name": "M Aditya Prayoga",
+    "University": "Institut Agama Islam Negeri Lhokseumawe",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25009",
+    "Name": "Azizah Khusnul Fauziah",
+    "University": "Institut Bisnis Dan Informatika Kesatuan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25013",
+    "Name": "Alia Mu'Zizah Fitria",
+    "University": "Institut Media Digital Emtek",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25015",
+    "Name": "Rafli Muhamad Ridhwan",
+    "University": "Institut Pendidikan Indonesia Garut",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25041",
+    "Name": "Joice Anastasya Napitupulu",
+    "University": "Institut Teknologi Del",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25042",
+    "Name": "Joy Valeda Silalahi",
+    "University": "Institut Teknologi Del",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25055",
+    "Name": "Nanda Revan Saputro",
+    "University": "Institut Teknologi Perusahaan Listrik Negara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25056",
+    "Name": "Khairunnisa",
+    "University": "Institut Teknologi Sains Bandung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25058",
+    "Name": "Ahmad Ikhsan Maulana",
+    "University": "Institut Teknologi Sepuluh Nopember",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25068",
+    "Name": "Haikal Akmal",
+    "University": "Institut Teknologi Sumatera",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25074",
+    "Name": "Marsella Dwi Julianti",
+    "University": "Institut Teknologi Telkom Purwokerto",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25075",
+    "Name": "Nadira Hikmah Fatheena",
+    "University": "Institut Teknologi Telkom Purwokerto",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25077",
+    "Name": "Achmad Maimun Charis",
+    "University": "Institut Widya Pratama",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25078",
+    "Name": "Nadia Shofi Ramadhani",
+    "University": "Politeknik Astra",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25079",
+    "Name": "Sahar Romansa",
+    "University": "Politeknik Astra",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25080",
+    "Name": "Arta Lita Sihombing",
+    "University": "Politeknik Caltex Riau",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25085",
+    "Name": "Rian Saputra",
+    "University": "Politeknik Elektronika Negeri Surabaya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25086",
+    "Name": "Tirta Afandi",
+    "University": "Politeknik Elektronika Negeri Surabaya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25088",
+    "Name": "Faisal Arrahman Pratama",
+    "University": "Politeknik Harapan Bersama",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25089",
+    "Name": "Muhammad Yanda",
+    "University": "Politeknik Lembaga Pendidikan dan Pengembangan Profesi Indonesia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25100",
+    "Name": "Boy Ishwara Aditama",
+    "University": "Politeknik Negeri Jakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25103",
+    "Name": "Muhammad Bimo Ariotedjo",
+    "University": "Politeknik Negeri Jakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25104",
+    "Name": "Putri Anisa La Ananila",
+    "University": "Politeknik Negeri Jakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25108",
+    "Name": "Hendi Firmansah",
+    "University": "Politeknik Negeri Lampung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25109",
+    "Name": "Melisa Fitri",
+    "University": "Politeknik Negeri Lampung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25110",
+    "Name": "Muhamad Dzakwan Alfaris",
+    "University": "Politeknik Negeri Madiun",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25111",
+    "Name": "Nabila Carrissa Dewi",
+    "University": "Politeknik Negeri Madiun",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25115",
+    "Name": "Sharlyf Shaquille Syani",
+    "University": "Politeknik Negeri Malang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25122",
+    "Name": "Ryandi Mahendra",
+    "University": "Politeknik Negeri Medan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25128",
+    "Name": "Miftahul Azzahra",
+    "University": "Politeknik Negeri Padang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25141",
+    "Name": "Razaq Himawan Pratama Putra",
+    "University": "Politeknik Piksi Ganesha",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25142",
+    "Name": "Ahmad Sofiyurrohman",
+    "University": "Politeknik Piksi Input Serang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25143",
+    "Name": "Fajrin Widianto",
+    "University": "Politeknik Piksi Input Serang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25153",
+    "Name": "Junita Balik",
+    "University": "Sekolah Tinggi Ilmu Manajemen YKPN Yogyakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25154",
+    "Name": "Alyssya Rhamadina",
+    "University": "Sekolah Tinggi Ilmu Tarbiyah Madani Yogyakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25160",
+    "Name": "Agni Fatya Kholila",
+    "University": "Sekolah Tinggi Teknologi Informasi NIIT",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25163",
+    "Name": "Muhammad Hilmi Indra Permana",
+    "University": "Sekolah Tinggi Teknologi Ronggolawe",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25164",
+    "Name": "Muhammad Ayyasy Mutazeri",
+    "University": "Sekolah Tinggi Teknologi Terpadu Nurul Fikri",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25166",
+    "Name": "Sindi Prasetiyani",
+    "University": "STIMIK Tunas Bangsa Banjarnegara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25172",
+    "Name": "Andreas Kevin",
+    "University": "STMIK Pontianak",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25174",
+    "Name": "Silva Septika Sari",
+    "University": "STMIK Widya Utama",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25179",
+    "Name": "Roby Sabililhaq",
+    "University": "Universitas Ahmad Dahlan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25180",
+    "Name": "Siti Fatimah Nur Cahya",
+    "University": "Universitas Ahmad Dahlan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25182",
+    "Name": "Evan Caesar Muliana",
+    "University": "Universitas Airlangga",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25190",
+    "Name": "Muhammad Kevin Alvarel",
+    "University": "Universitas Al-Khairiyah",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25196",
+    "Name": "Zaki Eka Saputra",
+    "University": "Universitas Amikom Yogyakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25201",
+    "Name": "Indrian Deska Nabilla",
+    "University": "Universitas Andalas",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25208",
+    "Name": "Aisyah Azzahrah",
+    "University": "Universitas Bengkulu",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25211",
+    "Name": "Muhammad Yusuf Arrayyan",
+    "University": "Universitas Bengkulu",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25231",
+    "Name": "Najwa Nur Aziz",
+    "University": "Universitas Bina Sarana Informatika",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25237",
+    "Name": "Aulia Haq",
+    "University": "Universitas Brawijaya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25252",
+    "Name": "Marchelin",
+    "University": "Universitas Bunda Mulia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25269",
+    "Name": "Gianne Angely Puspa Pilatus",
+    "University": "Universitas Dhyana Pura",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25272",
+    "Name": "Fais Sofyan Noor",
+    "University": "Universitas Dian Nuswantoro",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25284",
+    "Name": "Muhammad Ilham 'Aziiz Alfarobi",
+    "University": "Universitas Duta Bangsa Surakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25288",
+    "Name": "Excel Fathan Breviano",
+    "University": "Universitas Gadjah Mada",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25302",
+    "Name": "Nabila Putri Ramadani",
+    "University": "Universitas Gunadarma",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25306",
+    "Name": "Darmayanti",
+    "University": "Universitas Halu Oleo",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25313",
+    "Name": "Nabiyl Ahmad Fawzy Muntasir",
+    "University": "Universitas Hasanuddin",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25314",
+    "Name": "Nurfadilah",
+    "University": "Universitas Hasanuddin",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25315",
+    "Name": "Prananda Dian Asih. M",
+    "University": "Universitas Hasanuddin",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25319",
+    "Name": "Anastia Firyal Nisrina",
+    "University": "Universitas Ibn Khaldun Bogor",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25320",
+    "Name": "Ridho Mas'ud Said",
+    "University": "Universitas Ibn Khaldun Bogor",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25321",
+    "Name": "Nabilah Mufti",
+    "University": "Universitas Indo Global Mandiri",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25342",
+    "Name": "Sustri Elina Simamora",
+    "University": "Universitas Internasional Semen Indonesia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25344",
+    "Name": "Fajar Zildan Ananta",
+    "University": "Universitas Islam As-syafiiyah",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25346",
+    "Name": "Daffa Sumarlan",
+    "University": "Universitas Islam Bandung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25353",
+    "Name": "Zahid Anugrah Muzaffar Rana",
+    "University": "Universitas Islam Indonesia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25361",
+    "Name": "Muhammad Yusuf",
+    "University": "Universitas Islam Negeri Alauddin Makassar",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25363",
+    "Name": "Siti Hardianti Ashari",
+    "University": "Universitas Islam Negeri Alauddin Makassar",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25365",
+    "Name": "Cut Yety Kasturi",
+    "University": "Universitas Islam Negeri Ar-Raniry Banda Aceh",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25367",
+    "Name": "Muhamad Naldo Zulkarnaen",
+    "University": "Universitas Islam Negeri Maulana Malik Ibrahim",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25371",
+    "Name": "Rheynald Adhyaksa Majid",
+    "University": "Universitas Islam Negeri Profesor Kiai Haji Saifuddin Zuhri Purwokerto",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25373",
+    "Name": "Rama Dhika Arvembi",
+    "University": "Universitas Islam Negeri Raden Intan Lampung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25387",
+    "Name": "Gahyaka Ararya Fairuz Rakha Febrila Putra",
+    "University": "Universitas Islam Negeri Sunan Kalijaga",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25390",
+    "Name": "Muhammad Dedad Fajarsodiq Akastangga",
+    "University": "Universitas Islam Negeri Sunan Kalijaga",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25391",
+    "Name": "Sahla Maulidatus Saidah",
+    "University": "Universitas Islam Negeri Sunan Kalijaga",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25402",
+    "Name": "Fariz Naufal Azhar",
+    "University": "Universitas Islam Sultan Agung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25408",
+    "Name": "Azhar Zaidan Ramadhan",
+    "University": "Universitas Jenderal Soedirman",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25423",
+    "Name": "Verocana Nanda",
+    "University": "Universitas Katolik Soegijapranata",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25425",
+    "Name": "Aditya Arya Dwitama Mahardika",
+    "University": "Universitas KH. A. Wahab Hasbullah",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25432",
+    "Name": "Sierly Putri Anjani",
+    "University": "Universitas Komputer Indonesia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25434",
+    "Name": "Elva Maria Evelina",
+    "University": "Universitas Kristen Duta Wacana",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25436",
+    "Name": "Mario Kevin Kristianto",
+    "University": "Universitas Kristen Duta Wacana",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25443",
+    "Name": "Thierry Henry Belisan",
+    "University": "Universitas Kristen Petra",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25447",
+    "Name": "Kadek Aditya Juniarta",
+    "University": "Universitas Kristen Satya Wacana",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25452",
+    "Name": "Amalia Soraya",
+    "University": "Universitas Lambung Mangkurat",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25457",
+    "Name": "Muhammad Ridho Ar-Rosyid",
+    "University": "Universitas Lampung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25463",
+    "Name": "Albert William Saputra",
+    "University": "Universitas Ma Chung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25465",
+    "Name": "Atika Pratiwi Harahap",
+    "University": "Universitas Malikussaleh",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25466",
+    "Name": "Hana Marmella",
+    "University": "Universitas Malikussaleh",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25477",
+    "Name": "Arisanti Nurlaili",
+    "University": "Universitas Mikroskil",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25479",
+    "Name": "Tika Liana Kacaribu",
+    "University": "Universitas Mitra Bangsa",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25480",
+    "Name": "Adelia",
+    "University": "Universitas Muhammadiyah Bangka Belitung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25482",
+    "Name": "Mohammad Hafiz Naufal",
+    "University": "Universitas Muhammadiyah Cirebon",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25483",
+    "Name": "Nur Shabrina Qonitah",
+    "University": "Universitas Muhammadiyah Kalimantan Timur",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25485",
+    "Name": "Galbi Nadifah",
+    "University": "Universitas Muhammadiyah Makassar",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25487",
+    "Name": "Fahmi Alfaqih",
+    "University": "Universitas Muhammadiyah Malang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25488",
+    "Name": "Mira Sapriyawati",
+    "University": "Universitas Muhammadiyah Malang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25493",
+    "Name": "Fawwaz Adli",
+    "University": "Universitas Muhammadiyah Muara Bungo",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25495",
+    "Name": "Dwiki Nur Ichlas",
+    "University": "Universitas Muhammadiyah Pontianak",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25497",
+    "Name": "Giffari Daffa Alzi",
+    "University": "Universitas Muhammadiyah Pontianak",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25498",
+    "Name": "Tri Wahyudi",
+    "University": "Universitas Muhammadiyah Pringsewu Lampung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25500",
+    "Name": "Tiananmen Setyo Nugroho",
+    "University": "Universitas Muhammadiyah Prof Dr Hamka",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25501",
+    "Name": "Dianwan Noven Nur Fauzian",
+    "University": "Universitas Muhammadiyah Purwokerto",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25502",
+    "Name": "Habieb Anugrah Heryza",
+    "University": "Universitas Muhammadiyah Riau",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25508",
+    "Name": "Salma Nurfauziah",
+    "University": "Universitas Muhammadiyah Sukabumi",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25510",
+    "Name": "Hafizhurrahman",
+    "University": "Universitas Muhammadiyah Surakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25517",
+    "Name": "Fikri Rizkia Prisyabil",
+    "University": "Universitas Muhammadiyah Yogyakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25524",
+    "Name": "Maulana Rivai Mustapa",
+    "University": "Universitas Multimedia Nusantara Jakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25530",
+    "Name": "Maula Nahdliyah Muchlis",
+    "University": "Universitas Nahdlatul Ulama Surabaya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25532",
+    "Name": "Danu Prianto",
+    "University": "Universitas Nahdlatul Ulama Yogyakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25533",
+    "Name": "Itmamul Wafa",
+    "University": "Universitas Nahdlatul Ulama Yogyakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25537",
+    "Name": "Nur Alim M. Suma",
+    "University": "Universitas Negeri Gorontalo",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25543",
+    "Name": "Indah Dwi Anugrah S",
+    "University": "Universitas Negeri Makassar",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25544",
+    "Name": "Muhammad Rafsanjani",
+    "University": "Universitas Negeri Makassar",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25545",
+    "Name": "Nabila Suci Ramadhani",
+    "University": "Universitas Negeri Makassar",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25557",
+    "Name": "Ronauli Siregar",
+    "University": "Universitas Negeri Manado",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25558",
+    "Name": "Aulia Anggraini",
+    "University": "Universitas Negeri Medan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25559",
+    "Name": "Fadilah Chairunnisa",
+    "University": "Universitas Negeri Medan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25562",
+    "Name": "Nurwidia Kasih",
+    "University": "Universitas Negeri Medan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25568",
+    "Name": "Apriansyah Wibowo",
+    "University": "Universitas Negeri Semarang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25591",
+    "Name": "Wafa Lauhatur Rohmania",
+    "University": "Universitas Negeri Yogyakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25593",
+    "Name": "Najwa Khairiyah Ivanka",
+    "University": "Universitas Nusa Putra",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25601",
+    "Name": "Rivaldo Natanael",
+    "University": "Universitas Padjadjaran",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25608",
+    "Name": "Kristian Reynaldy",
+    "University": "Universitas Palangka Raya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25610",
+    "Name": "Raynando Kurniawan",
+    "University": "Universitas Palangka Raya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25613",
+    "Name": "P. Kanisius Bagaskara",
+    "University": "Universitas Pamulang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25615",
+    "Name": "Addya Virna Amany",
+    "University": "Universitas Pancasila",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25616",
+    "Name": "Jessica Cally Gabriella Delvilly",
+    "University": "Universitas Pancasila",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25620",
+    "Name": "Khadija Karepesina",
+    "University": "Universitas Pattimura",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25625",
+    "Name": "Jessica Leo",
+    "University": "Universitas Pelita Harapan Medan",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25629",
+    "Name": "Pinda",
+    "University": "Universitas Pembangunan Nasional Veteran Jakarta",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25633",
+    "Name": "Farah Faizah",
+    "University": "Universitas Pembangunan Nasional Veteran Jawa Timur",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25641",
+    "Name": "Putu Sevina Aryastika",
+    "University": "Universitas Pendidikan Ganesha",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25643",
+    "Name": "Aurel Puteri Ramadani",
+    "University": "Universitas Pendidikan Indonesia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25649",
+    "Name": "Yattaqi Ahmad Faza",
+    "University": "Universitas Pendidikan Indonesia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25650",
+    "Name": "Patric Marsa Tonapa",
+    "University": "Universitas Pendidikan Muhammadiyah Sorong",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25657",
+    "Name": "Jofanza Denis Aldida",
+    "University": "Universitas PGRI Madiun",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25658",
+    "Name": "Silvi Kusuma Wardhani Gunawan",
+    "University": "Universitas PGRI Wiranegara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25659",
+    "Name": "Solikha Bella",
+    "University": "Universitas PGRI Wiranegara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25667",
+    "Name": "Ellerin Aurelia Chowina",
+    "University": "Universitas Prima Indonesia",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25673",
+    "Name": "Dwi Asti Istiqomah",
+    "University": "Universitas Putera Batam",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25674",
+    "Name": "Like Sagitri Helen",
+    "University": "Universitas Putra Indonesia Yptk Padang",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25675",
+    "Name": "Diva Syabina Putri",
+    "University": "Universitas Raharja",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25681",
+    "Name": "Islahul Hadi",
+    "University": "Universitas Riau",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25686",
+    "Name": "Raisa Kurais",
+    "University": "Universitas Sam Ratulangi",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25690",
+    "Name": "Siti Rachmania Putri",
+    "University": "Universitas Sebelas April",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25691",
+    "Name": "Yusup Ahmad Fauzan",
+    "University": "Universitas Sebelas April",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25693",
+    "Name": "Jasson Franklyn Wang",
+    "University": "Universitas Sebelas Maret",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25694",
+    "Name": "Maria Margaretha Widi Priandini",
+    "University": "Universitas Sebelas Maret",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25695",
+    "Name": "Mohamad Nur Rohman",
+    "University": "Universitas Sebelas Maret",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25696",
+    "Name": "Soraya Indah Setiani",
+    "University": "Universitas Sebelas Maret",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25698",
+    "Name": "Bagus Wirayuda",
+    "University": "Universitas Sembilanbelas November Kolaka",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25701",
+    "Name": "Rizqiyah",
+    "University": "Universitas Sepuluh Nopember Papua",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25713",
+    "Name": "Annisa Reida Raheima",
+    "University": "Universitas Sriwijaya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25716",
+    "Name": "Muhammad Ramadhan Syaputra",
+    "University": "Universitas Sriwijaya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25719",
+    "Name": "Abid Hanan Wicaksono",
+    "University": "Universitas Sugeng Hartono",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25726",
+    "Name": "Emejleano Rusmin Nggepo",
+    "University": "Universitas Sultan Ageng Tirtayasa",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25728",
+    "Name": "Muhamad Fauwzi Ramadhan",
+    "University": "Universitas Sultan Ageng Tirtayasa",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25729",
+    "Name": "Andre Christian Davey",
+    "University": "Universitas Sumatera Utara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25735",
+    "Name": "Alethia Clarita",
+    "University": "Universitas Surabaya",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25740",
+    "Name": "Hamzah Arfah",
+    "University": "Universitas Syiah Kuala",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25745",
+    "Name": "Elsya Armelya Naysila Hawane",
+    "University": "Universitas Tadulako",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25751",
+    "Name": "Ester Oppier",
+    "University": "Universitas Tanjungpura",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25756",
+    "Name": "Devany Aguslia",
+    "University": "Universitas Tarumanagara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25757",
+    "Name": "Eunice Eugenia Karta",
+    "University": "Universitas Tarumanagara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25758",
+    "Name": "Filbert Ferdinand",
+    "University": "Universitas Tarumanagara",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25764",
+    "Name": "Syamsi Alpiansyah",
+    "University": "Universitas Teknologi Bandung",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25776",
+    "Name": "Rajwaa Khairan",
+    "University": "Universitas Telkom",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25778",
+    "Name": "Aufa Fatikha Dewi Aisyah",
+    "University": "Universitas Terbuka",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25781",
+    "Name": "Fajar Arianto",
+    "University": "Universitas Terbuka",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25790",
+    "Name": "Ayatullah Daimaini",
+    "University": "Universitas Trunojoyo",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25791",
+    "Name": "M. Sultan Abdurrahman Al Zudas",
+    "University": "Universitas Trunojoyo",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25794",
+    "Name": "Irfan Jayadi",
+    "University": "Universitas Udayana",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25796",
+    "Name": "Made Agata Purwananda",
+    "University": "Universitas Udayana",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25798",
+    "Name": "Nathan Alvino Fam",
+    "University": "Universitas Utpadaka Swastika",
+    "Tier": "Rising Star"
+  },
+  {
+    "GSAID": "GSAID25801",
+    "Name": "Aulia Puspita Rizqi",
+    "University": "Universitas Islam Negeri Walisongo Semarang",
+    "Tier": "Rising Star"
+  }
+
+]
+
