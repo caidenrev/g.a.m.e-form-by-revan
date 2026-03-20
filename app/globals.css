@@ -49,16 +49,6 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-
-  /* Google Decorations Animation */
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  
-  .animate-float-delayed {
-    animation: float 6s ease-in-out infinite;
-    animation-delay: 3s;
-  }
 }
 
 @keyframes scroll-left {
@@ -70,37 +60,12 @@
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-10px) rotate(5deg);
-  }
-  50% {
-    transform: translateY(-5px) rotate(-3deg);
-  }
-  75% {
-    transform: translateY(-15px) rotate(3deg);
-  }
-}
-
 /* Gallery Mobile Grid Fix */
 @media (max-width: 640px) {
   .gallery-grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 0.75rem !important;
-  }
-  
-  /* Mobile Google Decorations Optimization */
-  .google-decoration-mobile {
-    opacity: 0.15 !important;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)) !important;
-  }
-  
-  .google-decoration-mobile.animate-float {
-    animation-duration: 8s !important;
   }
 }
 
