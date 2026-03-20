@@ -620,7 +620,7 @@ export default function App() {
               <img
                 src="/images/google-decoration.png"
                 alt="Google Decoration"
-                className="h-12 sm:h-16 md:h-20 w-auto transition-transform duration-300 hover:scale-110 drop-shadow-lg"
+                className="h-20 sm:h-28 md:h-36 lg:h-40 w-auto drop-shadow-lg"
               />
             </div>
           </div>
