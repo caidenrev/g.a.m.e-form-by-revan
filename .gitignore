@@ -62,6 +62,14 @@ CLEANUP_MEMBER_NAMES.md
 MEMBER_CLEANUP_COMMANDS.md
 MEMBER_VALIDATION.md
 
+# Member delete scripts and documentation
+delete-member*.js
+delete-members*.js
+delete-members.sh
+delete-members.bat
+DELETE_MEMBERS_GUIDE.md
+FIREBASE_SETUP.md
+
 # Generated reports and backups
 *-report-*.json
 members-backup-*.json
@@ -70,6 +78,7 @@ cleanup-log-*.txt
 daily-member-report-*.json
 pre-cleanup-report.txt
 post-cleanup-report.txt
+deletion-report-*.json
 
 # Firebase config files (optional - bisa di-commit kalau mau)
 # .firebaserc

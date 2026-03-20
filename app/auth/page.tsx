@@ -223,7 +223,8 @@ export default function AuthPage() {
   }
 
   const handleGsaIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newGsaId = e.target.value
+    // Convert ke uppercase otomatis
+    const newGsaId = e.target.value.toUpperCase()
     setGsaId(newGsaId)
     
     // Clear previous warnings

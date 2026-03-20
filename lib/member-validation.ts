@@ -11,11 +11,16 @@ const normalizeString = (str: string): string => {
   return str.toLowerCase().replace(/\s+/g, '').trim()
 }
 
+// Fungsi untuk normalisasi GSA ID (uppercase)
+const normalizeGsaId = (gsaId: string): string => {
+  return gsaId.toUpperCase().trim()
+}
+
 // Fungsi untuk mencari member berdasarkan GSA ID
 export const findMemberByGsaId = (gsaId: string): MemberData | null => {
-  const normalizedGsaId = normalizeString(gsaId)
+  const normalizedGsaId = normalizeGsaId(gsaId)
   return memberData.find(member => 
-    normalizeString(member.gsaId) === normalizedGsaId
+    normalizeGsaId(member.gsaId) === normalizedGsaId
   ) || null
 }
 
@@ -161,9 +166,9 @@ function calculateSimilarity(str1: string, str2: string): number {
   return maxLength === 0 ? 1 : (maxLength - matrix[str2.length][str1.length]) / maxLength
 }
 
-// Fungsi untuk mendapatkan semua GSA ID yang valid
+// Fungsi untuk mendapatkan semua GSA ID yang valid (uppercase)
 export const getAllValidGsaIds = (): string[] => {
-  return memberData.map(member => member.gsaId)
+  return memberData.map(member => normalizeGsaId(member.gsaId))
 }
 
 // Fungsi untuk auto-complete nama dan kampus berdasarkan GSA ID

@@ -192,6 +192,81 @@ export default function App() {
         backgroundSize: '40px 40px'
       }}></div>
 
+      {/* Google Decorations - Fixed positioned for mobile */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Top Left Google Decoration */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute -top-4 -left-4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain opacity-30 drop-shadow-lg animate-float" 
+        />
+        
+        {/* Top Right Google Decoration */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute -top-6 -right-6 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain opacity-25 drop-shadow-md rotate-45 animate-float-delayed" 
+        />
+        
+        {/* Middle Left Google Decoration */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute top-1/3 -left-8 w-14 h-14 sm:w-18 sm:h-18 md:w-22 md:h-22 object-contain opacity-20 drop-shadow-lg rotate-12 animate-float" 
+          style={{ animationDelay: '2s' }}
+        />
+        
+        {/* Middle Right Google Decoration */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute top-1/2 -right-10 w-18 h-18 sm:w-22 sm:h-22 md:w-26 md:h-26 object-contain opacity-15 drop-shadow-xl -rotate-12 animate-float-delayed" 
+        />
+        
+        {/* Bottom Left Google Decoration */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute bottom-1/4 -left-6 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain opacity-25 drop-shadow-lg rotate-90 animate-float" 
+          style={{ animationDelay: '4s' }}
+        />
+        
+        {/* Bottom Right Google Decoration */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute -bottom-8 -right-4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain opacity-30 drop-shadow-md -rotate-45 animate-float-delayed" 
+        />
+        
+        {/* Center Floating Google Decorations - Mobile Optimized */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute top-2/3 left-1/4 w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain opacity-10 drop-shadow-sm rotate-180 animate-float" 
+          style={{ animationDelay: '6s' }}
+        />
+        
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute top-1/4 right-1/3 w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain opacity-15 drop-shadow-sm rotate-270 animate-float-delayed" 
+        />
+        
+        {/* Additional Mobile-Specific Decorations */}
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute top-1/6 left-1/2 w-4 h-4 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain opacity-12 drop-shadow-sm rotate-45 animate-float google-decoration-mobile sm:hidden" 
+          style={{ animationDelay: '8s' }}
+        />
+        
+        <img 
+          src="/images/google-decoration.png" 
+          alt="" 
+          className="absolute bottom-1/3 right-1/4 w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain opacity-18 drop-shadow-sm -rotate-30 animate-float-delayed google-decoration-mobile sm:hidden" 
+        />
+      </div>
+
       {/* Floating Pill Header with Dropdown */}
       <div className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-5 px-4 w-full">
         {/* Main Pill */}
@@ -274,7 +349,19 @@ export default function App() {
       <div className="relative z-10 w-full py-8 mt-24 space-y-16 flex flex-col items-center">
 
         {/* Top Sections Container (Restricted Width) */}
-        <div className="w-full max-w-4xl px-4 flex flex-col items-center">
+        <div className="w-full max-w-4xl px-4 flex flex-col items-center relative">
+          {/* Google Decorations around content */}
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-8 -left-8 w-12 h-12 sm:w-16 sm:h-16 object-contain opacity-20 drop-shadow-lg rotate-12 animate-float hidden sm:block" 
+            style={{ animationDelay: '1.5s' }}
+          />
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-6 -right-10 w-10 h-10 sm:w-14 sm:h-14 object-contain opacity-15 drop-shadow-md -rotate-12 animate-float-delayed hidden sm:block" 
+          />
 
           {/* Page Headlines */}
           <div className="text-center mt-6 mb-2 space-y-3">
@@ -287,7 +374,19 @@ export default function App() {
           </div>
 
           {/* Scattered Instructor Cards */}
-          <div id="speaker" className="flex flex-wrap justify-center gap-x-8 gap-y-16 sm:gap-x-12 sm:gap-y-20 mt-8 mb-20 px-4 scroll-mt-32">
+          <div id="speaker" className="flex flex-wrap justify-center gap-x-8 gap-y-16 sm:gap-x-12 sm:gap-y-20 mt-8 mb-20 px-4 scroll-mt-32 relative">
+            {/* Google Decorations around instructor cards */}
+            <img 
+              src="/images/google-decoration.png" 
+              alt="" 
+              className="absolute -top-4 left-4 w-8 h-8 sm:w-12 sm:h-12 object-contain opacity-25 drop-shadow-md rotate-45 animate-float" 
+              style={{ animationDelay: '3.5s' }}
+            />
+            <img 
+              src="/images/google-decoration.png" 
+              alt="" 
+              className="absolute -bottom-4 right-4 w-10 h-10 sm:w-14 sm:h-14 object-contain opacity-20 drop-shadow-lg -rotate-45 animate-float-delayed" 
+            />
 
             {instructors.map((instructor, index) => {
               // Alternate rotations for a scattered look
@@ -317,7 +416,20 @@ export default function App() {
           </div>
 
           {/* GSA 2025 RECAP Section */}
-          <div id="recap" className="w-full flex flex-col items-center mb-10 mt-6 scroll-mt-32">
+          <div id="recap" className="w-full flex flex-col items-center mb-10 mt-6 scroll-mt-32 relative">
+            {/* Google Decorations around recap section */}
+            <img 
+              src="/images/google-decoration.png" 
+              alt="" 
+              className="absolute -top-6 -left-6 w-14 h-14 sm:w-18 sm:h-18 object-contain opacity-15 drop-shadow-xl rotate-90 animate-pulse hidden md:block" 
+              style={{ animationDelay: '5.5s' }}
+            />
+            <img 
+              src="/images/google-decoration.png" 
+              alt="" 
+              className="absolute -top-8 -right-8 w-12 h-12 sm:w-16 sm:h-16 object-contain opacity-20 drop-shadow-lg -rotate-90 animate-pulse hidden md:block" 
+              style={{ animationDelay: '6.5s' }}
+            />
             <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#475467] mb-6 tracking-tight uppercase">
               GSA 2025 <span className="text-[#0ea5e9]">RECAP</span>
             </h2>
@@ -342,7 +454,20 @@ export default function App() {
 
 
         {/* List Member Section - Full Width */}
-        <div id="members" className="w-full flex flex-col items-center scroll-mt-32">
+        <div id="members" className="w-full flex flex-col items-center scroll-mt-32 relative">
+          {/* Google Decorations around members section */}
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-12 left-8 w-16 h-16 sm:w-20 sm:h-20 object-contain opacity-25 drop-shadow-lg rotate-12 animate-pulse hidden lg:block" 
+            style={{ animationDelay: '7.5s' }}
+          />
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-10 right-12 w-14 h-14 sm:w-18 sm:h-18 object-contain opacity-20 drop-shadow-md -rotate-12 animate-pulse hidden lg:block" 
+            style={{ animationDelay: '8.5s' }}
+          />
           <div className="max-w-4xl w-full px-4 flex flex-col items-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#475467] mb-3 leading-snug">
               Member <span className="text-[#0ea5e9]">GSA</span>
@@ -432,7 +557,20 @@ export default function App() {
 
         {/* Upcoming Events Section - Full Width Carousel (Positioned below Members) */}
         {events.length > 0 && (
-          <div id="events" className="w-full flex flex-col items-center scroll-mt-32">
+          <div id="events" className="w-full flex flex-col items-center scroll-mt-32 relative">
+            {/* Google Decorations around events section */}
+            <img 
+              src="/images/google-decoration.png" 
+              alt="" 
+              className="absolute -top-8 left-16 w-12 h-12 sm:w-16 sm:h-16 object-contain opacity-30 drop-shadow-lg rotate-45 animate-pulse hidden lg:block" 
+              style={{ animationDelay: '9.5s' }}
+            />
+            <img 
+              src="/images/google-decoration.png" 
+              alt="" 
+              className="absolute -top-6 right-20 w-10 h-10 sm:w-14 sm:h-14 object-contain opacity-25 drop-shadow-md -rotate-45 animate-pulse hidden lg:block" 
+              style={{ animationDelay: '10.5s' }}
+            />
             <div className="max-w-4xl w-full px-4 flex flex-col items-center">
               <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#475467] mb-3 leading-snug uppercase tracking-tight">
                 Upcoming <span className="text-[#0ea5e9]">Events</span>
@@ -517,7 +655,20 @@ export default function App() {
         )}
 
         {/* Bottom Sections Container (Restricted Width) */}
-        <div className="w-full max-w-4xl px-4 flex flex-col items-center">
+        <div className="w-full max-w-4xl px-4 flex flex-col items-center relative">
+          {/* Google Decorations around bottom sections */}
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-10 -left-12 w-18 h-18 sm:w-22 sm:h-22 object-contain opacity-15 drop-shadow-xl rotate-180 animate-pulse hidden md:block" 
+            style={{ animationDelay: '11.5s' }}
+          />
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-8 -right-10 w-16 h-16 sm:w-20 sm:h-20 object-contain opacity-20 drop-shadow-lg rotate-270 animate-pulse hidden md:block" 
+            style={{ animationDelay: '12.5s' }}
+          />
           {/* The Blog Container */}
           <div id="blog" className="w-full flex flex-col items-center scroll-mt-24">
             <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#475467] mb-8 leading-snug">
@@ -590,7 +741,32 @@ export default function App() {
         </div>
 
         {/* Special Thanks Section */}
-        <div className="w-full max-w-4xl px-4 flex flex-col items-center mt-20 mb-10 text-center">
+        <div className="w-full max-w-4xl px-4 flex flex-col items-center mt-20 mb-10 text-center relative">
+          {/* Google Decorations around special thanks */}
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-6 -left-8 w-20 h-20 sm:w-24 sm:h-24 object-contain opacity-25 drop-shadow-lg rotate-12 animate-pulse hidden sm:block" 
+            style={{ animationDelay: '13.5s' }}
+          />
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -top-4 -right-6 w-16 h-16 sm:w-20 sm:h-20 object-contain opacity-30 drop-shadow-md -rotate-12 animate-pulse hidden sm:block" 
+            style={{ animationDelay: '14.5s' }}
+          />
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -bottom-8 left-4 w-14 h-14 sm:w-18 sm:h-18 object-contain opacity-20 drop-shadow-xl rotate-45 animate-pulse hidden md:block" 
+            style={{ animationDelay: '15.5s' }}
+          />
+          <img 
+            src="/images/google-decoration.png" 
+            alt="" 
+            className="absolute -bottom-6 right-8 w-12 h-12 sm:w-16 sm:h-16 object-contain opacity-25 drop-shadow-lg -rotate-45 animate-pulse hidden md:block" 
+            style={{ animationDelay: '16.5s' }}
+          />
           <h2 className="text-2xl sm:text-3xl font-black text-[#1e293b] leading-tight mb-4">
             Program ini terselenggara<br></br> berkat dukungan<br></br> luar biasa dari:
           </h2>
