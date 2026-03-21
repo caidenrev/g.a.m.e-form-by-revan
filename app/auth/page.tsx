@@ -6,7 +6,6 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import ImageCropper from '@/components/ImageCropper'
 import CompressionPopup from '@/components/CompressionPopup'
@@ -14,7 +13,6 @@ import LoginPopup from '@/components/LoginPopup'
 import GsaRejectionPopup from '@/components/GsaRejectionPopup'
 import TierValidationPopup from '@/components/TierValidationPopup'
 import MemberValidationPopup from '@/components/MemberValidationPopup'
-import { GSAID_LIST } from '@/lib/gsa-ids'
 import { db } from '@/lib/firebase'
 import { collection, query, where, getDocs } from 'firebase/firestore'
 import { validateFileSize } from '@/lib/cloudinary'
@@ -298,18 +296,19 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-10 px-4">
-      <div className="fixed inset-0 pointer-events-none" style={{
-        backgroundImage: 'linear-gradient(rgba(59,130,246,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.18) 1px, transparent 1px)',
-        backgroundSize: '40px 40px'
-      }}></div>
-
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center py-10 px-4">
       <div className="relative z-10 w-full max-w-md">
-        <Link href="/" className="flex justify-center mb-6">
-          <img src="/images/asset1.png" alt="GSA" className="h-16 object-contain" />
-        </Link>
+        {/* Logo dengan style capsule floating untuk semua device */}
+        <div className="flex justify-center mb-6">
+          <Link href="/">
+            <div className="bg-white shadow-lg rounded-full px-6 py-3 border border-gray-100">
+              <img src="/images/asset1.png" alt="GSA" className="h-12 object-contain" />
+            </div>
+          </Link>
+        </div>
 
-        <Card className="bg-white shadow-xl rounded-[40px] border-2 border-blue-200 p-8 overflow-hidden">
+        {/* Container tanpa card untuk semua device */}
+        <div className="p-0 overflow-hidden">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#1e293b] leading-tight drop-shadow-sm mb-6 text-center">
             {isLogin ? 'Login' : 'Daftar'} <span className="text-[#0ea5e9]">Member GSA</span>
           </h2>
@@ -332,7 +331,7 @@ export default function AuthPage() {
                 <div>
                   <label className="block text-sm font-semibold text-[#475467] mb-2">Foto Profile (Opsional)</label>
                   <div className="flex items-center gap-4">
-                    <div className="w-20 h-20 rounded-2xl overflow-hidden border-4 border-blue-50 bg-blue-50 flex-shrink-0">
+                    <div className="w-20 h-20 rounded-2xl overflow-hidden border-4 border-gray-100 bg-gray-50 flex-shrink-0">
                       {profilePhoto ? (
                         <img src={URL.createObjectURL(profilePhoto)} alt="Preview" className="w-full h-full object-cover" />
                       ) : (
@@ -344,12 +343,12 @@ export default function AuthPage() {
                       )}
                     </div>
                     <div className="flex-1">
-                      <div className="bg-blue-50 rounded-2xl p-1 shadow-sm h-12 flex items-center">
+                      <div className="bg-gray-50 rounded-2xl p-1 shadow-none h-12 flex items-center border border-gray-200">
                         <Input 
                           type="file" 
                           accept="image/*" 
                           onChange={handleImageSelect} 
-                          className="border-0 bg-transparent text-sm file:bg-blue-100 file:text-blue-700 file:border-0 file:rounded-full file:px-4 file:py-1 file:mr-4 file:font-semibold hover:file:bg-blue-200 cursor-pointer w-full focus-visible:ring-0 focus-visible:ring-offset-0 h-auto py-0 px-0" 
+                          className="border-0 bg-transparent text-sm file:bg-blue-100 file:text-blue-700 file:border-0 file:rounded-full file:px-4 file:py-1 file:mr-4 file:font-semibold hover:file:bg-blue-200 cursor-pointer w-full focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none h-auto py-0 px-0" 
                         />
                       </div>
                     </div>
@@ -364,7 +363,7 @@ export default function AuthPage() {
                       value={name} 
                       onChange={handleNameChange} 
                       placeholder="Masukkan nama lengkap" 
-                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" 
+                      className="bg-gray-50 border border-gray-200 shadow-none rounded-full h-12 px-5 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" 
                     />
                   </div>
                 </div>
@@ -377,7 +376,7 @@ export default function AuthPage() {
                       value={campus} 
                       onChange={handleCampusChange} 
                       placeholder="Contoh: Universitas Indonesia" 
-                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" 
+                      className="bg-gray-50 border border-gray-200 shadow-none rounded-full h-12 px-5 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" 
                     />
                   </div>
                 </div>
@@ -390,7 +389,7 @@ export default function AuthPage() {
                       value={gsaId} 
                       onChange={handleGsaIdChange} 
                       placeholder="Contoh: GSAID25612" 
-                      className="bg-white border-0 shadow-sm rounded-full h-12 px-5 pr-12 focus-visible:ring-blue-400" 
+                      className="bg-gray-50 border border-gray-200 shadow-none rounded-full h-12 px-5 pr-12 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" 
                     />
                     {gsaId && name && campus && (() => {
                       // Validasi kombinasi lengkap GSA ID + nama + kampus
@@ -498,12 +497,12 @@ export default function AuthPage() {
 
             <div>
               <label className="block text-sm font-semibold text-[#475467] mb-2">Email *</label>
-              <Input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email@example.com" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+              <Input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email@example.com" className="bg-gray-50 border border-gray-200 shadow-none rounded-full h-12 px-5 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" />
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-[#475467] mb-2">Password *</label>
-              <Input required type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Minimal 6 karakter" className="bg-white border-0 shadow-sm rounded-full h-12 px-5 focus-visible:ring-blue-400" />
+              <Input required type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Minimal 6 karakter" className="bg-gray-50 border border-gray-200 shadow-none rounded-full h-12 px-5 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none" />
               {isLogin && (
                 <div className="flex justify-end mt-2">
                   <button 
@@ -528,7 +527,7 @@ export default function AuthPage() {
               {isLogin ? 'Belum punya akun? Daftar di sini' : 'Sudah punya akun? Login di sini'}
             </button>
           </div>
-        </Card>
+        </div>
       </div>
 
       {showCropper && (
