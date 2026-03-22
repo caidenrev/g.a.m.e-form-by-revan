@@ -14,6 +14,7 @@ interface MemberValidationPopupProps {
   onAcceptSuggestions: (suggestions: { name?: string; campus?: string }) => void
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export default function MemberValidationPopup({ 
   isOpen, 
   onClose, 

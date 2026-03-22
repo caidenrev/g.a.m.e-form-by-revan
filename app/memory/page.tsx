@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import Link from 'next/link'
 import { Heart, RefreshCcw } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import Navbar from '@/components/Navbar'
@@ -27,7 +27,7 @@ export default function MemoryMatchPage() {
   const [matchedIds, setMatchedIds] = useState<string[]>([])
   const [health, setHealth] = useState(MAX_HEALTH)
 
-  const shuffle = (array: any[]) => {
+  const shuffle = <T,>(array: T[]): T[] => {
     const newArray = [...array]
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -40,7 +40,7 @@ export default function MemoryMatchPage() {
     try {
       setGameState('LOADING')
       const snapshot = await getDocs(collection(db, 'members'))
-      const allMembers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[]
+      const allMembers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Array<{id: string, name: string, photoURL?: string, campus?: string}>
       
       const shuffledMembers = shuffle(allMembers).slice(0, 6)
       
