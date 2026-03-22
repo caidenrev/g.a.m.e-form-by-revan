@@ -7,6 +7,8 @@ import { useAuth } from '@/contexts/AuthContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Silkscreen } from 'next/font/google'
+import { db } from '@/lib/firebase'
+import { doc, setDoc, collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'
 
 const pixelFont = Silkscreen({ weight: ['400', '700'], subsets: ['latin'] })
 
@@ -42,6 +44,7 @@ export default function GamePage() {
   const [pipes, setPipes] = useState<Pipe[]>([])
   const [score, setScore] = useState(0)
   const [highScore, setHighScore] = useState(0)
+  const [leaderboard, setLeaderboard] = useState<any[]>([])
   
   const frameRef = useRef(0)
   const gameLoopRef = useRef<number>()
@@ -62,7 +65,32 @@ export default function GamePage() {
     // Load high score
     const saved = localStorage.getItem('flappy_highscore')
     if (saved) setHighScore(parseInt(saved))
+
+    // Listen to leaderboard
+    const q = query(collection(db, 'flappyScores'), orderBy('score', 'desc'), limit(10))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      setLeaderboard(data)
+    })
+    return () => unsubscribe()
   }, [])
+
+  // Sync highest remote score
+  useEffect(() => {
+    if (user) {
+      const unsubscribe = onSnapshot(doc(db, 'flappyScores', user.uid), (docSnap) => {
+        if (docSnap.exists()) {
+          const remoteScore = docSnap.data().score || 0
+          setHighScore((prev) => {
+            const best = Math.max(prev, remoteScore)
+            localStorage.setItem('flappy_highscore', best.toString())
+            return best
+          })
+        }
+      })
+      return () => unsubscribe()
+    }
+  }, [user])
 
   const jump = useCallback(() => {
     if (gameState === 'START') {
@@ -105,8 +133,20 @@ export default function GamePage() {
     if (score > highScore) {
       setHighScore(score)
       localStorage.setItem('flappy_highscore', score.toString())
+      
+      // Save to Firebase
+      if (user && memberData) {
+        const scoreRef = doc(db, 'flappyScores', user.uid)
+        setDoc(scoreRef, {
+          memberId: user.uid,
+          name: memberData.name || user.displayName || 'GSA Member',
+          score: score,
+          photoURL: memberData.photoURL || user.photoURL || null,
+          timestamp: new Date()
+        }, { merge: true }).catch(err => console.error("Error saving score:", err))
+      }
     }
-  }, [score, highScore])
+  }, [score, highScore, user, memberData])
 
   useEffect(() => {
     if (gameState !== 'PLAYING' && gameState !== 'FALLING') return
@@ -306,7 +346,7 @@ export default function GamePage() {
           {gameState === 'START' && (
             <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
               <h1 className={`text-4xl text-white mb-6 text-center leading-relaxed ${pixelFont.className}`} style={pixelOutlineStroke}>
-                FLAPPY<br/>CLOUD
+                FLAPPY<br/>DINO
               </h1>
               <p className={`text-2xl text-green-400 mb-10 animate-pulse ${pixelFont.className}`} style={pixelOutlineStroke}>
                 GET READY!
@@ -348,6 +388,36 @@ export default function GamePage() {
           Gunakan <kbd className="bg-gray-800 px-2 py-1 rounded text-white mx-1 border border-gray-600">Spasi</kbd> atau <kbd className="bg-gray-800 px-2 py-1 rounded text-white mx-1 border border-gray-600">↑</kbd> untuk lompat
         </p>
       </div>
+
+      {/* Leaderboard Section */}
+      <div className="w-full max-w-md mx-auto mt-12 mb-20 px-4 relative z-10">
+        <div className="bg-[#ded895] rounded-xl p-6 shadow-xl border-4 border-[#543847]">
+          <h2 className={`text-2xl text-center text-[#e26738] mb-6 tracking-wide drop-shadow-sm ${pixelFont.className}`} style={{ WebkitTextStroke: '1px #543847' }}>LEADERBOARD</h2>
+          
+          <div className="flex flex-col gap-3">
+            {leaderboard.length === 0 ? (
+              <p className="text-center text-[#543847] font-medium py-4">Belum ada skor yang tercatat. Jadilah yang pertama!</p>
+            ) : (
+              leaderboard.map((entry, index) => (
+                <div key={entry.id} className="flex items-center justify-between p-3 rounded-lg bg-[#e8e2b1] border-2 border-[#543847]/20">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border-2 border-[#543847] ${index === 0 ? 'bg-yellow-400 text-white' : index === 1 ? 'bg-gray-300 text-gray-800' : index === 2 ? 'bg-orange-400 text-white' : 'bg-[#ded895] text-[#543847]'}`}>
+                      {index + 1}
+                    </div>
+                    <div className="font-bold text-[#543847] truncate max-w-[130px] sm:max-w-[180px]">
+                      {entry.name}
+                    </div>
+                  </div>
+                  <div className={`text-2xl text-white ${pixelFont.className}`} style={{ WebkitTextStroke: '2px #543847' }}>
+                    {entry.score}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+
       <Footer />
     </div>
   )
