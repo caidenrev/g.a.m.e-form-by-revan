@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Heart, RefreshCcw } from 'lucide-react'
+import { Heart, RefreshCcw, Trophy } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -199,7 +199,7 @@ export default function MemoryMatchPage() {
                     {/* FRONT of card (Photo & Name) - Member Card Design */}
                     <div 
                       className={`absolute inset-0 bg-white rounded-[20px] sm:rounded-[32px] p-2 sm:p-3 border-[3px] sm:border-[5px] border-white shadow-2xl flex flex-col items-center transition-all ${
-                        matchedIds.includes(card.memberId) ? 'ring-4 sm:ring-8 ring-green-400 bg-green-50' : ''
+                        matchedIds.includes(card.memberId) ? 'ring-4 sm:ring-8 ring-blue-400 bg-blue-50' : ''
                       }`}
                       style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                     >
@@ -228,31 +228,36 @@ export default function MemoryMatchPage() {
 
           {/* Overlays */}
           {gameState === 'GAME_OVER' && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/60 backdrop-blur-md rounded-[40px]">
-              <div className="bg-white p-8 rounded-[40px] shadow-2xl border flex flex-col items-center transform scale-110 animate-in zoom-in duration-300">
-                <h2 className="text-4xl font-black text-red-500 mb-2">GAME OVER</h2>
-                <p className="text-gray-600 font-medium mb-6">Yahh nyawamu habis!</p>
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-[40px]">
+              <div className="bg-white p-10 rounded-[32px] shadow-2xl border-2 border-red-50 flex flex-col items-center transform scale-105 animate-in zoom-in duration-500 max-w-sm text-center">
+                <div className="w-20 h-20 bg-red-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner animate-pulse text-red-500">
+                  <Heart className="w-10 h-10 fill-red-500" />
+                </div>
+                <h2 className="text-3xl font-black text-gray-800 mb-3">Game Over</h2>
+                <p className="text-gray-500 font-medium mb-8">Sayang sekali, nyawamu habis. Jangan menyerah, coba lagi!</p>
                 <button 
                   onClick={fetchAndSetup}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-3.5 px-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-95 transition-all flex items-center gap-2 w-full justify-center"
                 >
-                  <RefreshCcw className="w-5 h-5" /> Main Lagi
+                  <RefreshCcw className="w-5 h-5" /> Coba Lagi
                 </button>
               </div>
             </div>
           )}
 
           {gameState === 'WIN' && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/60 backdrop-blur-md rounded-[40px]">
-              <div className="bg-white p-8 rounded-[40px] shadow-2xl border flex flex-col items-center transform scale-110 animate-in zoom-in duration-300">
-                <img src="/images/asset7.png" className="w-20 mb-4 animate-bounce" alt="Victory" />
-                <h2 className="text-4xl font-black text-green-500 mb-2">KAMU MENANG!</h2>
-                <p className="text-gray-600 font-medium mb-6 text-center max-w-xs">Ingatanmu luar biasa! Kamu berhasil mengenali semua member.</p>
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-[40px]">
+              <div className="bg-white p-10 rounded-[32px] shadow-2xl border-2 border-blue-50 flex flex-col items-center transform scale-105 animate-in zoom-in duration-500 max-w-sm text-center">
+                <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner animate-bounce text-blue-500">
+                  <Trophy className="w-10 h-10" />
+                </div>
+                <h2 className="text-3xl font-black text-gray-800 mb-3">Luar Biasa!</h2>
+                <p className="text-gray-500 font-medium mb-8">Ingatanmu tajam. Kamu berhasil mencocokkan semua member dengan sempurna.</p>
                 <button 
                   onClick={fetchAndSetup}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-95 transition-all flex items-center gap-2 w-full justify-center"
                 >
-                  <RefreshCcw className="w-5 h-5" /> Main Lagi
+                  <RefreshCcw className="w-5 h-5" /> Mainkan Kembali
                 </button>
               </div>
             </div>
