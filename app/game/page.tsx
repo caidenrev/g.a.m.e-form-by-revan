@@ -44,7 +44,7 @@ export default function GamePage() {
   const [pipes, setPipes] = useState<Pipe[]>([])
   const [score, setScore] = useState(0)
   const [highScore, setHighScore] = useState(0)
-  const [leaderboard, setLeaderboard] = useState<any[]>([])
+  const [leaderboard, setLeaderboard] = useState<Array<{ id: string, name: string, score: number, photoURL?: string }>>([])
   
   const frameRef = useRef(0)
   const gameLoopRef = useRef<number>()
@@ -69,7 +69,7 @@ export default function GamePage() {
     // Listen to leaderboard
     const q = query(collection(db, 'flappyScores'), orderBy('score', 'desc'), limit(10))
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Array<{ id: string, name: string, score: number, photoURL?: string }>
       setLeaderboard(data)
     })
     return () => unsubscribe()
@@ -248,12 +248,14 @@ export default function GamePage() {
         backgroundSize: '40px 40px'
       }}></div>
 
-      <div className="w-full justify-end items-center max-w-lg mb-4 flex px-4">
+      <div className="w-full justify-center items-center max-w-lg mb-4 flex px-4">
         {/* Profile Card */}
-        <div className="flex flex-col items-end gap-1">
-          <div className="bg-blue-50 px-3 py-1 rounded-full text-xs font-bold text-blue-600 flex items-center gap-2 border border-blue-100">
-            <span>{loading ? 'Memuat Profil...' : (memberData?.name || user?.displayName || 'Tamu (Belum Login)')}</span>
-            <span className={`w-1.5 h-1.5 rounded-full ${loading ? 'bg-yellow-400' : (user ? 'bg-green-500' : 'bg-red-500')} animate-pulse`}></span>
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-2">
+            <span className={`text-white text-xs sm:text-sm tracking-wider ${pixelFont.className}`} style={pixelOutlineStroke}>
+              {loading ? 'MEMUAT PROFIL...' : ((memberData?.name || user?.displayName)?.toUpperCase() || 'TAMU (BELUM LOGIN)')}
+            </span>
+            <span className={`w-2 h-2 rounded-full ${loading ? 'bg-yellow-400' : (user ? 'bg-green-500' : 'bg-red-500')} animate-pulse border border-black shadow-sm`}></span>
           </div>
         </div>
       </div>
