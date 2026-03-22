@@ -6,6 +6,13 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { Silkscreen } from 'next/font/google'
+
+const pixelFont = Silkscreen({ weight: ['400', '700'], subsets: ['latin'] })
+
+const pixelOutlineStroke = {
+  textShadow: '2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000'
+}
 
 // Constants
 const GRAVITY = 0.56
@@ -14,8 +21,8 @@ const PIPE_SPEED = 3
 const PIPE_SPAWN_RATE = 100 // frames
 const PIPE_WIDTH = 52
 const PIPE_GAP = 150
-const BIRD_WIDTH = 34
-const BIRD_HEIGHT = 24
+const BIRD_WIDTH = 40
+const BIRD_HEIGHT = 40
 const GAME_WIDTH = 400
 const GAME_HEIGHT = 600
 const GROUND_HEIGHT = 112
@@ -219,11 +226,12 @@ export default function GamePage() {
         >
           {/* Game Background */}
           <div 
-            className="absolute inset-0 bg-repeat-x" 
+            className="absolute inset-0 z-0" 
             style={{ 
               backgroundImage: 'url(/game-assets/sprites/background-day.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: `-${(frameRef.current * 0.5) % GAME_WIDTH}px 0`
+              backgroundSize: 'auto 100%',
+              backgroundRepeat: 'repeat-x',
+              backgroundPosition: `${-(frameRef.current * 0.5)}px 0`
             }}
           />
 
@@ -258,12 +266,14 @@ export default function GamePage() {
 
           {/* Ground */}
           <div 
-            className="absolute w-full bg-repeat-x z-20"
+            className="absolute w-full z-20"
             style={{ 
               top: GAME_HEIGHT - GROUND_HEIGHT,
               height: GROUND_HEIGHT,
               backgroundImage: 'url(/game-assets/sprites/base.png)',
-              backgroundPosition: `-${(frameRef.current * PIPE_SPEED) % GAME_WIDTH}px 0`
+              backgroundSize: `auto ${GROUND_HEIGHT}px`,
+              backgroundRepeat: 'repeat-x',
+              backgroundPosition: `${-(frameRef.current * PIPE_SPEED)}px 0`
             }}
           />
 
@@ -275,9 +285,10 @@ export default function GamePage() {
               top: birdPos,
               width: BIRD_WIDTH,
               height: BIRD_HEIGHT,
-              backgroundImage: 'url(/game-assets/sprites/bluebird-midflap.png)',
+              backgroundImage: 'url(/game-assets/sprites/dino.png)',
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
               transform: `rotate(${gameState === 'FALLING' || gameState === 'GAME_OVER' ? 90 : Math.min(Math.max(birdVel * 3, -25), 90)}deg)` // Rotate based on velocity
             }}
           />
@@ -285,7 +296,7 @@ export default function GamePage() {
           {/* In-Game Score */}
           {(gameState === 'PLAYING' || gameState === 'START') && (
             <div className="absolute top-10 w-full text-center z-50 pointer-events-none">
-              <span className="text-5xl font-black text-white drop-shadow-sm" style={{ WebkitTextStroke: '2px #543847' }}>
+              <span className={`text-6xl text-white ${pixelFont.className}`} style={pixelOutlineStroke}>
                 {score}
               </span>
             </div>
@@ -293,11 +304,20 @@ export default function GamePage() {
 
           {/* Start Screen */}
           {gameState === 'START' && (
-            <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
-              <img src="/game-assets/sprites/message.png" alt="Get Ready" className="mb-4 animate-bounce w-48" />
-              <p className="text-white font-bold bg-blue-600 px-6 py-2 rounded-full animate-pulse shadow-lg border-2 border-white/50">
-                Klik atau Tekan Spasi
+            <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+              <h1 className={`text-4xl text-white mb-6 text-center leading-relaxed ${pixelFont.className}`} style={pixelOutlineStroke}>
+                FLAPPY<br/>CLOUD
+              </h1>
+              <p className={`text-2xl text-green-400 mb-10 animate-pulse ${pixelFont.className}`} style={pixelOutlineStroke}>
+                GET READY!
               </p>
+              <button 
+                className={`bg-blue-500 hover:bg-blue-400 text-white uppercase font-bold text-sm tracking-wider px-8 py-4 rounded-full border-4 border-white shadow-[0_4px_0_rgb(37,99,235)] active:shadow-none active:translate-y-1 transition-all ${pixelFont.className}`}
+                style={pixelOutlineStroke}
+                onClick={(e) => { e.stopPropagation(); jump() }}
+              >
+                MULAI MAIN
+              </button>
             </div>
           )}
 
@@ -306,14 +326,15 @@ export default function GamePage() {
             <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
               <img src="/game-assets/sprites/gameover.png" alt="Game Over" className="mb-6 w-48 drop-shadow-lg" />
               <div className="bg-[#ded895] p-6 rounded-xl border-4 border-[#543847] shadow-xl text-center mb-6 w-64 transform scale-110">
-                <p className="text-[#e26738] font-black text-xl mb-1 uppercase tracking-wider">Score</p>
-                <p className="text-4xl font-black text-white mb-4 drop-shadow-md" style={{ WebkitTextStroke: '2px #543847' }}>{score}</p>
+                <p className={`text-white text-xl mb-3 font-bold ${pixelFont.className}`} style={pixelOutlineStroke}>SCORE</p>
+                <p className={`text-4xl text-white mb-5 ${pixelFont.className}`} style={pixelOutlineStroke}>{score}</p>
                 
-                <p className="text-[#e26738] font-black text-xl mb-1 uppercase tracking-wider">Best</p>
-                <p className="text-4xl font-black text-white drop-shadow-md" style={{ WebkitTextStroke: '2px #543847' }}>{highScore}</p>
+                <p className={`text-white text-xl mb-3 font-bold ${pixelFont.className}`} style={pixelOutlineStroke}>BEST</p>
+                <p className={`text-4xl text-white ${pixelFont.className}`} style={pixelOutlineStroke}>{highScore}</p>
               </div>
               <button 
-                className="bg-green-500 hover:bg-green-400 text-white font-black text-xl px-8 py-3 rounded-full border-4 border-white shadow-[0_4px_0_rgb(21,128,61)] active:shadow-none active:translate-y-1 transition-all"
+                className={`bg-green-500 hover:bg-green-400 text-white uppercase text-base font-bold tracking-wider px-8 py-4 rounded-full border-4 border-white shadow-[0_4px_0_rgb(21,128,61)] active:shadow-none active:translate-y-1 transition-all ${pixelFont.className}`}
+                style={pixelOutlineStroke}
                 onClick={(e) => { e.stopPropagation(); jump() }}
               >
                 MAIN LAGI
