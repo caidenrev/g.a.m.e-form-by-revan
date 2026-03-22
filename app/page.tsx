@@ -235,6 +235,10 @@ export default function App() {
             <Link href="/about" onClick={() => setIsMenuOpen(false)} className="px-5 py-3.5 text-sm font-bold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-colors">
               About
             </Link>
+            <Link href="/games" onClick={() => setIsMenuOpen(false)} className="px-5 py-3.5 text-sm font-bold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-colors flex items-center justify-between">
+              <span>Mini Games</span>
+              <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full animate-pulse">2 Play</span>
+            </Link>
 
             {/* Divider */}
             {user && <div className="h-px bg-gray-200 my-2 mx-3"></div>}
