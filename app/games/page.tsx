@@ -27,15 +27,13 @@ export default function GamesHubPage() {
 
       <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 px-2 sm:px-0">
         {/* Game 1: Flappy Dino */}
-        <Link href="/game" className="group bg-blue-50 rounded-[32px] p-6 sm:p-8 shadow-xl border-[5px] border-blue-50 hover:border-blue-100 transition-all hover:-translate-y-2 hover:shadow-2xl relative overflow-hidden flex flex-col items-center">
-          <div className="absolute top-0 right-0 w-32 h-32 opacity-20 pointer-events-none transform translate-x-4 -translate-y-4">
-            <img src="/images/asset7.png" alt="Dino Decor" className="w-full h-full object-contain" />
-          </div>
+        <Link href="/game" className="group bg-blue-50 rounded-[32px] p-6 sm:p-8 shadow-xl border-[5px] border-blue-50 hover:border-blue-100 transition-all hover:-translate-y-2 flex flex-col relative overflow-hidden">
+          <img src="/images/asset7.png" alt="Dino Decor" className="absolute -top-4 -right-4 w-48 sm:w-72 opacity-20 group-hover:rotate-12 transition-transform pointer-events-none" />
           
-          <img src="/game-assets/sprites/dino.png" className="w-20 h-20 sm:w-28 sm:h-28 object-contain drop-shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300 transform scale-x-[-1]" alt="Flappy Dino" />
-          <h2 className="text-2xl sm:text-3xl font-black text-blue-900 mb-2 whitespace-nowrap">Flappy Dino</h2>
+          <img src="/game-assets/sprites/dino.png" alt="Flappy Dino" className="w-20 h-20 sm:w-28 sm:h-28 object-contain drop-shadow-xl mb-6 group-hover:scale-110 transition-transform group-hover:rotate-6 relative z-10" />
+          <h2 className="text-2xl font-black text-gray-800 mb-3 group-hover:text-blue-600 transition-colors relative z-10">Flappy Dino</h2>
           <p className="text-gray-500 font-medium leading-relaxed flex-1 text-sm sm:text-base relative z-10">
-            Bantu burung biru melompati rintangan pipa bergaya klasik. Mainkan terus untuk mendapatkan High Score tertinggi!
+            Bantu sang Dino GSA melompat melewati rintangan klasik. Mainkan terus untuk mencetak rekor tertinggi di Leaderboard!
           </p>
           <div className="mt-8 relative inline-flex w-max bg-gray-50 px-5 py-2.5 rounded-full group-hover:bg-blue-50 transition-colors z-10 border border-gray-100 group-hover:border-blue-200">
             <span className="font-extrabold text-blue-600 uppercase tracking-wider text-xs sm:text-sm flex items-center gap-2">Mainkan Sekarang <ArrowLeft className="w-4 h-4 rotate-180" /></span>

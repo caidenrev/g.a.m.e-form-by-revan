@@ -75,22 +75,45 @@ export default function GamePage() {
     return () => unsubscribe()
   }, [])
 
-  // Sync highest remote score
+  // Sync highest remote score and migrate local high score
   useEffect(() => {
-    if (user) {
+    if (user && memberData) {
       const unsubscribe = onSnapshot(doc(db, 'flappyScores', user.uid), (docSnap) => {
+        const localBest = parseInt(localStorage.getItem('flappy_highscore') || '0')
+        
         if (docSnap.exists()) {
           const remoteScore = docSnap.data().score || 0
+          
+          if (localBest > remoteScore) {
+            // Local score is higher, push to DB!
+            setDoc(doc(db, 'flappyScores', user.uid), {
+              memberId: user.uid,
+              name: memberData.name || user.displayName || 'GSA Member',
+              score: localBest,
+              photoURL: memberData.photoURL || user.photoURL || null,
+              timestamp: new Date()
+            }, { merge: true })
+          }
+
           setHighScore((prev) => {
-            const best = Math.max(prev, remoteScore)
+            const best = Math.max(prev, remoteScore, localBest)
             localStorage.setItem('flappy_highscore', best.toString())
             return best
+          })
+        } else if (localBest > 0) {
+           // Document doesn't exist but user has a local high score!
+           setDoc(doc(db, 'flappyScores', user.uid), {
+            memberId: user.uid,
+            name: memberData.name || user.displayName || 'GSA Member',
+            score: localBest,
+            photoURL: memberData.photoURL || user.photoURL || null,
+            timestamp: new Date()
           })
         }
       })
       return () => unsubscribe()
     }
-  }, [user])
+  }, [user, memberData])
 
   const jump = useCallback(() => {
     if (gameState === 'START') {
